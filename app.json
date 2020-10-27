@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "SellIt",
+    "slug": "SellIt",
+    "platforms": ["ios", "android", "web"],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./app/assets/icon.png",
+    "splash": {
+      "image": "./app/assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#e63c4b"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.codewithmosh.sellIt",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.codewithmosh.sellIt",
+      "versionCode": 1
+    },
+    "description": "A marketplace for selling the stuff you don't need anymore.",
+    "notification": {
+      "iosDisplayInForeground": true
+    },
+    "extra": {
+      "bugsnag": {
+        "apiKey": "60c92253ae76a94f1f4e852579bba95b"
+      }
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "@bugsnag/expo/hooks/post-publish.js",
+          "config": {}
+        }
+      ]
+    }
+  }
+}
