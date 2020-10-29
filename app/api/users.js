@@ -8,7 +8,6 @@ const register = (userInfo) => {
   data.append("email", userInfo.email);
   data.append("password", userInfo.password);
   data.append("phone_number", userInfo.phone_number);
-
   if (userInfo.profile_image) {
     data.append("profile_image", {
       name: `${userInfo.name}ProfileImage.jpg`,

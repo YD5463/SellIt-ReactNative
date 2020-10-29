@@ -14,7 +14,6 @@ import {
 } from "../components/forms";
 import useApi from "../hooks/useApi";
 import ActivityIndicator from "../components/ActivityIndicator";
-import logger from "../utility/logger";
 import routes from "../navigation/routes";
 import Text from "../components/Text";
 import ProfileImagePicker from "./../components/ProfileImagePicker";
@@ -52,27 +51,20 @@ const validationSchema = Yup.object().shape({
 
 function RegisterScreen({ navigation }) {
   const loginApi = useApi(authApi.login);
+  const registerApi = useApi(usersApi.register);
   const { t } = useTranslation();
   const auth = useAuth();
   const [error, setError] = useState();
 
   const handleSubmit = async (userInfo) => {
-    const result = await usersApi.register(userInfo);
-    if (!result.ok) {
-      if (result.data) setError(result.data.error);
-      else {
-        setError("An unexpected error occurred.");
-        // logger.log(result);
-      }
-      return;
-    }
+    await registerApi.request(userInfo);
+    if (registerApi.error) return;
 
     const { data: authToken } = await loginApi.request(
       userInfo.email,
       userInfo.password
     );
     if (!authToken) return;
-    //auth.logIn(authToken);
     const { granted } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
     if (granted) {
       //const token = await registerForPushNotificationsAsync();
@@ -86,7 +78,7 @@ function RegisterScreen({ navigation }) {
 
   return (
     <>
-      <ActivityIndicator visible={loginApi.loading} />
+      <ActivityIndicator visible={loginApi.loading || registerApi.loading} />
       <Screen style={styles.container}>
         <Form
           initialValues={{
@@ -104,7 +96,7 @@ function RegisterScreen({ navigation }) {
             autoCorrect={false}
             icon="account"
             name="name"
-            placeholder="Name"
+            placeholder={t("Name")}
           />
           <FormField
             autoCapitalize="none"
@@ -112,7 +104,7 @@ function RegisterScreen({ navigation }) {
             icon="email"
             keyboardType="email-address"
             name="email"
-            placeholder="Email"
+            placeholder={t("E-mail Address")}
             textContentType="emailAddress"
           />
           <FormField
@@ -120,14 +112,14 @@ function RegisterScreen({ navigation }) {
             autoCorrect={false}
             icon="lock"
             name="password"
-            placeholder="Password"
+            placeholder={t("password")}
             secureTextEntry
             textContentType="password"
           />
           <FormField
             keyboardType="numeric"
             name="phone_number"
-            placeholder="Phone Number"
+            placeholder={t("Phone Number")}
             icon="cellphone"
           />
           <SubmitButton title={t("register")} />
