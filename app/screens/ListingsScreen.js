@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import Button from "../components/Button";
@@ -11,6 +11,7 @@ import Screen from "../components/Screen";
 import AppText from "../components/Text";
 import TagPick from "../components/TagPick";
 import { useTheme } from "react-native-paper";
+import SearchBar from "./../components/SearchBar";
 
 function ListingsScreen({ navigation }) {
   const { colors } = useTheme();
@@ -20,6 +21,7 @@ function ListingsScreen({ navigation }) {
   const [error, setError] = useState(false);
   const [originalListing, setOriginalListing] = useState([]);
   const [listing, setListing] = useState([]);
+  const [search, setSearch] = useState("");
 
   const initData = async () => {
     setLoading(true);
@@ -56,25 +58,41 @@ function ListingsScreen({ navigation }) {
       filterdCategories.has(listing.categoryId)
     );
   };
+  const searchFilter = (val) => {
+    setSearch(val);
+    if (val)
+      setListing(
+        originalListing.filter((listing) =>
+          listing.title.toLowerCase().includes(val.toLowerCase())
+        )
+      );
+    else setListing(getFilteredListing());
+  };
 
   return (
     <>
       <ActivityIndicator visible={loading} />
 
       <Screen style={[styles.screen, { backgroundColor: colors.light }]}>
-        <FlatList
-          data={Object.keys(categoriesMap)}
-          keyExtractor={(category) => category}
-          renderItem={({ item }) => (
-            <TagPick tagName={item} onPress={onTagPickPressed} />
-          )}
-          horizontal={true}
-        />
+        <SearchBar search={search} onChange={searchFilter} />
+        <View style={{ paddingBottom: 10 }}>
+          <FlatList
+            data={Object.keys(categoriesMap)}
+            keyExtractor={(category) => category}
+            renderItem={({ item }) => (
+              <TagPick tagName={item} onPress={onTagPickPressed} />
+            )}
+            horizontal={true}
+          />
+        </View>
         {error && (
           <>
             <AppText>Couldn't retrieve the listings.</AppText>
             <Button title="Retry" onPress={initData} />
           </>
+        )}
+        {listing.length === 0 && (
+          <AppText>No exiting listing with this filters.</AppText>
         )}
         <FlatList
           data={listing}
@@ -98,6 +116,9 @@ function ListingsScreen({ navigation }) {
 const styles = StyleSheet.create({
   screen: {
     padding: 20,
+  },
+  search: {
+    height: 20,
   },
 });
 

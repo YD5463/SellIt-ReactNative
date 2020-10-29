@@ -20,7 +20,7 @@ export default {
       danger: colors.danger,
       blue: colors.blue,
       hardLight: colors.hardLight,
-
+      boldLight: "#C0C0C0",
       muted: "#F0F1F3",
       success: "#7DBE31",
       error: "#FC0021",
@@ -43,7 +43,7 @@ export default {
       danger: colors.danger,
       blue: colors.blue,
       hardLight: colors.medium,
-
+      boldLight: colors.light,
       muted: "#F0F1F3",
       success: "#7DBE31",
       error: "#FC0021",

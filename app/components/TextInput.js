@@ -5,14 +5,20 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import defaultStyles from "../config/styles";
 import { useTheme } from "react-native-paper";
 
-function AppTextInput({ icon, width = "100%", ...otherProps }) {
+function AppTextInput({
+  icon,
+  width = "100%",
+  color = "light",
+  iconSize = 20,
+  ...otherProps
+}) {
   const { colors } = useTheme();
   return (
-    <View style={[styles.container, { width, backgroundColor: colors.light }]}>
+    <View style={[styles.container, { width, backgroundColor: colors[color] }]}>
       {icon && (
         <MaterialCommunityIcons
           name={icon}
-          size={20}
+          size={iconSize}
           color={colors.medium}
           style={styles.icon}
         />
