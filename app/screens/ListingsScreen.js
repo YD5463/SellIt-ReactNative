@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  TouchableWithoutFeedback,
+} from "react-native";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import Button from "../components/Button";
@@ -12,6 +17,8 @@ import AppText from "../components/Text";
 import TagPick from "../components/TagPick";
 import { useTheme } from "react-native-paper";
 import SearchBar from "./../components/SearchBar";
+import { MaterialIcons } from "@expo/vector-icons";
+// import Slider from "@react-native-community/slider";
 
 function ListingsScreen({ navigation }) {
   const { colors } = useTheme();
@@ -43,30 +50,27 @@ function ListingsScreen({ navigation }) {
   }, []);
 
   const onTagPickPressed = (tagName, picked) => {
-    // console.log("tag selected");
     if (!picked) filterdCategories.add(categoriesMap[tagName]);
     else {
       filterdCategories.delete(categoriesMap[tagName]);
     }
     setFilterdCategories(filterdCategories);
-    setListing(getFilteredListing());
+    setListing(getFilteredListing(search, filterdCategories));
   };
 
-  const getFilteredListing = () => {
-    if (filterdCategories.size === 0) return originalListing;
-    return originalListing.filter((listing) =>
-      filterdCategories.has(listing.categoryId)
-    );
+  const getFilteredListing = (search, filterdCategories) => {
+    return originalListing.filter((listing) => {
+      let res = true;
+      if (filterdCategories.size !== 0)
+        res = res && filterdCategories.has(listing.categoryId);
+      if (search !== "")
+        res = res && listing.title.toLowerCase().includes(search.toLowerCase());
+      return res;
+    });
   };
   const searchFilter = (val) => {
     setSearch(val);
-    if (val)
-      setListing(
-        originalListing.filter((listing) =>
-          listing.title.toLowerCase().includes(val.toLowerCase())
-        )
-      );
-    else setListing(getFilteredListing());
+    setListing(getFilteredListing(val, filterdCategories));
   };
 
   return (
@@ -74,7 +78,15 @@ function ListingsScreen({ navigation }) {
       <ActivityIndicator visible={loading} />
 
       <Screen style={[styles.screen, { backgroundColor: colors.light }]}>
-        <SearchBar search={search} onChange={searchFilter} />
+        <View
+          style={{ flexDirection: "row", alignItems: "center", width: "90%" }}
+        >
+          <TouchableWithoutFeedback onPress={() => {}}>
+            <MaterialIcons name="sort" size={30} color={colors.medium} />
+          </TouchableWithoutFeedback>
+          <SearchBar search={search} onChange={searchFilter} />
+        </View>
+
         <View style={{ paddingBottom: 10 }}>
           <FlatList
             data={Object.keys(categoriesMap)}

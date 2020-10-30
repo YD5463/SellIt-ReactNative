@@ -9,10 +9,7 @@ function SearchBar({ onChange, search }) {
     <View style={[styles.container, { backgroundColor: colors.white }]}>
       <MaterialCommunityIcons name="magnify" size={35} color={colors.medium} />
       <TextInput
-        onChangeText={(text) => {
-          onChange(text);
-          console.log("text is:", text);
-        }}
+        onChangeText={onChange}
         value={search}
         style={defaultStyles.text}
       />
