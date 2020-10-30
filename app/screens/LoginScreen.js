@@ -71,6 +71,11 @@ function LoginScreen({ navigation }) {
           />
           <SubmitButton title={t("login")} />
           <TouchableOpacity
+            onPress={() => navigation.navigate(routes.FORGOT_PASSWORD)}
+          >
+            <Text style={styles.register}>Forgot password...</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => navigation.navigate(routes.REGISTER)}
           >
             <Text style={styles.register}>{t("register")}</Text>

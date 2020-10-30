@@ -15,4 +15,5 @@ export default Object.freeze({
   THEME: "Theme",
   LISTING_IMAGE: "ViewListingImage",
   VALIDATE_EMAIL: "Verify",
+  FORGOT_PASSWORD: "ForgotPassword",
 });

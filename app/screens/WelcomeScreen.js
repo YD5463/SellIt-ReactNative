@@ -23,9 +23,11 @@ function WelcomeScreen({ navigation }) {
   useEffect(() => {
     playSong();
     return () => {
-      song.unloadAsync();
+      console.log("im here");
+      if (song) song.stopAsync();
     };
   }, []);
+  
   return (
     <ImageBackground
       blurRadius={10}
@@ -39,12 +41,18 @@ function WelcomeScreen({ navigation }) {
       <View style={styles.buttonsContainer}>
         <Button
           title={t("login")}
-          onPress={() => navigation.navigate(routes.LOGIN)}
+          onPress={() => {
+            song.stopAsync();
+            navigation.navigate(routes.LOGIN);
+          }}
         />
         <Button
           title={t("register")}
           color="secondary"
-          onPress={() => navigation.navigate(routes.REGISTER)}
+          onPress={() => {
+            song.stopAsync();
+            navigation.navigate(routes.REGISTER);
+          }}
         />
       </View>
     </ImageBackground>

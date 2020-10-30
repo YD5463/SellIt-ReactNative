@@ -24,8 +24,10 @@ const change_password = (user_info) =>
     curr_password: user_info.current_password,
     new_password: user_info.password,
   });
+const forgot_password = (email) =>
+  client.put(`${endpoint}/forgot_password`, { email });
 
 const editProfile = (user_info) =>
   client.put(`${endpoint}/edit_profile`, user_info);
 
-export default { register, change_password, editProfile };
+export default { register, change_password, editProfile, forgot_password };
