@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ImageBackground, StyleSheet, View, Image, Text } from "react-native";
 import Button from "../components/Button";
 import routes from "../navigation/routes";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
+import { Audio } from "expo-av";
 
 function WelcomeScreen({ navigation }) {
   const { colors } = useTheme();
   const { t, i18n } = useTranslation();
+  const [song, setSong] = useState();
+  const playSong = async () => {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../assets/song.mp3"),
+      {
+        shouldPlay: true,
+        isLooping: true,
+      }
+    );
+    setSong(sound);
+  };
+  useEffect(() => {
+    playSong();
+    return () => {
+      song.unloadAsync();
+    };
+  }, []);
   return (
     <ImageBackground
       blurRadius={10}
