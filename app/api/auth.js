@@ -8,8 +8,8 @@ const userLeftApp = () => client.put(`${endpoint}/userLeft`);
 
 const getUserActivity = () => client.get(`${endpoint}/activity`);
 
-const validateEmail = (code) =>
-  client.post(`${endpoint}/validate_email`, { code });
+const validateEmail = (code, email) =>
+  client.post(`${endpoint}/validate_email`, { code, email });
 
 const resendValidationCode = () =>
   client.get(`${endpoint}/send_velidation_code`);

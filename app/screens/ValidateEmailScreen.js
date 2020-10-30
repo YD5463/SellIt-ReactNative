@@ -16,7 +16,7 @@ import ActivityIndicator from "../components/ActivityIndicator";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 function ValidateEmailScreen({ route }) {
-  const { authToken, email } = route.params;
+  const { email } = route.params;
   const ValidateEmailApi = useApi(authApi.validateEmail);
   const resendCodeApi = useApi(authApi.resendValidationCode);
   const auth = useAuth();
@@ -33,15 +33,13 @@ function ValidateEmailScreen({ route }) {
           setSeconds(59);
         }
       } else setSeconds((s) => s - 1);
-    }, 1000);
+    }, 5000);
     return () => clearInterval(timerId);
   }, [seconds, minutes]);
-  console.log(authToken);
-  console.log(email);
-  const submit_code = () => {
-    console.log("im here");
-    ValidateEmailApi.request(code);
-    auth.logIn(authToken);
+
+  const submit_code = async () => {
+    await ValidateEmailApi.request(code, email);
+    if (!ValidateEmailApi.error) auth.logIn(ValidateEmailApi.data);
   };
   const CELL_COUNT = 6;
   const [code, setCode] = useState("");
@@ -98,6 +96,10 @@ function ValidateEmailScreen({ route }) {
           </Text>
         )}
         <ErrorMessage visible={codeExpired} error="The code has been expired" />
+        <ErrorMessage
+          visible={ValidateEmailApi.error}
+          error="the code is worng,try again..."
+        />
         <TouchableOpacity
           onPress={() => {
             resendCodeApi.request();
