@@ -9,23 +9,12 @@ web-build
 # Node
 node_modules
 npm-debug.log
+debug.log
 yarn-error.log
 
-# Ruby
-.direnv
 
 # Emacs
 *~
-
-# Vim
-.*.swp
-.*.swo
-.*.swn
-.*.swm
-
-# Sublime Text
-*.sublime-project
-*.sublime-workspace
 
 # Xcode
 *.pbxuser
@@ -44,9 +33,6 @@ xcuserdata
 .idea/modules.xml
 .idea/vcs.xml
 
-# Eclipse
-.project
-.settings
 
 # VSCode
 .history/
