@@ -2,8 +2,10 @@ import client from "./client";
 
 const endpoint = "/user";
 
-const getSaller = async (id) => {
+const getSaller = (id) => {
   return client.get(`${endpoint}/${id}`);
 };
 
-export default { getSaller };
+const getUpdatedUser = () => client.get(endpoint);
+
+export default { getSaller, getUpdatedUser };
