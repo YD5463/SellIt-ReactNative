@@ -10,6 +10,7 @@ import ChangeThemeScreen from "./../screens/ChangeThemeScreen";
 import { TouchableWithoutFeedback, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import MyActivityScreen from "./../screens/MyActivityScreen";
+import ChangeSubscriptionScreen from "./../screens/ChangeSubscriptionScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -55,6 +56,14 @@ const screens = [
     targetScreen: () =>
       getComponentWithBack(ChangeLanguageScreen, "Change Language"),
     Icon: MaterialCommunityIcons,
+  },
+  {
+    screenName: "Change Subscription",
+    titleKey: "notification",
+    iconName: "notifications",
+    targetScreen: () =>
+      getComponentWithBack(ChangeSubscriptionScreen, "Change Subscription"),
+    Icon: MaterialIcons,
   },
   {
     screenName: "My Activity",
