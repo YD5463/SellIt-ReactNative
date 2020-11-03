@@ -18,6 +18,7 @@ import TagPick from "../components/TagPick";
 import { useTheme } from "react-native-paper";
 import SearchBar from "./../components/SearchBar";
 import { MaterialIcons } from "@expo/vector-icons";
+import Cart from "../components/Cart";
 // import Slider from "@react-native-community/slider";
 
 function ListingsScreen({ navigation }) {
@@ -29,7 +30,7 @@ function ListingsScreen({ navigation }) {
   const [originalListing, setOriginalListing] = useState([]);
   const [listing, setListing] = useState([]);
   const [search, setSearch] = useState("");
-
+  const [cart, setCart] = useState([]);
   const initData = async () => {
     setLoading(true);
     const categoryResponse = await categoriesApi.getCategories();
@@ -72,19 +73,19 @@ function ListingsScreen({ navigation }) {
     setSearch(val);
     setListing(getFilteredListing(val, filterdCategories));
   };
-
   return (
     <>
       <ActivityIndicator visible={loading} />
 
       <Screen style={[styles.screen, { backgroundColor: colors.light }]}>
-        <View
-          style={{ flexDirection: "row", alignItems: "center", width: "90%" }}
-        >
-          <TouchableWithoutFeedback onPress={() => {}}>
-            <MaterialIcons name="sort" size={30} color={colors.medium} />
-          </TouchableWithoutFeedback>
-          <SearchBar search={search} onChange={searchFilter} />
+        <View style={styles.head}>
+          <Cart elementsNumber={cart.length} />
+          <SearchBar search={search} onChange={searchFilter} width="85%" />
+          <View style={{ marginLeft: 5 }}>
+            <TouchableWithoutFeedback onPress={() => {}}>
+              <MaterialIcons name="sort" size={30} color={colors.medium} />
+            </TouchableWithoutFeedback>
+          </View>
         </View>
 
         <View style={{ paddingBottom: 10 }}>
@@ -97,29 +98,38 @@ function ListingsScreen({ navigation }) {
             horizontal={true}
           />
         </View>
-        {error && (
-          <>
-            <AppText>Couldn't retrieve the listings.</AppText>
-            <Button title="Retry" onPress={initData} />
-          </>
-        )}
-        {listing.length === 0 && (
-          <AppText>No exiting listing with this filters.</AppText>
-        )}
-        <FlatList
-          data={listing}
-          keyExtractor={(listing) => listing._id.toString()}
-          renderItem={({ item }) => (
-            <Card
-              title={item.title}
-              subTitle={"$" + item.price}
-              imageUrl={item.images[0].url}
-              onPress={() => navigation.navigate(routes.LISTING_DETAILS, item)}
-              thumbnailUrl={item.images[0].thumbnailUrl}
-            />
+        <View style={{ padding: 20 }}>
+          {error && (
+            <>
+              <AppText>Couldn't retrieve the listings.</AppText>
+              <Button title="Retry" onPress={initData} />
+            </>
           )}
-          extraData={filterdCategories}
-        />
+          {listing.length === 0 && (
+            <AppText>No exiting listing with this filters.</AppText>
+          )}
+          <FlatList
+            data={listing}
+            keyExtractor={(listing) => listing._id.toString()}
+            renderItem={({ item }) => (
+              <Card
+                title={item.title}
+                subTitle={"$" + item.price}
+                imageUrl={item.images[0].url}
+                onPress={() =>
+                  navigation.navigate(routes.LISTING_DETAILS, item)
+                }
+                thumbnailUrl={item.images[0].thumbnailUrl}
+                OnAddToCart={() => {
+                  cart.push(item);
+                  setCart(cart);
+                }}
+                OnBuy={() => {}} //navigate
+              />
+            )}
+            extraData={filterdCategories}
+          />
+        </View>
       </Screen>
     </>
   );
@@ -127,10 +137,16 @@ function ListingsScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   screen: {
-    padding: 20,
+    padding: 8,
   },
   search: {
     height: 20,
+  },
+  head: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "90%",
+    padding: 3,
   },
 });
 

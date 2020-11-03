@@ -24,6 +24,7 @@ export default {
       muted: "#F0F1F3",
       success: "#7DBE31",
       error: "#FC0021",
+      orange: "#FFAF22",
     },
   },
   dark: {
@@ -47,6 +48,7 @@ export default {
       muted: "#F0F1F3",
       success: "#7DBE31",
       error: "#FC0021",
+      orange: "#FFAF22",
     },
   },
 };

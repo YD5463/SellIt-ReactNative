@@ -40,7 +40,6 @@ function ListingDetailsScreen({ route, navigation }) {
   const getSallerApi = useApi(user.getSaller);
 
   useEffect(() => {
-    console.log(listing);
     getSallerApi.request(listing.userId);
     notificationChannel.init();
   }, []);
@@ -83,7 +82,7 @@ function ListingDetailsScreen({ route, navigation }) {
               <Text style={[styles.price, { color: colors.secondary }]}>
                 ${listing.price}
               </Text>
-              
+
               <View style={styles.userContainer}>
                 <ListItem
                   image={require("../assets/mosh.jpg")}

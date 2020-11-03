@@ -3,6 +3,7 @@ import client from "./client";
 const endpoint = "/user";
 
 const getSaller = (id) => {
+  console.log("saller");
   return client.get(`${endpoint}/${id}`);
 };
 
