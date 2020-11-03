@@ -42,6 +42,10 @@ function AccountScreen({ navigation }) {
   const getUpdatedUserApi = useApi(user.getUpdatedUser);
   useEffect(() => {
     getUpdatedUserApi.request();
+    const unsubscribe = navigation.addListener("focus", () => {
+      getUpdatedUserApi.request();
+    });
+    return unsubscribe;
   }, []);
 
   return (
@@ -64,7 +68,10 @@ function AccountScreen({ navigation }) {
             IconComponent={
               getUpdatedUserApi.data.profile_image ? (
                 <Image
-                  uri={`${settings.apiUrl}/user/profileImage/${getUpdatedUserApi.data.userId}`}
+                  uri={getUpdatedUserApi.data.profile_image.url}
+                  preview={{
+                    uri: getUpdatedUserApi.data.profile_image.thumbnailUrl,
+                  }}
                   style={{ width: 55, height: 55, borderRadius: 30 }}
                   tint="light"
                 />
@@ -81,7 +88,9 @@ function AccountScreen({ navigation }) {
               navigation.push(routes.EDIT_PROFILE, {
                 user: {
                   ...getUpdatedUserApi.data,
-                  profile_image: `${settings.apiUrl}/user/profileImage/${getUpdatedUserApi.data.userId}`,
+                  profile_image: getUpdatedUserApi.data.profile_image
+                    ? getUpdatedUserApi.data.profile_image.url
+                    : null,
                 },
               });
             }}
@@ -103,7 +112,10 @@ function AccountScreen({ navigation }) {
                 }
                 onPress={() =>
                   navigation.navigate(item.targetScreen, {
-                    user: getUpdatedUserApi.data,
+                    user: {
+                      ...getUpdatedUserApi.data,
+                      profile_image: getUpdatedUserApi.data.profile_image.url,
+                    },
                   })
                 }
               />
