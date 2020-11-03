@@ -6,7 +6,12 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { Form, FormField, StandartFormPicker } from "../components/forms";
+import {
+  Form,
+  FormField,
+  StandartFormPicker,
+  ErrorMessage,
+} from "../components/forms";
 import * as Yup from "yup";
 import TextInputWithLine from "./../components/TextInputWithLine";
 import Screen from "./../components/Screen";
@@ -17,12 +22,18 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useTheme } from "react-native-paper";
 import { useToast } from "react-native-styled-toast";
 // import { Snackbar } from "react-native-paper";
+import useApi from "./../hooks/useApi";
+import ActivityIndicator from "../components/ActivityIndicator";
+
+const phone_regex = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label("Name"),
   email: Yup.string().required().email().label("E-mail Address"),
   bio: Yup.string().label("Bio"),
-  phone: Yup.string().length(9).label("Phone Number"),
+  phone_number: Yup.string()
+    .matches(phone_regex, "Phone Number is'nt valid")
+    .required(),
   gender: Yup.object().nullable().label("Gender"),
   profile_image: Yup.string().label("Profile Image"),
 });
@@ -31,24 +42,25 @@ const textFields = {
   name: "Name",
   bio: "Bio",
   email: "E-mail Address",
-  phone: "Phone Number",
+  phone_number: "Phone Number",
 };
 
 function EditProfileScreen({ route, navigation }) {
   const { colors } = useTheme();
   const { user } = route.params;
   const [goBack, setGoBack] = useState(false);
+  const editProfileApi = useApi(users.editProfile);
   const formRef = useRef();
   useEffect(() => {
     if (goBack) navigation.goBack();
   }, [goBack]);
   const { toast } = useToast();
 
-  const handleSubmit = (user_info) => {
-    console.log(user_info);
-    users.editProfile(user_info);
+  const handleSubmit = async (user_info) => {
+    await editProfileApi.request(user_info);
+    if (editProfileApi.error || editProfileApi.loading) return;
     toast({ message: "The profile updated!" });
-    navigation.goBack();
+    setInterval(() => setGoBack(true), 700);
   };
 
   const handleBack = () => {
@@ -60,7 +72,7 @@ function EditProfileScreen({ route, navigation }) {
           text: "Cancel",
           onPress: () => setGoBack(false),
           style: "cancel",
-      },
+        },
         { text: "OK", onPress: () => setGoBack(true) },
       ],
       { cancelable: false }
@@ -73,7 +85,10 @@ function EditProfileScreen({ route, navigation }) {
       headerRight: () => (
         <View style={{ margin: 3 }}>
           <TouchableWithoutFeedback
-            onPress={() => formRef.current.handleSubmit()}
+            onPress={() => {
+              if (formRef.current.isValid && formRef.current.dirty)
+                formRef.current.handleSubmit();
+            }}
           >
             <MaterialCommunityIcons
               name="check"
@@ -98,45 +113,52 @@ function EditProfileScreen({ route, navigation }) {
   }, [navigation]);
 
   return (
-    <Screen style={styles.container}>
-      <KeyboardAvoidingView
-        behavior="position"
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 200}
-      >
-        <Form
-          initialValues={{
-            name: user.name,
-            email: user.email,
-            bio: getValue(user.bio),
-            phone: getValue(user.phone),
-            gender: user.gender ? user.gender : null,
-            profile_image: getValue(user.profile_image),
-          }}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-          innerRef={formRef}
+    <>
+      <ActivityIndicator visible={editProfileApi.loading} />
+      <Screen style={styles.container}>
+        <KeyboardAvoidingView
+          behavior="position"
+          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 200}
         >
-          <ProfileImagePicker name="profile_image" />
-          {Object.keys(textFields).map((name, i) => (
-            <FormField
-              key={i.toString()}
-              name={name}
-              TextInputComponent={TextInputWithLine}
-              label={textFields[name]}
+          <Form
+            initialValues={{
+              name: user.name,
+              email: user.email,
+              bio: getValue(user.bio),
+              phone_number: getValue(user.phone_number),
+              gender: user.gender,
+              profile_image: getValue(user.profile_image),
+            }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+            innerRef={formRef}
+          >
+            <ProfileImagePicker name="profile_image" />
+            {Object.keys(textFields).map((name, i) => (
+              <FormField
+                key={i.toString()}
+                name={name}
+                TextInputComponent={TextInputWithLine}
+                label={textFields[name]}
+              />
+            ))}
+            <StandartFormPicker
+              name="gender"
+              label="Gender"
+              items={[
+                { label: "Male", value: "male" },
+                { label: "Female", value: "female" },
+                { label: "Decline to answer", value: "decline" },
+              ]}
             />
-          ))}
-          <StandartFormPicker
-            name="gender"
-            label="Gender"
-            items={[
-              { label: "Male", value: "male" },
-              { label: "Female", value: "female" },
-              { label: "Decline to answer", value: null },
-            ]}
-          />
-        </Form>
-      </KeyboardAvoidingView>
-    </Screen>
+            <ErrorMessage
+              error={`Somthing went worng, please try again...${editProfileApi.data}`}
+              visible={editProfileApi.error}
+            />
+          </Form>
+        </KeyboardAvoidingView>
+      </Screen>
+    </>
   );
 }
 

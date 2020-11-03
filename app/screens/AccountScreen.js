@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, FlatList } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { ListItem, ListItemSeparator } from "../components/lists";
@@ -14,6 +14,7 @@ import useApi from "./../hooks/useApi";
 import user from "../api/user";
 import ActivityIndicator from "../components/ActivityIndicator";
 import settings from "../config/settings";
+import { useFocusEffect } from "@react-navigation/native";
 
 const menuItems = [
   {
@@ -76,14 +77,14 @@ function AccountScreen({ navigation }) {
                 />
               )
             }
-            onPress={() =>
-              navigation.navigate(routes.EDIT_PROFILE, {
+            onPress={() => {
+              navigation.push(routes.EDIT_PROFILE, {
                 user: {
                   ...getUpdatedUserApi.data,
                   profile_image: `${settings.apiUrl}/user/profileImage/${getUpdatedUserApi.data.userId}`,
                 },
-              })
-            }
+              });
+            }}
           />
         </View>
         <View style={styles.container}>
