@@ -16,4 +16,5 @@ export default Object.freeze({
   LISTING_IMAGE: "ViewListingImage",
   VALIDATE_EMAIL: "Verify",
   FORGOT_PASSWORD: "ForgotPassword",
+  MY_CART: "CartDetails",
 });

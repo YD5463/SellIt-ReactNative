@@ -20,7 +20,7 @@ export default {
       danger: colors.danger,
       blue: colors.blue,
       hardLight: colors.hardLight,
-      boldLight: "#C0C0C0",
+      boldLight: "#D8D8D8",
       muted: "#F0F1F3",
       success: "#7DBE31",
       error: "#FC0021",

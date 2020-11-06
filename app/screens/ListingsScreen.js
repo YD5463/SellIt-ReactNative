@@ -30,7 +30,8 @@ function ListingsScreen({ navigation }) {
   const [originalListing, setOriginalListing] = useState([]);
   const [listing, setListing] = useState([]);
   const [search, setSearch] = useState("");
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState({});
+  const [cartSize, setCartSize] = useState(0);
   const initData = async () => {
     setLoading(true);
     const categoryResponse = await categoriesApi.getCategories();
@@ -79,7 +80,11 @@ function ListingsScreen({ navigation }) {
 
       <Screen style={[styles.screen, { backgroundColor: colors.light }]}>
         <View style={styles.head}>
-          <Cart elementsNumber={cart.length} />
+          <Cart
+            elementsNumber={cartSize}
+            onPress={() => navigation.navigate(routes.MY_CART, { cart })}
+          />
+
           <SearchBar search={search} onChange={searchFilter} width="85%" />
           <View style={{ marginLeft: 5 }}>
             <TouchableWithoutFeedback onPress={() => {}}>
@@ -121,8 +126,11 @@ function ListingsScreen({ navigation }) {
                 }
                 thumbnailUrl={item.images[0].thumbnailUrl}
                 OnAddToCart={() => {
-                  cart.push(item);
+                  const key = item._id;
+                  if (!cart[key]) cart[key] = { ...item, quantity: 0 };
+                  cart[key].quantity++;
                   setCart(cart);
+                  setCartSize(cartSize + 1);
                 }}
                 OnBuy={() => {}} //navigate
               />
