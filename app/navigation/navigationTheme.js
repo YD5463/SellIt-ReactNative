@@ -25,6 +25,7 @@ export default {
       success: "#7DBE31",
       error: "#FC0021",
       orange: "#FFAF22",
+      gray: "#A0A0A0",
     },
   },
   dark: {
@@ -49,6 +50,7 @@ export default {
       success: "#7DBE31",
       error: "#FC0021",
       orange: "#FFAF22",
+      gray: "#D2D2D2",
     },
   },
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, FlatList } from "react-native";
-import { SimpleLineIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { ListItem, ListItemSeparator } from "../components/lists";
 import Icon from "../components/Icon";
 import routes from "../navigation/routes";
@@ -13,8 +13,6 @@ import { Image } from "react-native-expo-image-cache";
 import useApi from "./../hooks/useApi";
 import user from "../api/user";
 import ActivityIndicator from "../components/ActivityIndicator";
-import settings from "../config/settings";
-import { useFocusEffect } from "@react-navigation/native";
 
 const menuItems = [
   {
@@ -35,7 +33,19 @@ const menuItems = [
   },
 ];
 
+const optionsItem = {
+  title: "settings",
+  icon: {
+    name: "settings",
+    backgroundColor: "gray",
+    IconComponent: MaterialIcons,
+  },
+};
+
 function AccountScreen({ navigation }) {
+  useEffect(() => {
+    menuItems.push({ ...optionsItem, onPress: () => navigation.openDrawer() });
+  }, []);
   const { logOut } = useAuth();
   const { t } = useTranslation();
   const { colors } = useTheme();
@@ -53,15 +63,6 @@ function AccountScreen({ navigation }) {
       <ActivityIndicator visible={getUpdatedUserApi.loading} />
       <Screen style={{ backgroundColor: colors.light }}>
         <View style={styles.container}>
-          <View style={styles.options}>
-            <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-              <SimpleLineIcons
-                name="options-vertical"
-                size={26}
-                color={colors.medium}
-              />
-            </TouchableWithoutFeedback>
-          </View>
           <ListItem
             title={getUpdatedUserApi.data.name}
             subTitle={getUpdatedUserApi.data.email}
@@ -108,15 +109,20 @@ function AccountScreen({ navigation }) {
                   <Icon
                     name={item.icon.name}
                     backgroundColor={colors[item.icon.backgroundColor]}
+                    IconComponent={item.icon.IconComponent}
                   />
                 }
-                onPress={() =>
-                  navigation.navigate(item.targetScreen, {
-                    user: {
-                      ...getUpdatedUserApi.data,
-                      profile_image: getUpdatedUserApi.data.profile_image.url,
-                    },
-                  })
+                onPress={
+                  item.onPress
+                    ? item.onPress
+                    : () =>
+                        navigation.navigate(item.targetScreen, {
+                          user: {
+                            ...getUpdatedUserApi.data,
+                            profile_image:
+                              getUpdatedUserApi.data.profile_image.url,
+                          },
+                        })
                 }
               />
             )}
@@ -133,12 +139,6 @@ function AccountScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  options: {
-    width: "100%",
-    height: 40,
-    paddingRight: 10,
-    alignItems: "flex-end",
-  },
   container: {
     marginVertical: 20,
   },

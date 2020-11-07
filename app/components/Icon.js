@@ -8,6 +8,7 @@ function Icon({
   backgroundColor = "#000",
   iconColor = "#fff",
   iconSizeRatio = 0.6,
+  IconComponent = MaterialCommunityIcons,
 }) {
   return (
     <View
@@ -20,7 +21,7 @@ function Icon({
         alignItems: "center",
       }}
     >
-      <MaterialCommunityIcons
+      <IconComponent
         name={name}
         color={iconColor}
         size={size * iconSizeRatio}
