@@ -85,9 +85,13 @@ function ListingDetailsScreen({ route, navigation }) {
 
               <View style={styles.userContainer}>
                 <ListItem
-                  image={require("../assets/mosh.jpg")}
+                  image={
+                    getSallerApi.data.profile_image
+                      ? getSallerApi.data.profile_image.url
+                      : null
+                  }
                   title={getSallerApi.data.name}
-                  subTitle={`${getSallerApi.data.listings} Listings`}
+                  subTitle={`${getSallerApi.data.listings} Listing`}
                 />
               </View>
             </View>

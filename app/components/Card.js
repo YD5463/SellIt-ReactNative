@@ -20,12 +20,14 @@ function Card({
   return (
     <View style={[styles.card, { backgroundColor: colors.white }]}>
       <TouchableWithoutFeedback onPress={onPress}>
-        <Image
-          style={styles.image}
-          tint="light"
-          preview={{ uri: thumbnailUrl }}
-          uri={imageUrl}
-        />
+        <View style={styles.image}>
+          <Image
+            style={styles.image}
+            tint="light"
+            preview={{ uri: thumbnailUrl }}
+            uri={imageUrl}
+          />
+        </View>
       </TouchableWithoutFeedback>
       <View style={styles.detailsContainer}>
         <Text style={styles.title} numberOfLines={1}>

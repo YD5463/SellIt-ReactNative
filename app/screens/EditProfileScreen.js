@@ -1,4 +1,10 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useContext,
+} from "react";
 import {
   View,
   StyleSheet,
@@ -24,6 +30,7 @@ import { useToast } from "react-native-styled-toast";
 // import { Snackbar } from "react-native-paper";
 import useApi from "./../hooks/useApi";
 import ActivityIndicator from "../components/ActivityIndicator";
+import storage from "../auth/storage";
 
 const phone_regex = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -49,7 +56,8 @@ function EditProfileScreen({ route, navigation }) {
   const { colors } = useTheme();
   const { user } = route.params;
   const [goBack, setGoBack] = useState(false);
-  const editProfileApi = useApi(users.editProfile);
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState();
   const formRef = useRef();
   useEffect(() => {
     if (goBack) navigation.goBack();
@@ -57,10 +65,14 @@ function EditProfileScreen({ route, navigation }) {
   const { toast } = useToast();
 
   const handleSubmit = async (user_info) => {
-    await editProfileApi.request(user_info);
-    if (editProfileApi.error || editProfileApi.loading) return;
+    setLoading(true);
+    const res = await users.editProfile(user_info);
+    if (!res.ok) return setError(res.data);
+    setError(undefined);
+    await storage.storeToken(res.data.token);
+    setLoading(false);
     toast({ message: "The profile updated!" });
-    setInterval(() => setGoBack(true), 700);
+    setInterval(() => setGoBack(true), 400);
   };
 
   const handleBack = () => {
@@ -114,7 +126,7 @@ function EditProfileScreen({ route, navigation }) {
 
   return (
     <>
-      <ActivityIndicator visible={editProfileApi.loading} />
+      <ActivityIndicator visible={loading} />
       <Screen style={styles.container}>
         <KeyboardAvoidingView
           behavior="position"
@@ -152,8 +164,8 @@ function EditProfileScreen({ route, navigation }) {
               ]}
             />
             <ErrorMessage
-              error={`Somthing went worng, please try again...${editProfileApi.data}`}
-              visible={editProfileApi.error}
+              error={`Somthing went worng, please try again...${error}`}
+              visible={error}
             />
           </Form>
         </KeyboardAvoidingView>

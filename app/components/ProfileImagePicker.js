@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { View, StyleSheet, Image } from "react-native";
 import { useFormikContext } from "formik";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import Icon from "./Icon";
@@ -34,12 +33,16 @@ function ProfileImagePicker({ name }) {
     }
   };
 
+  const valueType = typeof values[name] === "object";
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={selectImage}>
         <View style={{ marginLeft: 30 }}>
           {values[name] && !errors[name] ? (
-            <Image source={{ uri: values[name] }} style={styles.image} />
+            <Image
+              source={{ uri: valueType ? values[name].url : values[name] }}
+              style={styles.image}
+            />
           ) : (
             <Icon
               name="account"

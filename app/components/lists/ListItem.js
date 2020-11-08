@@ -15,12 +15,13 @@ function ListItem({
   renderRightActions,
 }) {
   const { colors } = useTheme();
+
   return (
     <Swipeable renderRightActions={renderRightActions}>
       <TouchableHighlight underlayColor={colors.light} onPress={onPress}>
         <View style={[styles.container, { backgroundColor: colors.white }]}>
           {IconComponent}
-          {image && <Image style={styles.image} source={image} />}
+          {image && <Image style={styles.image} source={{ uri: image }} />}
           <View style={styles.detailsContainer}>
             <Text style={styles.title} numberOfLines={1}>
               {title}
