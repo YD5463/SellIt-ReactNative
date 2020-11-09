@@ -4,8 +4,9 @@ import Text from "./Text";
 import { Image } from "react-native-expo-image-cache";
 import { useTheme } from "react-native-paper";
 import QuantityInput from "./QuantityInput";
+import helper from "../utility/helper";
 
-function ViewCartItem({ item }) {
+function ViewCartItem({ item, onMinus, onPlus }) {
   const { colors } = useTheme();
   return (
     <View style={styles.container}>
@@ -17,14 +18,16 @@ function ViewCartItem({ item }) {
       />
       <View style={{ flexDirection: "column", paddingLeft: 13 }}>
         <Text style={styles.title} numberOfLines={2}>
-          {item.title}
+          {helper.showText(item.title, 19)}
         </Text>
-        <Text
-          style={[styles.description, { color: colors.medium }]}
-          numberOfLines={2}
-        >
-          {item.description ? item.description : "No description..."}
-        </Text>
+        <View style={{ flexDirection: "row" }}>
+          <Text
+            style={[styles.description, { color: colors.medium }]}
+            numberOfLines={2}
+          >
+            {item.description ? item.description : "No description..."}
+          </Text>
+        </View>
         <View
           style={{
             alignItems: "flex-end",
@@ -36,8 +39,8 @@ function ViewCartItem({ item }) {
           <Text style={styles.price}>{`$${item.price}`}</Text>
           <View style={{ paddingLeft: 70 }}>
             <QuantityInput
-              onMinus={() => {}}
-              onPlus={() => {}}
+              onMinus={() => onMinus(item._id)}
+              onPlus={() => onPlus(item._id)}
               quantity={item.quantity}
             />
           </View>
@@ -60,11 +63,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "bold",
-    fontSize: 23,
+    fontSize: 21,
   },
   description: {
     fontSize: 18,
     fontWeight: "400",
+    flex: 1,
   },
   price: {
     fontSize: 19,
