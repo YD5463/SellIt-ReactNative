@@ -19,6 +19,8 @@ import { useTheme } from "react-native-paper";
 import SearchBar from "./../components/SearchBar";
 import { MaterialIcons } from "@expo/vector-icons";
 import Cart from "../components/Cart";
+import cache from "../utility/cache";
+import settings from "../config/settings";
 // import Slider from "@react-native-community/slider";
 
 function ListingsScreen({ navigation }) {
@@ -36,6 +38,7 @@ function ListingsScreen({ navigation }) {
     setLoading(true);
     const categoryResponse = await categoriesApi.getCategories();
     const listingResponse = await listingsApi.getListings();
+    const cachedCart = await cache.get(settings.CartCacheKey);
     setLoading(false);
     if (!categoryResponse.ok || !listingResponse.ok) return setError(true);
     setError(false);
@@ -46,6 +49,13 @@ function ListingsScreen({ navigation }) {
     setCategoriesMap(newCategoriesMap);
     setOriginalListing(listingResponse.data);
     setListing(listingResponse.data);
+    if (cachedCart) {
+      setCart(cachedCart);
+      let size = 0;
+      for (const [key, value] of Object.entries(cachedCart))
+        size += value.quantity;
+      setCartSize(size);
+    }
   };
   useEffect(() => {
     initData();
@@ -77,7 +87,6 @@ function ListingsScreen({ navigation }) {
   return (
     <>
       <ActivityIndicator visible={loading} />
-
       <Screen style={[styles.screen, { backgroundColor: colors.light }]}>
         <View style={styles.head}>
           <Cart
@@ -130,6 +139,7 @@ function ListingsScreen({ navigation }) {
                   if (!cart[key]) cart[key] = { ...item, quantity: 0 };
                   cart[key].quantity++;
                   setCart(cart);
+                  cache.store(settings.CartCacheKey, cart);
                   setCartSize(cartSize + 1);
                 }}
                 OnBuy={() => {}} //navigate
