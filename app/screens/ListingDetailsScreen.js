@@ -6,6 +6,9 @@ import {
   Keyboard,
   ScrollView,
   Platform,
+  TouchableOpacity,
+  Share,
+  Linking,
 } from "react-native";
 import MapView from "react-native-maps";
 
@@ -28,6 +31,7 @@ import notificationChannel from "../utility/notificationChannel";
 import ImageListScroll from "./../components/ImageListScroll";
 import routes from "../navigation/routes";
 import { useTheme } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const validationSchema = Yup.object().shape({
   message: Yup.string().required().label("Contatct Message"),
@@ -58,7 +62,27 @@ function ListingDetailsScreen({ route, navigation }) {
       },
     });
   };
-
+  const onShare = async () => {
+    let redirectUrl = Linking.makeUrl("listings/listingsDetails/", listing);
+    try {
+      const result = await Share.share({
+        url: redirectUrl,
+        message: `I am sharing with listing called ${listing.title} in just ${listing.price}`,
+        title: listing.title,
+      });
+      // if (result.action === Share.sharedAction) {
+      //   if (result.activityType) {
+      //     // shared with activity type of result.activityType
+      //   } else {
+      //     // shared
+      //   }
+      // } else if (result.action === Share.dismissedAction) {
+      //   // dismissed
+      // }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
   return (
     <>
       <ActivityIndicator visible={messageApi.loading || getSallerApi.loading} />
@@ -79,10 +103,22 @@ function ListingDetailsScreen({ route, navigation }) {
 
             <View style={styles.detailsContainer}>
               <Text style={styles.title}>{listing.title}</Text>
-              <Text style={[styles.price, { color: colors.secondary }]}>
-                ${listing.price}
-              </Text>
-
+              <View style={{ flexDirection: "row" }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={[styles.price, { color: colors.secondary }]}>
+                    ${listing.price}
+                  </Text>
+                </View>
+                <View>
+                  <TouchableOpacity onPress={onShare}>
+                    <MaterialCommunityIcons
+                      name="share-variant"
+                      size={27}
+                      color={colors.medium}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
               <View style={styles.userContainer}>
                 <ListItem
                   image={
