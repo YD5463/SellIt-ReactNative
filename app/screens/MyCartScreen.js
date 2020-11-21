@@ -6,6 +6,8 @@ import { useTheme } from "react-native-paper";
 import Text from "../components/Text";
 import { ListItemSeparator } from "../components/lists";
 import AppButton from "../components/Button";
+import cache from "../utility/cache";
+import settings from "../config/settings";
 
 function MyCartScreen({ route, navigation }) {
   const getSum = (cart) => {
@@ -17,6 +19,10 @@ function MyCartScreen({ route, navigation }) {
   const { cart } = route.params;
   const { colors } = useTheme();
   const [editedCart, setEditedCart] = useState(cart);
+  const setCart = (newCart) => {
+    setEditedCart(newCart);
+    cache.store(settings.CartCacheKey, newCart);
+  };
   const [sum, setSum] = useState(getSum(cart));
   return (
     <Screen style={[styles.container, { backgroundColor: colors.light }]}>
@@ -38,12 +44,12 @@ function MyCartScreen({ route, navigation }) {
                 setSum(sum - editedCart[itemId].price);
                 if (--editedCart[itemId].quantity === 0)
                   delete editedCart[itemId];
-                setEditedCart(editedCart);
+                setCart(editedCart);
               }}
               onPlus={(itemId) => {
                 setSum(sum + editedCart[itemId].price);
                 editedCart[itemId].quantity++;
-                setEditedCart(editedCart);
+                setCart(editedCart);
               }}
             />
           )}

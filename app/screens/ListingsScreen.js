@@ -34,11 +34,21 @@ function ListingsScreen({ navigation }) {
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState({});
   const [cartSize, setCartSize] = useState(0);
+  const setCachedCart = async () => {
+    const cachedCart = await cache.get(settings.CartCacheKey);
+    if (cachedCart) {
+      setCart(cachedCart);
+      let size = 0;
+      for (const [key, value] of Object.entries(cachedCart))
+        size += value.quantity;
+      setCartSize(size);
+    }
+  };
   const initData = async () => {
     setLoading(true);
     const categoryResponse = await categoriesApi.getCategories();
     const listingResponse = await listingsApi.getListings();
-    const cachedCart = await cache.get(settings.CartCacheKey);
+    await setCachedCart();
     setLoading(false);
     if (!categoryResponse.ok || !listingResponse.ok) return setError(true);
     setError(false);
@@ -49,16 +59,14 @@ function ListingsScreen({ navigation }) {
     setCategoriesMap(newCategoriesMap);
     setOriginalListing(listingResponse.data);
     setListing(listingResponse.data);
-    if (cachedCart) {
-      setCart(cachedCart);
-      let size = 0;
-      for (const [key, value] of Object.entries(cachedCart))
-        size += value.quantity;
-      setCartSize(size);
-    }
   };
+
   useEffect(() => {
     initData();
+    const unsubscribe = navigation.addListener("focus", () => {
+      setCachedCart();
+    });
+    return unsubscribe;
   }, []);
 
   const onTagPickPressed = (tagName, picked) => {
