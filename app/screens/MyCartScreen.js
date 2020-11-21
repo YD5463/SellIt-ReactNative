@@ -17,7 +17,7 @@ function MyCartScreen({ route, navigation }) {
   const { cart } = route.params;
   const { colors } = useTheme();
   const [editedCart, setEditedCart] = useState(cart);
-  console.log(cart);
+  const [sum, setSum] = useState(getSum(cart));
   return (
     <Screen style={[styles.container, { backgroundColor: colors.light }]}>
       <View style={{ paddingBottom: 15 }}>
@@ -35,11 +35,13 @@ function MyCartScreen({ route, navigation }) {
             <ViewCartItem
               item={editedCart[item]}
               onMinus={(itemId) => {
+                setSum(sum - editedCart[itemId].price);
                 if (--editedCart[itemId].quantity === 0)
                   delete editedCart[itemId];
                 setEditedCart(editedCart);
               }}
               onPlus={(itemId) => {
+                setSum(sum + editedCart[itemId].price);
                 editedCart[itemId].quantity++;
                 setEditedCart(editedCart);
               }}
@@ -55,7 +57,7 @@ function MyCartScreen({ route, navigation }) {
         <View style={{ flex: 1 }}>
           <Text style={{ color: colors.medium }}>Sub Total</Text>
         </View>
-        <Text style={styles.total}>{`$${getSum(cart)}`}</Text>
+        <Text style={styles.total}>{`$${sum}`}</Text>
       </View>
       <AppButton
         title="check out"
