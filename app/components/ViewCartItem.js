@@ -1,10 +1,11 @@
 import React from "react";
-import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Text from "./Text";
 import { Image } from "react-native-expo-image-cache";
 import { useTheme } from "react-native-paper";
 import QuantityInput from "./QuantityInput";
 import helper from "../utility/helper";
+import globalColors from "../config/colors";
 
 function ViewCartItem({ item, onMinus, onPlus }) {
   const { colors } = useTheme();
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
   image: {
     width: 120,
     height: 140,
+    borderRadius: 15,
   },
   title: {
     fontWeight: "bold",
@@ -72,6 +74,8 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 19,
+    fontWeight: "400",
+    color: globalColors.green,
     fontWeight: "400",
   },
 });

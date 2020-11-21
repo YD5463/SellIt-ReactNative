@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { useTheme } from "react-native-paper";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import Text from "./Text";
@@ -8,15 +8,15 @@ function QuantityInput({ onMinus, onPlus, quantity }) {
   const { colors } = useTheme();
   return (
     <View style={[styles.container, { backgroundColor: colors.boldLight }]}>
-      <TouchableWithoutFeedback onPress={onMinus}>
+      <TouchableOpacity onPress={onMinus}>
         <AntDesign name="minus" size={20} color={colors.black} />
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
       <View style={{ flex: 1, alignItems: "center" }}>
         <Text style={styles.quantity}>{quantity}</Text>
       </View>
-      <TouchableWithoutFeedback onPress={onPlus}>
+      <TouchableOpacity onPress={onPlus}>
         <Entypo name="plus" size={20} color={colors.black} />
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
     </View>
   );
 }

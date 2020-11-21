@@ -1,6 +1,6 @@
 const settings = {
   dev: {
-    apiUrl: "http://10.0.0.11:9000/api",
+    apiUrl: "http://192.168.68.101:9000/api",
   },
   production: {
     apiUrl: "https://yad2-backend.herokuapp.com/api/",
