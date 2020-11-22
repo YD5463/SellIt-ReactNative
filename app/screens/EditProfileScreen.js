@@ -31,6 +31,7 @@ import { useToast } from "react-native-styled-toast";
 import useApi from "./../hooks/useApi";
 import ActivityIndicator from "../components/ActivityIndicator";
 import storage from "../auth/storage";
+import { useTranslation } from "react-i18next";
 
 const phone_regex = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -59,6 +60,7 @@ function EditProfileScreen({ route, navigation }) {
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
   const formRef = useRef();
+  const { t } = useTranslation();
   useEffect(() => {
     if (goBack) navigation.goBack();
   }, [goBack]);
@@ -77,15 +79,15 @@ function EditProfileScreen({ route, navigation }) {
 
   const handleBack = () => {
     Alert.alert(
-      "Are you sure you to exit?",
-      "the chnages you made wont be saved",
+      t("exitTitle"),
+      t("exitSubTitle"),
       [
         {
-          text: "Cancel",
+          text: t("cancel"),
           onPress: () => setGoBack(false),
           style: "cancel",
         },
-        { text: "OK", onPress: () => setGoBack(true) },
+        { text: t("ok"), onPress: () => setGoBack(true) },
       ],
       { cancelable: false }
     );
@@ -156,11 +158,11 @@ function EditProfileScreen({ route, navigation }) {
             ))}
             <StandartFormPicker
               name="gender"
-              label="Gender"
+              label={t("gender")}
               items={[
-                { label: "Male", value: "male" },
-                { label: "Female", value: "female" },
-                { label: "Decline to answer", value: "decline" },
+                { label: t("male"), value: "male" },
+                { label: t("female"), value: "female" },
+                { label: t("decline"), value: "decline" },
               ]}
             />
             <ErrorMessage

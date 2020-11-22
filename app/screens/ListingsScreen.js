@@ -35,7 +35,7 @@ function ListingsScreen({ navigation }) {
   const [cart, setCart] = useState({});
   const [cartSize, setCartSize] = useState(0);
   const setCachedCart = async () => {
-    const cachedCart = await cache.get(settings.CartCacheKey);
+    const cachedCart = await cache.get(settings.CartCacheKey, false);
     if (cachedCart) {
       setCart(cachedCart);
       let size = 0;

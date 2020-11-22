@@ -36,7 +36,7 @@ const getComponentWithBack = (Screen, name) => {
 const screens = [
   {
     screenName: "Account",
-    titleKey: "Account",
+    titleKey: "account",
     iconName: "account-circle",
     targetScreen: AccountNavigator,
     Icon: MaterialCommunityIcons,
@@ -99,7 +99,15 @@ const SettingsNavigator = () => {
   const { colors } = useTheme();
   const { t } = useTranslation();
   return (
-    <Drawer.Navigator initialRouteName="Account" drawerType="slide" dr>
+    <Drawer.Navigator
+      initialRouteName="Account"
+      drawerType="slide"
+      drawerContentOptions={{
+        labelStyle: {
+          fontSize: 16,
+        },
+      }}
+    >
       {screens.map((screen) => (
         <Drawer.Screen
           key={screen.screenName}

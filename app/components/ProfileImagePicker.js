@@ -8,10 +8,12 @@ import Text from "./Text";
 import { ErrorMessage } from "./forms";
 import { useTheme } from "react-native-paper";
 import colors from "../config/colors";
+import { useTranslation } from "react-i18next";
 
 function ProfileImagePicker({ name }) {
   const { colors } = useTheme();
   const { setFieldValue, values, errors } = useFormikContext();
+  const { t } = useTranslation();
   useEffect(() => {
     requestPermission();
   }, []);
@@ -54,7 +56,7 @@ function ProfileImagePicker({ name }) {
           )}
         </View>
         <View style={{ marginTop: 10 }}>
-          <Text style={styles.text}>Change Profile Photo</Text>
+          <Text style={styles.text}>{t("changeP")}</Text>
         </View>
       </TouchableWithoutFeedback>
       <ErrorMessage error={errors[name]} visible={true} />
