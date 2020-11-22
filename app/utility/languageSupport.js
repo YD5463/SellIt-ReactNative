@@ -53,6 +53,10 @@ const init = () => {
             exitSubTitle: "the chnages you made wont be saved",
             cancel: "Cancel",
             ok: "Ok",
+            privacyTitle: "Who can see your private details",
+            privacyExplain:
+              "If you choose not sharing data about 'phone number',you won't be able to sell things(only buy)",
+            privacy: "Privacy",
           },
         },
         he: {
@@ -99,6 +103,10 @@ const init = () => {
             exitSubTitle: "השינוים שעשית לא ישמרו",
             cancel: "בטל",
             ok: "אוקיי",
+            privacyTitle: "מי יכול לראות את הפרטים האישיים שלך",
+            privacyExplain:
+              "אם תבחר/י שלא לשתף מידע לגבי 'מספר טלפון',לא תוכל/י למכור דברים",
+            privacy: "פרטיות",
           },
         },
       },

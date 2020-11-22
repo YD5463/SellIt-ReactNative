@@ -11,6 +11,7 @@ import { TouchableWithoutFeedback, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import MyActivityScreen from "./../screens/MyActivityScreen";
 import ChangeSubscriptionScreen from "./../screens/ChangeSubscriptionScreen";
+import ManagePrivacyScreen from "./../screens/ManagePrivacyScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -44,7 +45,7 @@ const screens = [
   {
     screenName: "Change Password",
     titleKey: "password",
-    iconName: "shield-lock-outline",
+    iconName: "shield-key-outline",
     targetScreen: () =>
       getComponentWithBack(ChangePasswordScreen, "Change Password"),
     Icon: MaterialCommunityIcons,
@@ -55,6 +56,14 @@ const screens = [
     iconName: "translate",
     targetScreen: () =>
       getComponentWithBack(ChangeLanguageScreen, "Change Language"),
+    Icon: MaterialCommunityIcons,
+  },
+  {
+    screenName: "Manage Privicy",
+    titleKey: "Privacy",
+    iconName: "shield-lock-outline",
+    targetScreen: () =>
+      getComponentWithBack(ManagePrivacyScreen, "Manage Privicy"),
     Icon: MaterialCommunityIcons,
   },
   {
