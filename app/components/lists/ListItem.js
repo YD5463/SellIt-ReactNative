@@ -13,13 +13,17 @@ function ListItem({
   IconComponent,
   onPress,
   renderRightActions,
+  iconName = "chevron-right",
+  padding = 15,
 }) {
   const { colors } = useTheme();
 
   return (
     <Swipeable renderRightActions={renderRightActions}>
       <TouchableHighlight underlayColor={colors.light} onPress={onPress}>
-        <View style={[styles.container, { backgroundColor: colors.white }]}>
+        <View
+          style={[styles.container, { backgroundColor: colors.white, padding }]}
+        >
           {IconComponent}
           {image && <Image style={styles.image} source={{ uri: image }} />}
           <View style={styles.detailsContainer}>
@@ -44,7 +48,7 @@ function ListItem({
           >
             <MaterialCommunityIcons
               color={colors.medium}
-              name="chevron-right"
+              name={iconName}
               size={25}
             />
           </View>
@@ -58,7 +62,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     flexDirection: "row",
-    padding: 15,
   },
   detailsContainer: {
     flex: 1,

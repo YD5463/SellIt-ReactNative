@@ -63,22 +63,12 @@ function ListingDetailsScreen({ route, navigation }) {
     });
   };
   const onShare = async () => {
-    let redirectUrl = Linking.makeUrl("listings/listingsDetails/", listing);
+    // let redirectUrl = Linking.makeUrl("listings/listingsDetails/", listing);
     try {
       const result = await Share.share({
-        url: redirectUrl,
-        message: `I am sharing with listing called ${listing.title} in just ${listing.price}`,
+        message: `I am sharing with you listing called ${listing.title} in just ${listing.price}$`,
         title: listing.title,
       });
-      // if (result.action === Share.sharedAction) {
-      //   if (result.activityType) {
-      //     // shared with activity type of result.activityType
-      //   } else {
-      //     // shared
-      //   }
-      // } else if (result.action === Share.dismissedAction) {
-      //   // dismissed
-      // }
     } catch (error) {
       alert(error.message);
     }
@@ -128,6 +118,11 @@ function ListingDetailsScreen({ route, navigation }) {
                   }
                   title={getSallerApi.data.name}
                   subTitle={`${getSallerApi.data.listings} Listing`}
+                  onPress={() =>
+                    Linking.openURL(`tel:${getSallerApi.data.phone_number}`)
+                  }
+                  iconName="phone"
+                  padding={0}
                 />
               </View>
             </View>

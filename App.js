@@ -12,13 +12,11 @@ import { navigationRef } from "./app/navigation/rootNavigation";
 import languageSupport from "./app/utility/languageSupport";
 import { AsyncStorage } from "react-native";
 import { Provider as PaperProvider } from "react-native-paper";
-import MyActivityScreen from "./app/screens/MyActivityScreen";
 import auth from "./app/api/auth";
-import BarChart from "./app/components/BarChart";
 import { ThemeProvider } from "styled-components";
 import { ToastProvider } from "react-native-styled-toast";
-import colors from "./app/config/colors";
-import ValidateEmailScreen from "./app/screens/ValidateEmailScreen";
+import MyActivityScreen from "./app/screens/MyActivityScreen";
+import BarChart from "./app/components/BarChart";
 languageSupport.init();
 
 export default function App() {
@@ -61,6 +59,15 @@ export default function App() {
             <NavigationContainer
               ref={navigationRef}
               theme={navigationTheme[theme]}
+              linking={{
+                config: {
+                  screens: {
+                    login: "login/",
+                    listingDetail: "listings/:id",
+                  },
+                },
+                prefixes: ["sellIt://", "http://sellIt.com"],
+              }}
             >
               {user ? <AppNavigator /> : <AuthNavigator />}
             </NavigationContainer>
