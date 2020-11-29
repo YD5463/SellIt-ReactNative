@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import Text from "../components/Text";
 import Screen from "./../components/Screen";
@@ -8,6 +8,7 @@ import user from "../api/user";
 import ActivityIndicator from "../components/ActivityIndicator";
 import Constants from "expo-constants";
 import { useTheme } from "react-native-paper";
+import CheckoutElement from "../components/CheckoutElement";
 
 const address = [
   {
@@ -17,17 +18,26 @@ const address = [
     country: "Israel",
     street: "Yoel Fridler",
   },
+  {
+    city: "Jerusalem",
+    state: "Israel",
+    postal_code: "9778807",
+    country: "Israel",
+    street: "Sherman ohoks",
+  },
 ];
 const paymentMethods = [
   {
     card_number: "4545454545454",
-    icon_url:
-      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.iconsdb.com%2Fblack-icons%2Fvisa-icon.html&psig=AOvVaw18hP5PTYh6TUETkAaAbyB3&ust=1606758385864000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCJC_n8ynqO0CFQAAAAAdAAAAABAD",
+    icon_url: "http://192.168.68.101:9000/assets/mastercard.jpg",
   },
 ];
 function CheckoutScreen(props) {
   const getDeliveryAddressApi = useApi(user.getUserAddress);
   const getPaymentMethodsApi = useApi(user.getUserPaymentMethods);
+  const [chosenAddress, setChoosenAddress] = useState(0);
+  const [chosenPayment, setChoosenPayment] = useState(0);
+
   const { colors } = useTheme();
   useEffect(() => {
     getDeliveryAddressApi.request();
@@ -41,25 +51,46 @@ function CheckoutScreen(props) {
       />
       <Screen style={[styles.container, { backgroundColor: colors.light }]}>
         <Text style={styles.heading}>Checkout</Text>
-        <View style={[styles.main, { backgroundColor: colors.white }]}>
+        <View
+          elevation={4}
+          style={[styles.main, { backgroundColor: colors.white }]}
+        >
           <Text style={styles.subTitle}>Delivery Address</Text>
           <FlatList
             data={address}
             keyExtractor={(address) => address.postal_code}
-            renderItem={({ item }) => <Text>Address</Text>}
+            renderItem={({ item, index }) => (
+              <CheckoutElement
+                isChosen={chosenAddress === index}
+                data={item.street}
+                title={`Address #${index + 1}`}
+                onPress={() => {
+                  setChoosenAddress(index);
+                  console.log("im here");
+                }}
+              />
+            )}
           />
           <Text style={styles.subTitle}>Payment Method</Text>
           <FlatList
             data={paymentMethods}
             keyExtractor={(pm) => pm.card_number}
-            renderItem={({ item }) => <Text>Payment</Text>}
+            renderItem={({ item, index }) => (
+              <CheckoutElement
+                isChosen={chosenPayment === index}
+                data={item.card_number}
+                icon={item.icon_url}
+                isSecure={true}
+                onPress={() => setChoosenPayment(index)}
+              />
+            )}
           />
         </View>
         <View style={{ marginTop: 25 }}>
           <Button
             title="Payment"
             onPress={() => navigation.navigate(routes.CHECKOUT)}
-            color="darkGray"
+            color="pink"
             borderRadius={15}
           />
         </View>
@@ -70,7 +101,7 @@ function CheckoutScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 13,
+    padding: 10,
     paddingTop: Constants.statusBarHeight + 5,
   },
   heading: {
@@ -79,10 +110,17 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
   main: {
-    zIndex: 2,
-    height: "70%",
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowRadius: 5,
+    shadowOpacity: 1.0,
+    height: "75%",
     width: "100%",
     borderRadius: 15,
+    padding: 13,
   },
   subTitle: {
     padding: 10,
