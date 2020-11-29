@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme":"myapp",
     "name": "SellIt",
     "slug": "SellIt",
     "platforms": ["ios", "android", "web"],

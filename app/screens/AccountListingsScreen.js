@@ -16,7 +16,7 @@ function AccountListingsScreen({ route, navigation }) {
     <>
       <ActivityIndicator visible={getListingApi.loading} />
 
-      {!getListingApi.loading && (
+      {!getListingApi.loading && getListingApi.data !== null && (
         <View style={styles.container}>
           <FlatList
             data={getListingApi.data}
@@ -28,7 +28,7 @@ function AccountListingsScreen({ route, navigation }) {
                 }
               />
             )}
-            keyExtractor={(listing) => listing.id.toString()}
+            keyExtractor={(listing) => listing._id}
           />
         </View>
       )}

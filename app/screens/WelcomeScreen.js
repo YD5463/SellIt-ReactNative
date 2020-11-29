@@ -8,7 +8,7 @@ import { Audio } from "expo-av";
 
 function WelcomeScreen({ navigation }) {
   const { colors } = useTheme();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [song, setSong] = useState();
   const playSong = async () => {
     const { sound } = await Audio.Sound.createAsync(
@@ -21,13 +21,12 @@ function WelcomeScreen({ navigation }) {
     setSong(sound);
   };
   useEffect(() => {
-    playSong();
+    // playSong();
     return () => {
-      console.log("im here");
       if (song) song.stopAsync();
     };
   }, []);
-  
+
   return (
     <ImageBackground
       blurRadius={10}
