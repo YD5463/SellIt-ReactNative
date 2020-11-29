@@ -17,6 +17,7 @@ import { ThemeProvider } from "styled-components";
 import { ToastProvider } from "react-native-styled-toast";
 import MyActivityScreen from "./app/screens/MyActivityScreen";
 import BarChart from "./app/components/BarChart";
+import CheckoutScreen from "./app/screens/CheckoutScreen";
 languageSupport.init();
 
 export default function App() {
@@ -55,7 +56,7 @@ export default function App() {
       >
         <PaperProvider theme={navigationTheme[theme]}>
           <ToastProvider position="BOTTOM" offset={40}>
-            <OfflineNotice />
+            {/* <OfflineNotice />
             <NavigationContainer
               ref={navigationRef}
               theme={navigationTheme[theme]}
@@ -70,7 +71,8 @@ export default function App() {
               }}
             >
               {user ? <AppNavigator /> : <AuthNavigator />}
-            </NavigationContainer>
+            </NavigationContainer> */}
+            <CheckoutScreen />
           </ToastProvider>
         </PaperProvider>
       </AuthContext.Provider>

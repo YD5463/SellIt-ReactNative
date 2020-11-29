@@ -23,7 +23,7 @@ function WelcomeScreen({ navigation }) {
   useEffect(() => {
     // playSong();
     return () => {
-      if (song) song.stopAsync();
+      // if (song) song.stopAsync();
     };
   }, []);
 
@@ -41,7 +41,7 @@ function WelcomeScreen({ navigation }) {
         <Button
           title={t("login")}
           onPress={() => {
-            song.stopAsync();
+            if (song) song.stopAsync();
             navigation.navigate(routes.LOGIN);
           }}
         />
@@ -49,7 +49,7 @@ function WelcomeScreen({ navigation }) {
           title={t("register")}
           color="secondary"
           onPress={() => {
-            song.stopAsync();
+            if (song) song.stopAsync();
             navigation.navigate(routes.REGISTER);
           }}
         />

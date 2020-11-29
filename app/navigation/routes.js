@@ -17,4 +17,5 @@ export default Object.freeze({
   VALIDATE_EMAIL: "Verify",
   FORGOT_PASSWORD: "ForgotPassword",
   MY_CART: "CartDetails",
+  CHECKOUT: "Checkout",
 });
