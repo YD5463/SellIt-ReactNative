@@ -7,8 +7,9 @@ import useApi from "./../hooks/useApi";
 import user from "../api/user";
 import ActivityIndicator from "../components/ActivityIndicator";
 import Constants from "expo-constants";
-import { useTheme } from "react-native-paper";
+import { Modal, useTheme } from "react-native-paper";
 import CheckoutElement from "../components/CheckoutElement";
+import AddElementInput from "../components/AddElementInput";
 
 const address = [
   {
@@ -32,6 +33,8 @@ const paymentMethods = [
     icon_url: "http://192.168.68.101:9000/assets/mastercard.jpg",
   },
 ];
+const MAX_OPTIONS = 3;
+
 function CheckoutScreen(props) {
   const getDeliveryAddressApi = useApi(user.getUserAddress);
   const getPaymentMethodsApi = useApi(user.getUserPaymentMethods);
@@ -49,8 +52,11 @@ function CheckoutScreen(props) {
       <ActivityIndicator
         visible={getDeliveryAddressApi.loading || getPaymentMethodsApi.loading}
       />
+      <Modal visible={true}>
+          
+      </Modal>
       <Screen style={[styles.container, { backgroundColor: colors.light }]}>
-        <Text style={styles.heading}>Checkout</Text>
+        <Text style={[styles.heading, { color: colors.black }]}>Checkout</Text>
         <View
           elevation={4}
           style={[styles.main, { backgroundColor: colors.white }]}
@@ -71,6 +77,9 @@ function CheckoutScreen(props) {
               />
             )}
           />
+          {address.length < MAX_OPTIONS && (
+            <AddElementInput onPress={() => {}} elementName="Address" />
+          )}
           <Text style={styles.subTitle}>Payment Method</Text>
           <FlatList
             data={paymentMethods}
@@ -85,6 +94,9 @@ function CheckoutScreen(props) {
               />
             )}
           />
+          {address.length < MAX_OPTIONS && (
+            <AddElementInput onPress={() => {}} elementName="Credit Card" />
+          )}
         </View>
         <View style={{ marginTop: 25 }}>
           <Button
