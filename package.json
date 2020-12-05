@@ -56,7 +56,8 @@
     "react-native-web": "~0.11.7",
     "styled-components": "^5.2.0",
     "styled-system": "^5.1.5",
-    "yup": "^0.28.5"
+    "yup": "^0.28.5",
+    "expo-media-library": "~8.1.0"
   },
   "devDependencies": {
     "babel-preset-expo": "~8.1.0",

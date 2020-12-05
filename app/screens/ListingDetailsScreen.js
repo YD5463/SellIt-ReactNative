@@ -11,7 +11,7 @@ import {
   Linking,
 } from "react-native";
 import MapView from "react-native-maps";
-
+import * as FileSystem from "expo-file-system";
 import messages from "../api/messages";
 import ListItem from "../components/lists/ListItem";
 import Text from "../components/Text";
@@ -32,6 +32,7 @@ import ImageListScroll from "./../components/ImageListScroll";
 import routes from "../navigation/routes";
 import { useTheme } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as MediaLibrary from "expo-media-library";
 
 const validationSchema = Yup.object().shape({
   message: Yup.string().required().label("Contatct Message"),
@@ -64,10 +65,31 @@ function ListingDetailsScreen({ route, navigation }) {
   };
   const onShare = async () => {
     // let redirectUrl = Linking.makeUrl("listings/listingsDetails/", listing);
+    const { uri } = await FileSystem.downloadAsync(
+      listing.images[0].url,
+      FileSystem.documentDirectory + "listing.jpg"
+    );
+    const asset = await MediaLibrary.createAssetAsync(uri);
+    await MediaLibrary.createAlbumAsync("SellIt", asset, false);
+    console.log(asset);
+    const fileBase64 = await FileSystem.readAsStringAsync(uri, {
+      encoding: "base64",
+    });
+
+    // console.log(fileBase64);
     try {
-      const result = await Share.share({
-        message: `I am sharing with you listing called ${listing.title} in just ${listing.price}$`,
+      await Share.share({
+        message: `${
+          listing.images[0].url
+        } I am sharing with you listing called ${listing.title} in just ${
+          listing.price
+        }$!\n
+        ${listing.description ? listing.description + "\n" : ""}
+        contact the seller ${getSallerApi.data.name} in phone ${
+          getSallerApi.data.phone_number
+        }`,
         title: listing.title,
+        url: `data:image/jpg;${fileBase64}`,
       });
     } catch (error) {
       alert(error.message);
