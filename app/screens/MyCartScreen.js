@@ -8,6 +8,7 @@ import { ListItemSeparator } from "../components/lists";
 import AppButton from "../components/Button";
 import cache from "../utility/cache";
 import settings from "../config/settings";
+import routes from "../navigation/routes";
 
 function MyCartScreen({ route, navigation }) {
   const getSum = (cart) => {
@@ -67,7 +68,7 @@ function MyCartScreen({ route, navigation }) {
       </View>
       <AppButton
         title="check out"
-        onPress={() => {}}
+        onPress={() => navigation.navigate(routes.CHECKOUT)}
         color="darkGray"
         borderRadius={15}
       />

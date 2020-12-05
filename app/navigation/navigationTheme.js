@@ -27,6 +27,7 @@ export default {
       orange: "#FFAF22",
       gray: "#A0A0A0",
       darkGray: "#404040",
+      pink: "#F60062",
     },
   },
   dark: {
@@ -53,6 +54,7 @@ export default {
       orange: "#FFAF22",
       gray: "#D2D2D2",
       darkGray: "#A0A0A0",
+      pink: "#F60062",
     },
   },
 };

@@ -92,6 +92,7 @@ function ListingsScreen({ navigation }) {
     setSearch(val);
     setListing(getFilteredListing(val, filterdCategories));
   };
+
   return (
     <>
       <ActivityIndicator visible={loading} />
