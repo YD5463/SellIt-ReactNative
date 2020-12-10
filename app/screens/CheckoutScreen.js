@@ -1,43 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, Modal } from "react-native";
 import Text from "../components/Text";
 import Screen from "./../components/Screen";
 import Button from "./../components/Button";
 import useApi from "./../hooks/useApi";
+import checkout from "../api/checkout";
 import user from "../api/user";
 import ActivityIndicator from "../components/ActivityIndicator";
 import Constants from "expo-constants";
-import { Modal, useTheme } from "react-native-paper";
-import CheckoutElement from "../components/CheckoutElement";
+import { useTheme } from "react-native-paper";
+import CheckoutElement from "../components/checkoutElement";
 import AddElementInput from "../components/AddElementInput";
+// import { Shapes } from "react-native-background-shapes";
+import { LinearGradient } from "expo-linear-gradient";
 
-const address = [
-  {
-    city: "Jerusalem",
-    state: "Israel",
-    postal_code: "9778807",
-    country: "Israel",
-    street: "Yoel Fridler",
-  },
-  {
-    city: "Jerusalem",
-    state: "Israel",
-    postal_code: "9778807",
-    country: "Israel",
-    street: "Sherman ohoks",
-  },
-];
-const paymentMethods = [
-  {
-    card_number: "4545454545454",
-    icon_url: "http://192.168.68.101:9000/assets/mastercard.jpg",
-  },
-];
 const MAX_OPTIONS = 3;
 
 function CheckoutScreen(props) {
   const getDeliveryAddressApi = useApi(user.getUserAddress);
-  const getPaymentMethodsApi = useApi(user.getUserPaymentMethods);
+  const getPaymentMethodsApi = useApi(checkout.getUserPaymentMethods);
   const [chosenAddress, setChoosenAddress] = useState(0);
   const [chosenPayment, setChoosenPayment] = useState(0);
 
@@ -52,61 +33,76 @@ function CheckoutScreen(props) {
       <ActivityIndicator
         visible={getDeliveryAddressApi.loading || getPaymentMethodsApi.loading}
       />
-      <Modal visible={true}>
-          
-      </Modal>
-      <Screen style={[styles.container, { backgroundColor: colors.light }]}>
-        <Text style={[styles.heading, { color: colors.black }]}>Checkout</Text>
-        <View
-          elevation={4}
-          style={[styles.main, { backgroundColor: colors.white }]}
-        >
-          <Text style={styles.subTitle}>Delivery Address</Text>
-          <FlatList
-            data={address}
-            keyExtractor={(address) => address.postal_code}
-            renderItem={({ item, index }) => (
-              <CheckoutElement
-                isChosen={chosenAddress === index}
-                data={item.street}
-                title={`Address #${index + 1}`}
-                onPress={() => {
-                  setChoosenAddress(index);
-                  console.log("im here");
-                }}
+      <LinearGradient
+        colors={["#FF3A89", colors.light]}
+        locations={[0.3, 0.5]}
+        style={{ flex: 1 }}
+      >
+        <Screen>
+          <View style={styles.container}>
+            <Text style={[styles.heading, { color: "#FFFFFF" }]}>Checkout</Text>
+            <View
+              elevation={4}
+              style={[styles.main, { backgroundColor: colors.white }]}
+            >
+              <View style={{ height: "50%" }}>
+                <Text style={styles.subTitle}>Delivery Address</Text>
+                {getDeliveryAddressApi.data.length > 0 && (
+                  <FlatList
+                    data={getDeliveryAddressApi.data}
+                    keyExtractor={(address) => address.postal_code}
+                    renderItem={({ item, index }) => (
+                      <CheckoutElement
+                        isChosen={chosenAddress === index}
+                        data={item.street}
+                        title={`Address #${index + 1}`}
+                        onPress={() => {
+                          setChoosenAddress(index);
+                        }}
+                      />
+                    )}
+                  />
+                )}
+                {getDeliveryAddressApi.data.length < MAX_OPTIONS && (
+                  <AddElementInput onPress={() => {}} elementName="Address" />
+                )}
+              </View>
+              <Text style={styles.subTitle}>Payment Method</Text>
+              {getPaymentMethodsApi.data.length > 0 && (
+                <FlatList
+                  data={getPaymentMethodsApi.data}
+                  keyExtractor={(pm) => pm.card_number}
+                  renderItem={({ item, index }) => (
+                    <CheckoutElement
+                      isChosen={chosenPayment === index}
+                      data={item.card_number}
+                      icon={item.icon_url}
+                      isSecure={true}
+                      onPress={() => setChoosenPayment(index)}
+                    />
+                  )}
+                />
+              )}
+              {getPaymentMethodsApi.data.length < MAX_OPTIONS && (
+                <View style={{ flex: 1 }}>
+                  <AddElementInput
+                    onPress={() => {}}
+                    elementName="Credit Card"
+                  />
+                </View>
+              )}
+            </View>
+            <View style={{ marginTop: 25 }}>
+              <Button
+                title="Payment"
+                onPress={() => navigation.navigate(routes.CHECKOUT)}
+                color="pink"
+                borderRadius={15}
               />
-            )}
-          />
-          {address.length < MAX_OPTIONS && (
-            <AddElementInput onPress={() => {}} elementName="Address" />
-          )}
-          <Text style={styles.subTitle}>Payment Method</Text>
-          <FlatList
-            data={paymentMethods}
-            keyExtractor={(pm) => pm.card_number}
-            renderItem={({ item, index }) => (
-              <CheckoutElement
-                isChosen={chosenPayment === index}
-                data={item.card_number}
-                icon={item.icon_url}
-                isSecure={true}
-                onPress={() => setChoosenPayment(index)}
-              />
-            )}
-          />
-          {address.length < MAX_OPTIONS && (
-            <AddElementInput onPress={() => {}} elementName="Credit Card" />
-          )}
-        </View>
-        <View style={{ marginTop: 25 }}>
-          <Button
-            title="Payment"
-            onPress={() => navigation.navigate(routes.CHECKOUT)}
-            color="pink"
-            borderRadius={15}
-          />
-        </View>
-      </Screen>
+            </View>
+          </View>
+        </Screen>
+      </LinearGradient>
     </>
   );
 }

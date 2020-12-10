@@ -15,8 +15,6 @@ import { Provider as PaperProvider } from "react-native-paper";
 import auth from "./app/api/auth";
 import { ThemeProvider } from "styled-components";
 import { ToastProvider } from "react-native-styled-toast";
-import MyActivityScreen from "./app/screens/MyActivityScreen";
-import BarChart from "./app/components/BarChart";
 languageSupport.init();
 
 export default function App() {

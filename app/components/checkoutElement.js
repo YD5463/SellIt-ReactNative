@@ -12,6 +12,7 @@ function CheckoutElement({
   isSecure = false,
   onPress,
 }) {
+  // if (!data) return <></>;
   const [text, setText] = useState();
   const getText = (data, isSecure) => {
     if (!isSecure) return data;
