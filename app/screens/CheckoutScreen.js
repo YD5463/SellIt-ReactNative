@@ -13,10 +13,11 @@ import CheckoutElement from "../components/checkoutElement";
 import AddElementInput from "../components/AddElementInput";
 // import { Shapes } from "react-native-background-shapes";
 import { LinearGradient } from "expo-linear-gradient";
+import routes from "../navigation/routes";
 
 const MAX_OPTIONS = 3;
 
-function CheckoutScreen(props) {
+function CheckoutScreen({navigation}) {
   const getDeliveryAddressApi = useApi(user.getUserAddress);
   const getPaymentMethodsApi = useApi(checkout.getUserPaymentMethods);
   const [chosenAddress, setChoosenAddress] = useState(0);
@@ -86,7 +87,7 @@ function CheckoutScreen(props) {
               {getPaymentMethodsApi.data.length < MAX_OPTIONS && (
                 <View style={{ flex: 1 }}>
                   <AddElementInput
-                    onPress={() => {}}
+                    onPress={() => navigation.navigate(routes.ADD_PAYMENT)}
                     elementName="Credit Card"
                   />
                 </View>

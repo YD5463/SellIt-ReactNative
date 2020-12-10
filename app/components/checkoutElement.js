@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useTheme } from "react-native-paper";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Fontisto } from "@expo/vector-icons";
 import Text from "./Text";
 
 function CheckoutElement({
@@ -35,7 +35,11 @@ function CheckoutElement({
     <TouchableOpacity onPress={onPress}>
       <View style={[styles.container, additional_style]}>
         <View style={{ flex: 1, flexDirection: !title ? "row" : "column" }}>
-          {icon && <Image source={{ uri: icon }} style={styles.icon} />}
+          {icon && (
+            <View style={styles.icon}>
+              <Fontisto name={icon} size={30} color="red" />
+            </View>
+          )}
           {title && (
             <Text style={{ color: colors.pink, fontWeight: "bold" }}>
               {getText(title, isSecure)}

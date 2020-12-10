@@ -18,4 +18,5 @@ export default Object.freeze({
   FORGOT_PASSWORD: "ForgotPassword",
   MY_CART: "CartDetails",
   CHECKOUT: "Checkout",
+  ADD_PAYMENT: "AddPaymentMethod",
 });

@@ -28,6 +28,8 @@ export default {
       gray: "#A0A0A0",
       darkGray: "#404040",
       pink: "#F60062",
+      turquoise: "#90d3d1",
+      hardBlue: "#0056C7",
     },
   },
   dark: {
@@ -55,6 +57,8 @@ export default {
       gray: "#D2D2D2",
       darkGray: "#A0A0A0",
       pink: "#F60062",
+      turquoise: "#296370",
+      hardBlue: "#4E99FC",
     },
   },
 };
