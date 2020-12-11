@@ -10,6 +10,7 @@ import RectTextInput from "./../components/TextInputs/RectTextInput";
 import useApi from "./../hooks/useApi";
 import checkout from "../api/checkout";
 import { useToast } from "react-native-styled-toast";
+import GoBackButton from "../components/GoBackButton";
 
 Yup.addMethod(Yup.string, "integer", function () {
   return this.matches(/^\d+$/, "The field should have digits only");
@@ -60,11 +61,7 @@ function AddPaymentMethodScreen({ navigation }) {
 
   return (
     <Screen style={[styles.container]}>
-      <View style={[styles.goBack, { borderColor: colors.turquoise }]}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="ios-arrow-back" size={24} color={colors.turquoise} />
-        </TouchableOpacity>
-      </View>
+      <GoBackButton onPress={() => navigation.goBack()} />
       <View style={styles.paymentTypes}></View>
       <Text style={styles.title}>Add Payment Method</Text>
       <Form
@@ -144,15 +141,6 @@ const styles = StyleSheet.create({
   },
   paymentTypes: {
     flexDirection: "row",
-  },
-  goBack: {
-    width: 40,
-    height: 35,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 2.4,
-    marginBottom: 17,
   },
 });
 
