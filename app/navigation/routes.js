@@ -19,4 +19,6 @@ export default Object.freeze({
   MY_CART: "CartDetails",
   CHECKOUT: "Checkout",
   ADD_PAYMENT: "AddPaymentMethod",
+  ADD_ADDRESS: "AddAddress",
+  OPTIONS_PICKER: "OptionsPicker",
 });

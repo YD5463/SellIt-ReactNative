@@ -6,6 +6,8 @@ import ViewImageScreen from "./../screens/ViewImageScreen";
 import MyCartScreen from "./../screens/MyCartScreen";
 import CheckoutScreen from "./../screens/CheckoutScreen";
 import AddPaymentMethodScreen from "./../screens/AddPaymentMethodScreen";
+import AddAddressScreen from "./../screens/AddAddressScreen";
+import OptionsPickerScreen from "./../screens/OptionsPickerScreen";
 
 const Stack = createStackNavigator();
 
@@ -17,7 +19,8 @@ const FeedNavigator = () => (
     <Stack.Screen name="CartDetails" component={MyCartScreen} />
     <Stack.Screen name="Checkout" component={CheckoutScreen} />
     <Stack.Screen name="AddPaymentMethod" component={AddPaymentMethodScreen} />
-    
+    <Stack.Screen name="AddAddress" component={AddAddressScreen} />
+    <Stack.Screen name="OptionsPicker" component={OptionsPickerScreen} />
   </Stack.Navigator>
 );
 

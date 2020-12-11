@@ -4,14 +4,13 @@ import ChangePasswordScreen from "./../screens/ChangePasswordScreen";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import AccountNavigator from "./AccountNavigator";
 import { createStackNavigator } from "@react-navigation/stack";
-import ChangeLanguageScreen from "./../screens/ChangeLanguageScreen";
 import { useTranslation } from "react-i18next";
 import ChangeThemeScreen from "./../screens/ChangeThemeScreen";
-import { TouchableWithoutFeedback, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import MyActivityScreen from "./../screens/MyActivityScreen";
 import ChangeSubscriptionScreen from "./../screens/ChangeSubscriptionScreen";
 import ManagePrivacyScreen from "./../screens/ManagePrivacyScreen";
+import OptionsPickerScreen from "./../screens/OptionsPickerScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -33,7 +32,6 @@ const getComponentWithBack = (Screen, name) => {
     </Stack.Navigator>
   );
 };
-
 const screens = [
   {
     screenName: "Account",
@@ -55,7 +53,7 @@ const screens = [
     titleKey: "language",
     iconName: "translate",
     targetScreen: () =>
-      getComponentWithBack(ChangeLanguageScreen, "Change Language"),
+      getComponentWithBack(OptionsPickerScreen, "Change Language"),
     Icon: MaterialCommunityIcons,
   },
   {
@@ -106,7 +104,8 @@ const screens = [
 
 const SettingsNavigator = () => {
   const { colors } = useTheme();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
   return (
     <Drawer.Navigator
       initialRouteName="Account"
