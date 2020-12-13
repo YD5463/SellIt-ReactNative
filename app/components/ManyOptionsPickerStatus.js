@@ -9,10 +9,13 @@ function ManyOptionsPickerStatus({
   chosenOption,
   setOption,
   options,
+  label,
+  width = "100%",
 }) {
   const { colors } = useTheme();
   return (
     <View style={styles.container}>
+      <Text style={styles.label}>{label}</Text>
       <TouchableWithoutFeedback
         onPress={() =>
           onPress({
@@ -23,12 +26,19 @@ function ManyOptionsPickerStatus({
           })
         }
       >
-        <View style={[styles.input, { backgroundColor: colors.light }]}>
-          <Ionicons name="ios-arrow-down" size={28} color={colors.black} />
-          <View style={{ paddingRight: 10 }}>
+        <View
+          style={[
+            styles.input,
+            { backgroundColor: colors.light, width: width },
+          ]}
+        >
+          <View style={{ paddingRight: 10, flex: 1 }}>
             <Text style={[styles.label, { color: colors.medium }]}>
-              {chosenOption}
+              {chosenOption ? chosenOption : "Select Option..."}
             </Text>
+          </View>
+          <View style={{ paddingRight: 10 }}>
+            <Ionicons name="ios-arrow-down" size={28} color={colors.black} />
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -38,15 +48,18 @@ function ManyOptionsPickerStatus({
 
 const styles = StyleSheet.create({
   container: {
-    padding: 5,
+    paddingTop: 20,
   },
   input: {
     flexDirection: "row",
-    width: "50%",
     height: 45,
     borderRadius: 7,
-    padding: 8,
+    paddingLeft: 15,
     alignItems: "center",
+  },
+  label: {
+    fontSize: 14,
+    marginBottom: 10,
   },
 });
 

@@ -29,7 +29,7 @@ function CheckoutElement({
   const additional_style = { backgroundColor: colors.boldLight };
   if (isChosen) {
     additional_style.borderWidth = 2;
-    additional_style.borderColor = colors.pink;
+    additional_style.borderColor = colors.hardBlue;
   }
   return (
     <TouchableOpacity onPress={onPress}>
@@ -41,7 +41,7 @@ function CheckoutElement({
             </View>
           )}
           {title && (
-            <Text style={{ color: colors.pink, fontWeight: "bold" }}>
+            <Text style={{ color: colors.hardBlue, fontWeight: "bold" }}>
               {getText(title, isSecure)}
             </Text>
           )}

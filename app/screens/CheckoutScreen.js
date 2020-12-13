@@ -14,7 +14,6 @@ import AddElementInput from "../components/AddElementInput";
 // import { Shapes } from "react-native-background-shapes";
 import { LinearGradient } from "expo-linear-gradient";
 import routes from "../navigation/routes";
-import AddAddressScreen from "./AddAddressScreen";
 
 const MAX_OPTIONS = 3;
 
@@ -36,7 +35,7 @@ function CheckoutScreen({ navigation }) {
         visible={getDeliveryAddressApi.loading || getPaymentMethodsApi.loading}
       />
       <LinearGradient
-        colors={[colors.hardBlue, colors.light]}
+        colors={["#F25996", colors.light]}
         locations={[0.3, 0.5]}
         style={{ flex: 1 }}
       >
@@ -101,7 +100,7 @@ function CheckoutScreen({ navigation }) {
               <Button
                 title="Payment"
                 onPress={() => navigation.navigate(routes.CHECKOUT)}
-                color="hardBlue"
+                color="pink"
                 borderRadius={15}
               />
             </View>
