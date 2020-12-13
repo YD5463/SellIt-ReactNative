@@ -23,7 +23,7 @@ function RectTextInput({
   const { t } = useTranslation();
   const { colors } = useTheme();
   return (
-    <View style={[styles.container, { width }]}>
+    <View style={[styles.container, { width: "100%" }]}>
       <Text style={[styles.label, { color: colors.black }]}>
         {t(label, { defaultValue: label })}
       </Text>
@@ -31,7 +31,10 @@ function RectTextInput({
       <View
         style={[
           styles.inputView,
-          { backgroundColor: colors.light, marginRight: twoInRow ? 15 : 0 },
+          {
+            backgroundColor: colors.light,
+            marginRight: twoInRow ? 15 : 0,
+          },
         ]}
       >
         <TextInput
@@ -48,8 +51,7 @@ function RectTextInput({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "column",
-    marginTop: 30,
+    marginVertical: 10,
   },
   label: {
     fontSize: 15,
@@ -57,7 +59,6 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 16,
-    alignItems: "center",
   },
   inputView: {
     height: 48,

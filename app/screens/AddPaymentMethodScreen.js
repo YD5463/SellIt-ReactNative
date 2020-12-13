@@ -17,23 +17,18 @@ Yup.addMethod(Yup.string, "integer", function () {
 });
 
 const validationSchema = Yup.object().shape({
-  card_number: Yup.string().required(), //TODO:add more checking here
-  owner_name: Yup.string()
-    .required()
-    .test(
-      "length",
-      "Maximum Length",
-      (name) => name && name.length < 20 && name.length > 1
-    ),
-  id_number: Yup.string().length(9).required().integer(),
-  cvv: Yup.string().required().integer(),
+  card_number: Yup.string().label("Card Number").required(), //TODO:add more checking here
+  owner_name: Yup.string().label("Owner Name").required(),
+  id_number: Yup.string().label("ID Number").length(9).required().integer(),
+  cvv: Yup.string().required().label("CVV").integer(),
   expired_date: Yup.string()
+    .label("Expired Date")
     .required()
     .matches(/[\d]{2}\/[\d]{2}/, "Invalid Date")
     .test("date", "Invalid Date", (text) => {
       if (!text) return false;
       const date = text.split("/");
-      if (date.length != 2) return false;
+      if (date.length != 3) return false;
       const only_digit = /^\d+$/;
       if (!only_digit.test(date[0]) || !only_digit.test(date[1])) return false;
       const month = parseInt(date[0], 10);
@@ -61,9 +56,12 @@ function AddPaymentMethodScreen({ navigation }) {
 
   return (
     <Screen style={[styles.container]}>
-      <GoBackButton onPress={() => navigation.goBack()} />
-      <View style={styles.paymentTypes}></View>
-      <Text style={styles.title}>Add Payment Method</Text>
+      <View style={{ flexDirection: "row" }}>
+        <GoBackButton onPress={() => navigation.goBack()} />
+        <View style={{ paddingLeft: 25, alignItems: "center" }}>
+          <Text style={styles.title}>Add Payment Method</Text>
+        </View>
+      </View>
       <Form
         initialValues={{
           card_number: "",
@@ -88,7 +86,7 @@ function AddPaymentMethodScreen({ navigation }) {
           TextInputComponent={RectTextInput}
           label="Owner Name"
           maxLength={15}
-          name="owner_namer"
+          name="owner_name"
           placeholder="Owner Name"
         />
         <FormField
@@ -111,6 +109,7 @@ function AddPaymentMethodScreen({ navigation }) {
             width="50%"
             twoInRow={true}
           />
+
           <FormField
             TextInputComponent={RectTextInput}
             keyboardType="numeric"

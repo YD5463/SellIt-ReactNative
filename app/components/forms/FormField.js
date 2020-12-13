@@ -3,6 +3,7 @@ import { useFormikContext } from "formik";
 
 import TextInput from "../TextInput";
 import ErrorMessage from "./ErrorMessage";
+import { View } from "react-native";
 
 function AppFormField({
   name,
@@ -19,7 +20,7 @@ function AppFormField({
   } = useFormikContext();
 
   return (
-    <>
+    <View style={{ flexDirection: "column", width }}>
       <TextInputComponent
         onBlur={() => setFieldTouched(name)}
         onChangeText={(text) => setFieldValue(name, text)}
@@ -28,7 +29,7 @@ function AppFormField({
         {...otherProps}
       />
       <ErrorMessage error={errors[name]} visible={touched[name]} />
-    </>
+    </View>
   );
 }
 

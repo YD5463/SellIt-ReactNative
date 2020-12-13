@@ -4,7 +4,7 @@ import { useFormikContext } from "formik";
 import ErrorMessage from "./ErrorMessage";
 import ManyOptionsPickerStatus from "../ManyOptionsPickerStatus";
 
-function FormPickerWithManyOptions({ name, options, onPress, label, width }) {
+function FormPickerWithManyOptions({ name, options, onPress, label }) {
   const { errors, setFieldValue, touched, values } = useFormikContext();
   return (
     <View style={styles.container}>
@@ -22,7 +22,9 @@ function FormPickerWithManyOptions({ name, options, onPress, label, width }) {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flexDirection: "column",
+  },
 });
 
 export default FormPickerWithManyOptions;
