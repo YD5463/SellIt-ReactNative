@@ -57,6 +57,10 @@ const init = () => {
             privacyExplain:
               "If you choose not sharing data about 'phone number',you won't be able to sell things(only buy)",
             privacy: "Privacy",
+            removePaymentTitle: "Are you sure you want to remove this payment?",
+            removePaymentSubtitle: "The payment can't being restored.",
+            removeAddressTitle: "Are you sure you want to remove this Address?",
+            removePaymentSubtitle: "The Address can't being restored.",
           },
         },
         he: {
@@ -107,6 +111,12 @@ const init = () => {
             privacyExplain:
               "אם תבחר/י שלא לשתף מידע לגבי 'מספר טלפון',לא תוכל/י למכור דברים",
             privacy: "פרטיות",
+            removePaymentTitle:
+              "האם את/ה בטוח/ה שאת/ה רוצה למחוק את אמצעי התשלום?",
+            removePaymentSubtitle:
+              "לא תוכל לשחזר את אמצעי התשלום לאחר המחיקה...",
+            removeAddressTitle: "Are you sure you want to remove this Address?",
+            removePaymentSubtitle: "The Address can't being restored.",
           },
         },
       },

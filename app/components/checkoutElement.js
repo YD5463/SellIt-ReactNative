@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useTheme } from "react-native-paper";
-import { AntDesign, Fontisto } from "@expo/vector-icons";
+import { AntDesign, Fontisto, FontAwesome } from "@expo/vector-icons";
 import Text from "./Text";
+import { TouchableWithoutFeedback } from "react-native";
 
 function CheckoutElement({
   title,
@@ -11,6 +12,7 @@ function CheckoutElement({
   isChosen,
   isSecure = false,
   onPress,
+  onDelete,
 }) {
   // if (!data) return <></>;
   const [text, setText] = useState();
@@ -29,7 +31,7 @@ function CheckoutElement({
   const additional_style = { backgroundColor: colors.boldLight };
   if (isChosen) {
     additional_style.borderWidth = 2;
-    additional_style.borderColor = colors.hardBlue;
+    additional_style.borderColor = colors.pink;
   }
   return (
     <TouchableOpacity onPress={onPress}>
@@ -49,8 +51,14 @@ function CheckoutElement({
             {text}
           </Text>
         </View>
-        {isChosen && (
+        {isChosen ? (
           <AntDesign name="checkcircle" size={30} color={colors.pink} />
+        ) : (
+          <View style={{ paddingRight: 10 }}>
+            <TouchableWithoutFeedback onPress={onDelete}>
+              <FontAwesome name="trash" size={28} color={colors.black} />
+            </TouchableWithoutFeedback>
+          </View>
         )}
       </View>
     </TouchableOpacity>
