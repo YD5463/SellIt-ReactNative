@@ -42,7 +42,7 @@ function ListingsScreen({ navigation }) {
       for (const [key, value] of Object.entries(cachedCart))
         size += value.quantity;
       setCartSize(size);
-    }
+    } else setCartSize(0);
   };
   const initData = async () => {
     setLoading(true);

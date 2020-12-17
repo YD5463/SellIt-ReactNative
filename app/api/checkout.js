@@ -4,6 +4,8 @@ const endpoint = "/checkout";
 
 const getUserPaymentMethods = () => client.get(`${endpoint}/paymentMethods`);
 
+const getUserAddress = () => client.get(`${endpoint}/adresss`);
+
 const addPayemtMethods = (paymentData) => {
   const expired_date = paymentData.expired_date.split("/");
   delete paymentData.expired_date;
@@ -24,6 +26,7 @@ const deleteAddress = (addressId) =>
 export default {
   getUserPaymentMethods,
   addPayemtMethods,
+  getUserAddress,
   addAdresss,
   deletePaymentMethod,
   deleteAddress,

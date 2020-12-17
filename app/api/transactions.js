@@ -1,8 +1,9 @@
 import client from "./client";
 const endpoint = "/transactions";
 
-const getUserAddress = () => client.get(`${endpoint}/adresss`);
+const buy = (listingsIds, addressId, paymentId) =>
+  client.post(`${endpoint}/buy`, { listingsIds, addressId, paymentId });
 
-const buy = (listingsIds) => client.post(`${endpoint}/buy`, { listingsIds });
+const getOrderedListings = () => client.get(`${endpoint}/orderedListings`);
 
-export default { getUserAddress, buy };
+export default { buy, getOrderedListings };
