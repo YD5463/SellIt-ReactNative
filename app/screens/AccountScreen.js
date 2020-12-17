@@ -28,6 +28,14 @@ const menuItems = [
     },
     targetScreen: routes.MESSAGES,
   },
+  {
+    title: "Ordered Products",
+    icon: {
+      name: "cart-outline",
+      backgroundColor: "blue",
+    },
+    targetScreen: routes.ORDERED_ITEMS,
+  },
 ];
 
 const optionsItem = {
