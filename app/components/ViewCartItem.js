@@ -7,7 +7,7 @@ import QuantityInput from "./QuantityInput";
 import helper from "../utility/helper";
 import globalColors from "../config/colors";
 
-function ViewCartItem({ item, onMinus, onPlus }) {
+function ViewCartItem({ item, onMinus, onPlus, priceColor = "green" }) {
   const { colors } = useTheme();
   return (
     <View style={styles.container}>
@@ -37,7 +37,9 @@ function ViewCartItem({ item, onMinus, onPlus }) {
             justifyContent: "center",
           }}
         >
-          <Text style={styles.price}>{`$${item.price}`}</Text>
+          <Text
+            style={[styles.price, { color: colors[priceColor] }]}
+          >{`$${item.price}`}</Text>
           <View style={{ paddingLeft: 70 }}>
             <QuantityInput
               onMinus={() => onMinus(item._id)}
@@ -75,7 +77,6 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 19,
     fontWeight: "400",
-    color: globalColors.green,
     fontWeight: "400",
   },
 });

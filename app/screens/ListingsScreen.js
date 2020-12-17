@@ -92,7 +92,6 @@ function ListingsScreen({ navigation }) {
     setSearch(val);
     setListing(getFilteredListing(val, filterdCategories));
   };
-
   return (
     <>
       <ActivityIndicator visible={loading} />
@@ -100,7 +99,9 @@ function ListingsScreen({ navigation }) {
         <View style={styles.head}>
           <Cart
             elementsNumber={cartSize}
-            onPress={() => navigation.navigate(routes.MY_CART, { cart })}
+            onPress={() => {
+              navigation.navigate(routes.MY_CART, { cart });
+            }}
           />
 
           <SearchBar search={search} onChange={searchFilter} width="85%" />
@@ -143,12 +144,12 @@ function ListingsScreen({ navigation }) {
                   navigation.navigate(routes.LISTING_DETAILS, item)
                 }
                 thumbnailUrl={item.images[0].thumbnailUrl}
-                OnAddToCart={() => {
+                OnAddToCart={async () => {
                   const key = item._id;
                   if (!cart[key]) cart[key] = { ...item, quantity: 0 };
                   cart[key].quantity++;
                   setCart(cart);
-                  cache.store(settings.CartCacheKey, cart);
+                  await cache.store(settings.CartCacheKey, cart);
                   setCartSize(cartSize + 1);
                 }}
                 OnBuy={() => {

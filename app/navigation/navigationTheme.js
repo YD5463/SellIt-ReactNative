@@ -30,6 +30,7 @@ export default {
       pink: "#F60062",
       turquoise: "#90d3d1",
       hardBlue: "#0056C7",
+      lightGreen: "#34D775",
     },
   },
   dark: {
@@ -59,6 +60,7 @@ export default {
       pink: "#F60062",
       turquoise: "#296370",
       hardBlue: "#4E99FC",
+      lightGreen: "#83E2A9",
     },
   },
 };

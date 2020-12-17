@@ -65,6 +65,7 @@ const init = () => {
             emptyCartTitle: "Cart Empty",
             emptyCartSubTitle:
               "Go Ahaed, pick some product you like and get back here to complete the buying proccess...",
+            "Countinue Shooping": "Countinue Shooping...",
           },
         },
         he: {
@@ -125,6 +126,7 @@ const init = () => {
             emptyCartTitle: "Cart Empty",
             emptyCartSubTitle:
               "Go Ahaed, pick some product you like and get back here to complete the buying proccess...",
+            "Countinue Shooping": "המשך בקנייה...",
           },
         },
       },

@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import ViewCartItem from "../components/ViewCartItem";
 import Screen from "./../components/Screen";
 import { useTheme } from "react-native-paper";
@@ -9,9 +15,9 @@ import AppButton from "../components/Button";
 import cache from "../utility/cache";
 import settings from "../config/settings";
 import routes from "../navigation/routes";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { backgroundColor } from "styled-system";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
+import { TouchableWithoutFeedback } from "react-native";
 
 function MyCartScreen({ route, navigation }) {
   const getSum = (cart) => {
@@ -28,14 +34,47 @@ function MyCartScreen({ route, navigation }) {
     setEditedCart(newCart);
     cache.store(settings.CartCacheKey, newCart);
   };
+  const handleResetCart = async () => {
+    Alert.alert(
+      "Are You Sure you want to reset the cart?",
+      "The cart can't be resoreted...",
+      [
+        {
+          text: t("cancel"),
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: t("ok"),
+          onPress: async () => {
+            setEditedCart(null);
+            await cache.remove(settings.CartCacheKey);
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
   const [sum, setSum] = useState(getSum(cart));
-  return cart && cart.length > 0 ? (
+  return editedCart && Object.keys(editedCart).length > 0 ? (
     <Screen style={[styles.container, { backgroundColor: colors.light }]}>
-      <View style={{ paddingBottom: 15 }}>
-        <Text style={styles.title}>My Cart</Text>
-        <Text style={styles.itemsNumber}>{`${
-          Object.keys(editedCart).length
-        } items`}</Text>
+      <View style={{ flexDirection: "row" }}>
+        <View style={{ paddingBottom: 15, flex: 1 }}>
+          <Text style={[styles.title, { color: colors["medium"] }]}>
+            My Cart
+          </Text>
+          <Text style={[styles.itemsNumber, { color: colors.medium }]}>{`${
+            Object.keys(editedCart).length
+          } items`}</Text>
+        </View>
+        <TouchableWithoutFeedback onPress={handleResetCart}>
+          <View style={styles.resetCartView}>
+            <Text style={[styles.resetCartText, { color: colors["medium"] }]}>
+              Reset Cart
+            </Text>
+            <Ionicons name="ios-trash" size={35} color={colors.medium} />
+          </View>
+        </TouchableWithoutFeedback>
       </View>
       <ListItemSeparator height={2} colorName="medium" />
       <View style={{ height: "60%" }}>
@@ -56,6 +95,7 @@ function MyCartScreen({ route, navigation }) {
                 editedCart[itemId].quantity++;
                 setCart(editedCart);
               }}
+              priceColor="lightGreen"
             />
           )}
           ItemSeparatorComponent={() => (
@@ -75,11 +115,13 @@ function MyCartScreen({ route, navigation }) {
         onPress={() =>
           navigation.navigate(routes.CHECKOUT, { listings: editedCart })
         }
-        color="darkGray"
+        color="hardBlue"
         borderRadius={15}
       />
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Text style={styles.goBack}>Countinue Shooping</Text>
+        <Text style={[styles.goBack, { color: colors.medium }]}>
+          {t("Countinue Shooping")}
+        </Text>
       </TouchableOpacity>
     </Screen>
   ) : (
@@ -97,6 +139,9 @@ function MyCartScreen({ route, navigation }) {
       <Text style={[styles.emptyCartSubTitle, { color: colors.medium }]}>
         {t("emptyCartSubTitle")}
       </Text>
+      <View style={{ width: 200 }}>
+        <AppButton title="Go Back" onPress={() => navigation.goBack()} />
+      </View>
     </Screen>
   );
 }
@@ -149,6 +194,16 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     textAlign: "center",
+  },
+  resetCartView: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    paddingBottom: 5,
+  },
+  resetCartText: {
+    fontSize: 18,
+    paddingRight: 7,
+    fontWeight: "bold",
   },
 });
 
