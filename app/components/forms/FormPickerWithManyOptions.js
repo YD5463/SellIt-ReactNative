@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { useFormikContext } from "formik";
 import ErrorMessage from "./ErrorMessage";
-import ManyOptionsPickerStatus from "../ManyOptionsPickerStatus";
+import ManyOptionsPickerStatus from "../pickers/ManyOptionsPickerStatus";
 
 function FormPickerWithManyOptions({ name, options, onPress, label, width }) {
   const { errors, setFieldValue, touched, values } = useFormikContext();

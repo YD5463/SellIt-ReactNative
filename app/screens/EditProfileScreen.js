@@ -19,7 +19,7 @@ import {
   ErrorMessage,
 } from "../components/forms";
 import * as Yup from "yup";
-import TextInputWithLine from "./../components/TextInputWithLine";
+import TextInputWithLine from "../components/TextInputs/TextInputWithLine";
 import Screen from "./../components/Screen";
 import ProfileImagePicker from "./../components/ProfileImagePicker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";

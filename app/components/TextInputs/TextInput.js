@@ -2,7 +2,7 @@ import React from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import defaultStyles from "../config/styles";
+import defaultStyles from "../../config/styles";
 import { useTheme } from "react-native-paper";
 
 function AppTextInput({

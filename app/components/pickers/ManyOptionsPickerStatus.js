@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "react-native-paper";
-import Text from "./Text";
+import Text from "../Text";
 
 function ManyOptionsPickerStatus({
   onPress,

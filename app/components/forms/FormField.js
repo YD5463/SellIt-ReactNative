@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormikContext } from "formik";
 
-import TextInput from "../TextInput";
+import TextInput from "../TextInputs/TextInput";
 import ErrorMessage from "./ErrorMessage";
 import { View } from "react-native";
 

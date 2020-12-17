@@ -5,7 +5,7 @@ import {
   FlatList,
   TouchableWithoutFeedback,
 } from "react-native";
-import TextInputWithLine from "../components/TextInputWithLine";
+import TextInputWithLine from "../components/TextInputs/TextInputWithLine";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Text from "../components/Text";
 import { useTheme } from "react-native-paper";

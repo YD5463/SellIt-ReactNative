@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, StyleSheet, ActivityIndicator, Keyboard } from "react-native";
-import TextInputWithLine from "./../components/TextInputWithLine";
+import TextInputWithLine from "../components/TextInputs/TextInputWithLine";
 import { useTheme } from "react-native-paper";
 import Screen from "./../components/Screen";
 import * as Yup from "yup";
