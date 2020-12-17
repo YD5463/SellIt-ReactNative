@@ -9,6 +9,8 @@ import AppButton from "../components/Button";
 import cache from "../utility/cache";
 import settings from "../config/settings";
 import routes from "../navigation/routes";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { backgroundColor } from "styled-system";
 
 function MyCartScreen({ route, navigation }) {
   const getSum = (cart) => {
@@ -25,7 +27,7 @@ function MyCartScreen({ route, navigation }) {
     cache.store(settings.CartCacheKey, newCart);
   };
   const [sum, setSum] = useState(getSum(cart));
-  return (
+  return cart && cart.length > 0 ? (
     <Screen style={[styles.container, { backgroundColor: colors.light }]}>
       <View style={{ paddingBottom: 15 }}>
         <Text style={styles.title}>My Cart</Text>
@@ -78,6 +80,23 @@ function MyCartScreen({ route, navigation }) {
         <Text style={styles.goBack}>Countinue Shooping</Text>
       </TouchableOpacity>
     </Screen>
+  ) : (
+    <Screen style={[styles.emptyCart, { backgroundColor: colors.light }]}>
+      <View style={[styles.mainCircle, { backgroundColor: colors.white }]}>
+        <MaterialCommunityIcons
+          name="basket"
+          size={150}
+          color={colors.primary}
+        />
+      </View>
+      <Text style={[styles.emptyCartTitle, { color: colors.medium }]}>
+        Cart Empty
+      </Text>
+      <Text style={[styles.emptyCartSubTitle, { color: colors.medium }]}>
+        Go Ahaed, pick some product you like and get back here to complete the
+        buying proccess...
+      </Text>
+    </Screen>
   );
 }
 
@@ -102,6 +121,32 @@ const styles = StyleSheet.create({
   },
   goBack: {
     fontSize: 20,
+    textAlign: "center",
+  },
+  mainCircle: {
+    width: 275,
+    height: 275,
+    borderRadius: 150,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyCart: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: "10%",
+  },
+  emptyCartTitle: {
+    fontSize: 30,
+    fontWeight: "600",
+    alignSelf: "center",
+    justifyContent: "center",
+    paddingTop: 25,
+  },
+  emptyCartSubTitle: {
+    paddingTop: 15,
+    fontSize: 20,
+    paddingLeft: 15,
+    paddingRight: 15,
     textAlign: "center",
   },
 });

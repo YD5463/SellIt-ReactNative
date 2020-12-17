@@ -61,6 +61,10 @@ const init = () => {
             removePaymentSubtitle: "The payment can't being restored.",
             removeAddressTitle: "Are you sure you want to remove this Address?",
             removePaymentSubtitle: "The Address can't being restored.",
+            "Ordered Products": "Ordered Products",
+            emptyCartTitle: "Cart Empty",
+            emptyCartSubTitle:
+              "Go Ahaed, pick some product you like and get back here to complete the buying proccess...",
           },
         },
         he: {
@@ -103,20 +107,24 @@ const init = () => {
             female: "אישה",
             decline: "מעדיף לא לענות",
             changeP: "שנה תמונת פרופיל",
-            exitTitle: "האם אתה בטוח שאתה רוצה לצאת?",
+            exitTitle: "האם את/ה בטוח שאתה רוצה לצאת?",
             exitSubTitle: "השינוים שעשית לא ישמרו",
             cancel: "בטל",
             ok: "אוקיי",
-            privacyTitle: "מי יכול לראות את הפרטים האישיים שלך",
+            privacyTitle: "מי יכול/ה לראות את הפרטים האישיים שלך",
             privacyExplain:
               "אם תבחר/י שלא לשתף מידע לגבי 'מספר טלפון',לא תוכל/י למכור דברים",
             privacy: "פרטיות",
             removePaymentTitle:
               "האם את/ה בטוח/ה שאת/ה רוצה למחוק את אמצעי התשלום?",
             removePaymentSubtitle:
-              "לא תוכל לשחזר את אמצעי התשלום לאחר המחיקה...",
-            removeAddressTitle: "Are you sure you want to remove this Address?",
-            removePaymentSubtitle: "The Address can't being restored.",
+              "לא תוכל/י לשחזר את אמצעי התשלום לאחר המחיקה...",
+            removeAddressTitle: "האם את/ה בטוח/ה שברצונך למחוק כתובת זו?",
+            removePaymentSubtitle: "לא תוכל/י לשחזר את הכתובת",
+            "Ordered Products": "מוצרים שהוזמנו",
+            emptyCartTitle: "Cart Empty",
+            emptyCartSubTitle:
+              "Go Ahaed, pick some product you like and get back here to complete the buying proccess...",
           },
         },
       },
