@@ -11,6 +11,7 @@ import settings from "../config/settings";
 import routes from "../navigation/routes";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { backgroundColor } from "styled-system";
+import { useTranslation } from "react-i18next";
 
 function MyCartScreen({ route, navigation }) {
   const getSum = (cart) => {
@@ -21,6 +22,7 @@ function MyCartScreen({ route, navigation }) {
   };
   const { cart } = route.params;
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const [editedCart, setEditedCart] = useState(cart);
   const setCart = (newCart) => {
     setEditedCart(newCart);
@@ -90,11 +92,10 @@ function MyCartScreen({ route, navigation }) {
         />
       </View>
       <Text style={[styles.emptyCartTitle, { color: colors.medium }]}>
-        Cart Empty
+        {t("emptyCartTitle")}
       </Text>
       <Text style={[styles.emptyCartSubTitle, { color: colors.medium }]}>
-        Go Ahaed, pick some product you like and get back here to complete the
-        buying proccess...
+        {t("emptyCartSubTitle")}
       </Text>
     </Screen>
   );

@@ -24,8 +24,8 @@ import settings from "../config/settings";
 const MAX_OPTIONS = 3;
 
 function CheckoutScreen({ navigation, route }) {
-  const { listings } = route.params;
-  const getDeliveryAddressApi = useApi(transactions.getUserAddress);
+  const { listings, fromBuyNow } = route.params;
+  const getDeliveryAddressApi = useApi(checkout.getUserAddress);
   const getPaymentMethodsApi = useApi(checkout.getUserPaymentMethods);
   const buyApi = useApi(transactions.buy);
   const [deliveries, setDeliveries] = useState([]);
@@ -118,11 +118,15 @@ function CheckoutScreen({ navigation, route }) {
     for (let [id, details] of Object.entries(listings))
       listingsIds[id] = details.quantity;
     // console.log(listingsIds);
-    await buyApi.request(listingsIds);
+    await buyApi.request(
+      listingsIds,
+      getDeliveryAddressApi.data[chosenAddress]._id,
+      getPaymentMethodsApi.data[chosenPayment]._id
+    );
     if (buyApi.error) setError(buyApi.error);
     else {
       toast({ message: "Buy Succfully..." });
-      await cache.remove(settings.CartCacheKey);
+      if (!fromBuyNow) await cache.remove(settings.CartCacheKey);
       navigation.navigate(routes.LISTINGS);
     }
   };

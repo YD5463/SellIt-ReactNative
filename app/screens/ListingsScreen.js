@@ -151,7 +151,12 @@ function ListingsScreen({ navigation }) {
                   cache.store(settings.CartCacheKey, cart);
                   setCartSize(cartSize + 1);
                 }}
-                OnBuy={() => {}} //navigate
+                OnBuy={() => {
+                  navigation.navigate(routes.CHECKOUT, {
+                    listings: { item: 1 },
+                    fromBuyNow: true,
+                  });
+                }}
               />
             )}
             extraData={filterdCategories}
