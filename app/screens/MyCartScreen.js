@@ -68,7 +68,9 @@ function MyCartScreen({ route, navigation }) {
       </View>
       <AppButton
         title="check out"
-        onPress={() => navigation.navigate(routes.CHECKOUT)}
+        onPress={() =>
+          navigation.navigate(routes.CHECKOUT, { listings: editedCart })
+        }
         color="darkGray"
         borderRadius={15}
       />

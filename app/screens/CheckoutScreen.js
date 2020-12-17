@@ -16,12 +16,18 @@ import { LinearGradient } from "expo-linear-gradient";
 import routes from "../navigation/routes";
 import { useToast } from "react-native-styled-toast";
 import { useTranslation } from "react-i18next";
+import transactions from "../api/transactions";
+import { ErrorMessage } from "../components/forms";
+import cache from "../utility/cache";
+import settings from "../config/settings";
 
 const MAX_OPTIONS = 3;
 
-function CheckoutScreen({ navigation }) {
-  const getDeliveryAddressApi = useApi(user.getUserAddress);
+function CheckoutScreen({ navigation, route }) {
+  const { listings } = route.params;
+  const getDeliveryAddressApi = useApi(transactions.getUserAddress);
   const getPaymentMethodsApi = useApi(checkout.getUserPaymentMethods);
+  const buyApi = useApi(transactions.buy);
   const [deliveries, setDeliveries] = useState([]);
   const [payments, setPayments] = useState([]);
   const [chosenAddress, setChoosenAddress] = useState(0);
@@ -30,6 +36,8 @@ function CheckoutScreen({ navigation }) {
   const deleteAddressApi = useApi(checkout.deleteAddress);
   const [paymentIndexToDelete, setPaymentIndexToDelete] = useState(-1);
   const [addressIndexToDelete, setAddressIndexToDelete] = useState(-1);
+  const [error, setError] = useState();
+  let alreadySubmit = false;
 
   const { toast } = useToast();
   const { t } = useTranslation();
@@ -38,7 +46,7 @@ function CheckoutScreen({ navigation }) {
 
   const getData = async () => {
     await getDeliveryAddressApi.request();
-    console.log(getDeliveryAddressApi.data);
+    // console.log(getDeliveryAddressApi.data);
     setDeliveries(getDeliveryAddressApi.data);
     await getPaymentMethodsApi.request();
     setPayments(getPaymentMethodsApi.data);
@@ -51,19 +59,23 @@ function CheckoutScreen({ navigation }) {
     });
     return unsubscribe;
   }, []);
+
   // console.log(getPaymentMethodsApi.data);
 
   const handleDeletePayment = async () => {
-    await deletePaymentApi.request(payments[paymentIndexToDelete].payemntId);
+    await deletePaymentApi.request(
+      getPaymentMethodsApi.data[paymentIndexToDelete].payemntId
+    );
     if (!deletePaymentApi.error)
-      setPayments(payments.splice(paymentIndexToDelete, 1));
+      setPayments(getPaymentMethodsApi.data(paymentIndexToDelete, 1));
     else toast({ message: "Error Accuured,Please try again", color: "red" });
   };
   const handleDeleteAddres = async () => {
     await deleteAddressApi.request(deliveries[addressIndexToDelete]._id);
-    if (!deleteAddressApi.error)
+    if (!deleteAddressApi.error) {
       setDeliveries(deliveries.splice(addressIndexToDelete, 1));
-    else toast({ message: "Error Accuured,Please try again", color: "red" });
+      toast({ message: "Deleted..." });
+    } else toast({ message: "Error Accuured,Please try again", color: "red" });
   };
 
   useEffect(() => {
@@ -93,6 +105,27 @@ function CheckoutScreen({ navigation }) {
     );
   };
 
+  const handleSubmit = async () => {
+    if (alreadySubmit) return;
+    alreadySubmit = true;
+    if (
+      getDeliveryAddressApi.data.length === 0 ||
+      getPaymentMethodsApi.data.length === 0
+    ) {
+      return setError("You need to provide address and payment method");
+    }
+    let listingsIds = {};
+    for (let [id, details] of Object.entries(listings))
+      listingsIds[id] = details.quantity;
+    // console.log(listingsIds);
+    await buyApi.request(listingsIds);
+    if (buyApi.error) setError(buyApi.error);
+    else {
+      toast({ message: "Buy Succfully..." });
+      await cache.remove(settings.CartCacheKey);
+      navigation.navigate(routes.LISTINGS);
+    }
+  };
   return (
     <>
       <ActivityIndicator
@@ -111,7 +144,7 @@ function CheckoutScreen({ navigation }) {
               <Text style={styles.subTitle}>Delivery Address</Text>
 
               <FlatList
-                data={deliveries}
+                data={getDeliveryAddressApi.data}
                 keyExtractor={(address) => address.postal_code}
                 renderItem={({ item, index }) => (
                   <CheckoutElement
@@ -132,7 +165,7 @@ function CheckoutScreen({ navigation }) {
                   />
                 )}
               />
-              {deliveries.length < MAX_OPTIONS && (
+              {getDeliveryAddressApi.data.length < MAX_OPTIONS && (
                 <AddElementInput
                   onPress={() => navigation.navigate(routes.ADD_ADDRESS)}
                   elementName="Address"
@@ -142,7 +175,7 @@ function CheckoutScreen({ navigation }) {
             <Text style={styles.subTitle}>Payment Method</Text>
 
             <FlatList
-              data={payments}
+              data={getPaymentMethodsApi.data}
               keyExtractor={(pm) => pm.card_number}
               renderItem={({ item, index }) => (
                 <CheckoutElement
@@ -163,7 +196,7 @@ function CheckoutScreen({ navigation }) {
               )}
             />
 
-            {payments.length < MAX_OPTIONS && (
+            {getPaymentMethodsApi.data.length < MAX_OPTIONS && (
               <View style={{ flex: 1 }}>
                 <AddElementInput
                   onPress={() => navigation.navigate(routes.ADD_PAYMENT)}
@@ -175,10 +208,11 @@ function CheckoutScreen({ navigation }) {
           <View style={{ marginTop: 25 }}>
             <Button
               title="Payment"
-              onPress={() => navigation.navigate(routes.CHECKOUT)}
+              onPress={handleSubmit}
               color="pink"
               borderRadius={15}
             />
+            <ErrorMessage error={error} visible={error} />
           </View>
         </View>
       </Screen>

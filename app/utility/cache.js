@@ -40,7 +40,19 @@ const get = async (key, canExpire = true) => {
   }
 };
 
+const remove = async (key) => {
+  console.log(prefix + key);
+  try {
+    await AsyncStorage.removeItem(prefix + key);
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+  return true;
+};
+
 export default {
   store,
   get,
+  remove,
 };
