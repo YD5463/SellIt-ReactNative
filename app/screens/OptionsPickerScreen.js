@@ -49,13 +49,19 @@ function OptionsPickerScreen({ route, navigation }) {
     setQuery(newQuery);
 
     if (newQuery === "") return;
-    const filteredOptions = originalOptions.filter((option) =>
-      option[titleKey]
-        ? option[titleKey].toLowerCase().includes(query.toLowerCase())
-        : true || option[subtitleKey]
-        ? option[subtitleKey].toLowerCase().includes(query.toLowerCase())
-        : true
-    );
+    const filteredOptions = originalOptions.filter((option) => {
+      if (
+        option[subtitleKey] &&
+        option[subtitleKey].toLowerCase() === newQuery.toLowerCase()
+      )
+        return true;
+      if (
+        option[titleKey] &&
+        option[titleKey].toLowerCase().includes(newQuery.toLowerCase())
+      )
+        return true;
+      return false;
+    });
     setOptions(
       filteredOptions.sort((a, b) => a[titleKey].localeCompare(b[titleKey]))
     );

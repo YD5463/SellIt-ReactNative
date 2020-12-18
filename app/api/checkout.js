@@ -15,7 +15,7 @@ const addPayemtMethods = (paymentData) => {
   return client.post(`${endpoint}/addPayemtMethods`, paymentData);
 };
 
-const addAdresss = (address) => client.post(`${endpoint}/addAdresss`, address);
+const addAdresss = (address) => client.post(`${endpoint}/addAddress`, address);
 
 const deletePaymentMethod = (paymentId) =>
   client.put(`${endpoint}/deletePaymentMethod`, { paymentId });

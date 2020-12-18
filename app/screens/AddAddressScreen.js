@@ -59,9 +59,10 @@ function AddAddressScreen({ navigation }) {
   }, []);
 
   const handleSubmit = async (values) => {
-    console.log(values);
-    await addAddressApi.request(values);
-    if (addAddressApi.error) return console.log("Error Accured!!!");
+    // console.log(values);
+    const response = await addAddressApi.request(values);
+    // console.log(addAddressApi);
+    if (!response.ok) return console.log("Error Accured!!!");
     toast({ message: "Add Address Succfully!" });
     navigation.goBack();
   };
@@ -128,7 +129,6 @@ function AddAddressScreen({ navigation }) {
               }}
               options={getSupportedCities.data}
               label="City"
-              
             />
 
             <ErrorMessage

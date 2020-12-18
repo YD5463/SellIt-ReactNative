@@ -1,13 +1,33 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { useTheme } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
-function GoBackButton({ onPress }) {
+function GoBackButton({ onPress, withAlertBefore = true }) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+  const handlePress = () => {
+    if (!withAlertBefore) onPress();
+    else {
+      Alert.alert(
+        t("exitTitle"),
+        t("exitSubTitle"),
+        [
+          {
+            text: t("cancel"),
+            onPress: () => {},
+            style: "cancel",
+          },
+          { text: t("ok"), onPress: onPress },
+        ],
+        { cancelable: false }
+      );
+    }
+  };
   return (
     <View style={[styles.goBack, { borderColor: colors.turquoise }]}>
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={handlePress}>
         <Ionicons name="ios-arrow-back" size={24} color={colors.turquoise} />
       </TouchableOpacity>
     </View>
