@@ -49,7 +49,7 @@ const optionsItem = {
 
 function AccountScreen({ navigation }) {
   useEffect(() => {
-    if (menuItems.length === menuItems.length)
+    if (menuItems.length === 3)
       menuItems.push({
         ...optionsItem,
         onPress: () => navigation.openDrawer(),

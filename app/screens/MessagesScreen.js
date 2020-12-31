@@ -1,92 +1,137 @@
-import React, { useState, useEffect } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
-
-import Screen from "../components/Screen";
+import React, { useLayoutEffect, useEffect, useState } from "react";
 import {
-  ListItem,
-  ListItemDeleteAction,
-  ListItemSeparator,
-} from "../components/lists";
-import messagesApi from "../api/messages";
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  FlatList,
+  Image,
+  ImageBackground,
+} from "react-native";
 import useApi from "./../hooks/useApi";
-//import storage from "../auth/storage";
-import Text from "../components/Text";
-import ActivityIndicator from "../components/ActivityIndicator";
-import Icon from "../components/Icon";
+import {
+  MaterialIcons,
+  Ionicons,
+  MaterialCommunityIcons,
+  AntDesign,
+} from "@expo/vector-icons";
 import { useTheme } from "react-native-paper";
+import { useTranslation } from "react-i18next";
+import Text from "../components/Text";
 
-function MessagesScreen(props) {
+function MessagesScreen({ navigation }) {
+  const contactName = "Avi Leve";
+  const contactId = 123;
+  const contactImageUri =
+    "http://192.168.68.110:9000/assets/c9e425db06fe2c64c1921fe8a96229a1_full.jpg";
   const { colors } = useTheme();
-  const [messages, setMessages] = useState();
-  const [refreshing, setRefreshing] = useState(false);
-  const getMessagesApi = useApi(messagesApi.getMessages);
-  //const [currUser, setCurrUser] = useState();
+  const { t } = useTranslation();
+  const [messages, setMessages] = useState([]);
 
-  const handleDelete = (message) => {
-    // Delete the message from messages
-    setMessages(messages.filter((m) => m.id !== message.id));
-  };
-
-  const setData = async () => {
-    await getMessagesApi.request();
-    setMessages(getMessagesApi.data);
-  };
-  useEffect(() => {
-    setData();
-  }, []);
-
-  useEffect(() => {
-    setData();
-  }, messages);
-
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerStyle: {
+        backgroundColor: colors.primary,
+      },
+      headerRight: () => (
+        <View style={styles.rightHeader}>
+          <Text style={{ color: "white", paddingRight: 5 }}>{contactName}</Text>
+          <TouchableOpacity>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                source={{ uri: contactImageUri }}
+                style={styles.contactImage}
+              />
+              <AntDesign name="arrowright" size={24} color="white" />
+            </View>
+          </TouchableOpacity>
+        </View>
+      ),
+      headerLeft: () => (
+        <View style={styles.leftHeader}>
+          <TouchableWithoutFeedback>
+            <Ionicons name="md-more" size={24} color="white" />
+          </TouchableWithoutFeedback>
+          <View style={styles.headerIcon}>
+            <TouchableWithoutFeedback>
+              <MaterialIcons name="call" size={24} color="white" />
+            </TouchableWithoutFeedback>
+          </View>
+          <View style={styles.headerIcon}>
+            <TouchableWithoutFeedback>
+              <MaterialCommunityIcons name="video" size={26} color="white" />
+            </TouchableWithoutFeedback>
+          </View>
+        </View>
+      ),
+      title: "",
+    });
+  });
+  useEffect(() => {}, []);
   return (
-    <>
-      <ActivityIndicator visible={getMessagesApi.loading} />
-      <Screen>
-        {!getMessagesApi.loading && messages && messages.length === 0 && (
-          <Text style={styles.zeroMessagesText}>
-            There Is No Messages To Display
-          </Text>
-        )}
-
-        <FlatList
-          data={messages}
-          keyExtractor={(message) => message.id.toString()}
-          renderItem={({ item }) => (
-            <ListItem
-              title={item.fromUser.name}
-              subTitle={item.content}
-              IconComponent={
-                <Icon
-                  name="account"
-                  size={55}
-                  backgroundColor={colors.medium}
-                  iconSizeRatio={0.7}
-                />
-              }
-              onPress={() => console.log("Message selected", item)}
-              renderRightActions={() => (
-                <ListItemDeleteAction onPress={() => handleDelete(item)} />
-              )}
+    <ImageBackground
+      source={{
+        uri:
+          "https://i.pinimg.com/originals/79/5c/ab/795cabc4647f73b365e2e6eabd0f34dc.png",
+      }}
+      style={styles.backgroundImage}
+    >
+      <View style={styles.container}>
+        <View style={{ height: "90%", width: "100%" }}>
+          <FlatList
+            data={messages}
+            keyExtractor={(message) => message._id}
+            renderItem={({ item }) => <View></View>}
+          />
+        </View>
+        <View style={styles.keyboard}>
+          <TouchableOpacity>
+            <MaterialIcons
+              name="insert-emoticon"
+              color={colors.medium}
+              size={24}
             />
-          )}
-          ItemSeparatorComponent={ListItemSeparator}
-          refreshing={refreshing}
-          onRefresh={() => {
-            setData();
-          }}
-        />
-      </Screen>
-    </>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  zeroMessagesText: {
-    alignSelf: "center",
-    marginTop: 50,
-    fontSize: 20,
-    fontWeight: "bold",
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+  },
+  container: {},
+  contactImage: {
+    width: 35,
+    height: 35,
+    borderRadius: 18,
+  },
+  leftHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 15,
+  },
+  rightHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingRight: 8,
+  },
+  headerIcon: {
+    paddingLeft: 15,
+  },
+  keyboard: {
+    backgroundColor: "white",
+    width: "80%",
+    height: 45,
+    borderRadius: 40,
+    paddingLeft: 8,
+    paddingRight: 8,
+    justifyContent: "center",
   },
 });
 
