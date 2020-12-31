@@ -7,6 +7,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  KeyboardAvoidingView,
 } from "react-native";
 import useApi from "./../hooks/useApi";
 import {
@@ -18,6 +19,22 @@ import {
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import Text from "../components/Text";
+import Message from "./../components/Message";
+import { TextInput } from "react-native";
+
+const seedMessages = [
+  { text: "how are you?", isFrom: true, date: "01-30-2020::11:30:22", _id: 1 },
+  { text: "im great!!", isFrom: false, date: "01-30-2020::12:30:22", _id: 2 },
+  {
+    text: "did you start the assignment?",
+    isFrom: false,
+    date: "01-30-2020::12:30:55",
+    _id: 3,
+  },
+  { text: "not yet...", isFrom: false, date: "01-30-2020::12:45:22", _id: 4 },
+  { text: "bye bye!!!", isFrom: false, date: "01-30-2020::12:46:22", _id: 66 },
+  { text: "see ya bro", isFrom: true, date: "01-30-2020::12:55:22", _id: 67 },
+];
 
 function MessagesScreen({ navigation }) {
   const contactName = "Avi Leve";
@@ -27,6 +44,7 @@ function MessagesScreen({ navigation }) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   const [messages, setMessages] = useState([]);
+  const [draftMessage, setDraftMessage] = useState();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -67,7 +85,9 @@ function MessagesScreen({ navigation }) {
       title: "",
     });
   });
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setMessages(seedMessages);
+  }, []);
   return (
     <ImageBackground
       source={{
@@ -77,22 +97,45 @@ function MessagesScreen({ navigation }) {
       style={styles.backgroundImage}
     >
       <View style={styles.container}>
-        <View style={{ height: "90%", width: "100%" }}>
-          <FlatList
-            data={messages}
-            keyExtractor={(message) => message._id}
-            renderItem={({ item }) => <View></View>}
-          />
-        </View>
-        <View style={styles.keyboard}>
-          <TouchableOpacity>
-            <MaterialIcons
-              name="insert-emoticon"
-              color={colors.medium}
-              size={24}
+        <KeyboardAvoidingView
+          behavior="position"
+          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 10}
+        >
+          <View style={{ height: "91%", width: "100%" }}>
+            <FlatList
+              data={messages}
+              keyExtractor={(message) => message._id}
+              renderItem={({ item }) => <Message meesageData={item} />}
             />
-          </TouchableOpacity>
-        </View>
+          </View>
+          <View style={styles.allKeyboard}>
+            <TouchableOpacity>
+              <View
+                style={[styles.micophone, { backgroundColor: colors.primary }]}
+              >
+                <MaterialCommunityIcons
+                  name="microphone"
+                  size={24}
+                  color="white"
+                />
+              </View>
+            </TouchableOpacity>
+            <View style={styles.keyboard}>
+              <TextInput
+                onChangeText={(text) => setDraftMessage(text)}
+                value={draftMessage}
+                selectionColor={colors.primary}
+              />
+              <TouchableOpacity>
+                <MaterialIcons
+                  name="insert-emoticon"
+                  color={colors.medium}
+                  size={24}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
       </View>
     </ImageBackground>
   );
@@ -125,13 +168,28 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   keyboard: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
     backgroundColor: "white",
     width: "80%",
     height: 45,
     borderRadius: 40,
     paddingLeft: 8,
     paddingRight: 8,
+  },
+  allKeyboard: {
+    justifyContent: "flex-end",
+    paddingRight: 10,
+    flexDirection: "row",
+  },
+  micophone: {
+    marginRight: 10,
     justifyContent: "center",
+    alignItems: "center",
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
 });
 
