@@ -120,6 +120,8 @@ function ListingsScreen({ navigation }) {
               <TagPick tagName={item} onPress={onTagPickPressed} />
             )}
             horizontal={true}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
           />
         </View>
         <View style={{ padding: 20 }}>
