@@ -19,8 +19,11 @@ import {
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import Text from "../components/Text";
-import Message from "./../components/Message";
+import TextMessage from "../components/chat/TextMessage";
 import { TextInput } from "react-native";
+//import { io } from "socket.io-client";
+import { Audio } from "expo-av";
+import AudioMessage from "./../components/chat/AudioMessage";
 
 const seedMessages = [
   { text: "how are you?", isFrom: true, date: "01-30-2020::11:30:22", _id: 1 },
@@ -36,7 +39,10 @@ const seedMessages = [
   { text: "see ya bro", isFrom: true, date: "01-30-2020::12:55:22", _id: 67 },
 ];
 
+const initHeight = 45;
+
 function MessagesScreen({ navigation }) {
+  let socket;
   const contactName = "Avi Leve";
   const contactId = 123;
   const contactImageUri =
@@ -44,7 +50,48 @@ function MessagesScreen({ navigation }) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   const [messages, setMessages] = useState([]);
-  const [draftMessage, setDraftMessage] = useState();
+  const [draftMessage, setDraftMessage] = useState("");
+  const [recording, setRecording] = useState();
+
+  const sendMessage = () => {
+    //call the api
+    setMessages([
+      ...messages,
+      { text: draftMessage, isFrom: true, date: Date.now() },
+    ]);
+    setDraftMessage("");
+  };
+  const startRecording = async () => {
+    try {
+      console.log("Requesting permissions..");
+      await Audio.requestPermissionsAsync();
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
+      console.log("Starting recording..");
+      const recording = new Audio.Recording();
+      await recording.prepareToRecordAsync(
+        Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+      );
+      await recording.startAsync();
+      setRecording(recording);
+      console.log("Recording started");
+    } catch (err) {
+      console.error("Failed to start recording", err);
+    }
+  };
+  const stopRecording = async () => {
+    console.log("Stopping recording..");
+    setRecording(undefined);
+    await recording.stopAndUnloadAsync();
+    const uri = recording.getURI();
+    setMessages([
+      ...messages,
+      { audoiUri: uri, isFrom: true, date: Date.now() },
+    ]);
+    console.log("Recording stopped and stored at", uri);
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -54,7 +101,7 @@ function MessagesScreen({ navigation }) {
       headerRight: () => (
         <View style={styles.rightHeader}>
           <Text style={{ color: "white", paddingRight: 5 }}>{contactName}</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
                 source={{ uri: contactImageUri }}
@@ -104,36 +151,71 @@ function MessagesScreen({ navigation }) {
           <View style={{ height: "91%", width: "100%" }}>
             <FlatList
               data={messages}
-              keyExtractor={(message) => message._id}
-              renderItem={({ item }) => <Message meesageData={item} />}
+              keyExtractor={(message) => message.date.toString()}
+              renderItem={({ item }) =>
+                item.text ? (
+                  <TextMessage meesageData={item} />
+                ) : (
+                  <AudioMessage {...item} />
+                )
+              }
             />
           </View>
           <View style={styles.allKeyboard}>
-            <TouchableOpacity>
-              <View
-                style={[styles.micophone, { backgroundColor: colors.primary }]}
-              >
-                <MaterialCommunityIcons
-                  name="microphone"
-                  size={24}
-                  color="white"
+            <View style={[styles.keyboard, { height: initHeight }]}>
+              <View style={{ paddingRight: 10 }}>
+                <TouchableOpacity>
+                  <MaterialIcons
+                    name="insert-emoticon"
+                    color={colors.medium}
+                    size={24}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 1 }}>
+                <TextInput
+                  placeholder={"Type a message..."}
+                  placeholderTextColor={colors.medium}
+                  onChangeText={(text) => setDraftMessage(text)}
+                  value={draftMessage}
+                  selectionColor={colors.primary}
+                  multiline
+                  numberOfLines={10}
+                  style={{ maxHeight: 5 * initHeight }}
                 />
               </View>
-            </TouchableOpacity>
-            <View style={styles.keyboard}>
-              <TextInput
-                onChangeText={(text) => setDraftMessage(text)}
-                value={draftMessage}
-                selectionColor={colors.primary}
-              />
-              <TouchableOpacity>
-                <MaterialIcons
-                  name="insert-emoticon"
-                  color={colors.medium}
-                  size={24}
-                />
-              </TouchableOpacity>
             </View>
+
+            {draftMessage.length > 0 ? (
+              <TouchableOpacity onPress={sendMessage}>
+                <View
+                  style={[
+                    styles.micophone,
+                    { backgroundColor: colors.primary },
+                  ]}
+                >
+                  <MaterialCommunityIcons name="send" size={24} color="white" />
+                </View>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPressIn={startRecording}
+                onPressOut={stopRecording}
+              >
+                <View
+                  style={[
+                    styles.micophone,
+                    { backgroundColor: colors.primary },
+                  ]}
+                >
+                  <MaterialCommunityIcons
+                    name="microphone"
+                    size={24}
+                    color="white"
+                  />
+                </View>
+              </TouchableOpacity>
+            )}
           </View>
         </KeyboardAvoidingView>
       </View>
@@ -169,22 +251,19 @@ const styles = StyleSheet.create({
   },
   keyboard: {
     flexDirection: "row",
-    justifyContent: "flex-end",
     alignItems: "center",
     backgroundColor: "white",
     width: "80%",
-    height: 45,
     borderRadius: 40,
     paddingLeft: 8,
     paddingRight: 8,
   },
   allKeyboard: {
-    justifyContent: "flex-end",
-    paddingRight: 10,
+    paddingLeft: 10,
     flexDirection: "row",
   },
   micophone: {
-    marginRight: 10,
+    marginLeft: 10,
     justifyContent: "center",
     alignItems: "center",
     width: 50,

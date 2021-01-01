@@ -1,9 +1,9 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import Text from "./Text";
+import Text from "../Text";
 import { useTheme } from "react-native-paper";
 
-function Message({ meesageData }) {
+function TextMessage({ meesageData }) {
   const { isFrom, text } = meesageData;
   const { colors } = useTheme();
   return (
@@ -36,4 +36,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Message;
+export default TextMessage;
