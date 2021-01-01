@@ -79,10 +79,7 @@ function MessagesScreen({ navigation }) {
   }, []);
   return (
     <ImageBackground
-      source={{
-        uri:
-          "https://i.pinimg.com/originals/79/5c/ab/795cabc4647f73b365e2e6eabd0f34dc.png",
-      }}
+      source={require("../assets/chatBackground.png")}
       style={styles.backgroundImage}
     >
       <View>
