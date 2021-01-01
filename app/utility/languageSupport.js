@@ -66,6 +66,8 @@ const init = () => {
             emptyCartSubTitle:
               "Go Ahaed, pick some product you like and get back here to complete the buying proccess...",
             "Countinue Shooping": "Countinue Shooping...",
+            keyboardPlaceholder: "Type a message...",
+            chats: "Chats",
           },
         },
         he: {
@@ -127,6 +129,8 @@ const init = () => {
             emptyCartSubTitle:
               "Go Ahaed, pick some product you like and get back here to complete the buying proccess...",
             "Countinue Shooping": "המשך בקנייה...",
+            keyboardPlaceholder: "הקלד/י הודעה...",
+            chats: "צ'אטים",
           },
         },
       },

@@ -4,6 +4,7 @@ import Text from "../Text";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import { useTheme } from "react-native-paper";
+import { useTranslation } from "react-i18next";
 
 const initHeight = 45;
 
@@ -12,7 +13,7 @@ function Keyboard({ sendMessage, sendRecording }) {
   const [draftMessage, setDraftMessage] = useState("");
   const [recording, setRecording] = useState();
   const [secondsRecord, setSecondsRecord] = useState(0);
-
+  const { t } = useTranslation();
   const startRecording = async () => {
     //countRecordSecondsTime();
     try {
@@ -56,7 +57,7 @@ function Keyboard({ sendMessage, sendRecording }) {
         </View>
         <View style={{ flex: 1 }}>
           <TextInput
-            placeholder={"Type a message..."}
+            placeholder={t("keyboardPlaceholder")}
             placeholderTextColor={colors.medium}
             onChangeText={(text) => setDraftMessage(text)}
             value={draftMessage}

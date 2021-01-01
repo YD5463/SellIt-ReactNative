@@ -22,5 +22,6 @@ export default Object.freeze({
   ADD_PAYMENT: "AddPaymentMethod",
   ADD_ADDRESS: "AddAddress",
   OPTIONS_PICKER: "OptionsPicker",
-  ORDERED_ITEMS:"Orderd Listings"
+  ORDERED_ITEMS: "Orderd Listings",
+  CHATS: "Chats",
 });

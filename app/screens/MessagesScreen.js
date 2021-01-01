@@ -19,11 +19,13 @@ import RightHeader from "./../components/chat/RightHeader";
 import Keyboard from "../components/chat/Keyboard";
 import messagesApi from "../api/messages";
 
-function MessagesScreen({ navigation }) {
+function MessagesScreen({ navigation, route }) {
   let socket;
-  const contactName = "Avi Leve";
-  const contactImageUri =
-    "http://192.168.68.110:9000/assets/c9e425db06fe2c64c1921fe8a96229a1_full.jpg";
+  const {
+    contactName,
+    contactProfileImage: contactImageUri,
+    contactId,
+  } = route.params;
   const { colors } = useTheme();
   const { t } = useTranslation();
   const [messages, setMessages] = useState([]);

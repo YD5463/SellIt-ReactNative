@@ -21,12 +21,12 @@ const menuItems = [
     targetScreen: routes.ACCOUNT_LISTINGS,
   },
   {
-    title: "myMessages",
+    title: "chats",
     icon: {
-      name: "email",
+      name: "chat",
       backgroundColor: "secondary",
     },
-    targetScreen: routes.MESSAGES,
+    targetScreen: routes.CHATS,
   },
   {
     title: "Ordered Products",
