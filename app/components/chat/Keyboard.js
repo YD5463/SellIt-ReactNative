@@ -69,7 +69,12 @@ function Keyboard({ sendMessage, sendRecording }) {
       </View>
       {recording && <Text>{secondsRecord}</Text>}
       {draftMessage.length > 0 ? (
-        <TouchableOpacity onPress={sendMessage}>
+        <TouchableOpacity
+          onPress={() => {
+            sendMessage(draftMessage);
+            setDraftMessage("");
+          }}
+        >
           <View style={[styles.micophone, { backgroundColor: colors.primary }]}>
             <MaterialCommunityIcons name="send" size={24} color="white" />
           </View>

@@ -17,38 +17,23 @@ import AudioMessage from "./../components/chat/AudioMessage";
 import LeftHeader from "./../components/chat/LeftHeader";
 import RightHeader from "./../components/chat/RightHeader";
 import Keyboard from "../components/chat/Keyboard";
-
-const seedMessages = [
-  { text: "how are you?", isFrom: true, date: "01-30-2020::11:30:22", _id: 1 },
-  { text: "im great!!", isFrom: false, date: "01-30-2020::12:30:22", _id: 2 },
-  {
-    text: "did you start the assignment?",
-    isFrom: false,
-    date: "01-30-2020::12:30:55",
-    _id: 3,
-  },
-  { text: "not yet...", isFrom: false, date: "01-30-2020::12:45:22", _id: 4 },
-  { text: "bye bye!!!", isFrom: false, date: "01-30-2020::12:46:22", _id: 66 },
-  { text: "see ya bro", isFrom: true, date: "01-30-2020::12:55:22", _id: 67 },
-];
-
-const initHeight = 45;
+import messagesApi from "../api/messages";
 
 function MessagesScreen({ navigation }) {
   let socket;
   const contactName = "Avi Leve";
-  const contactId = 123;
   const contactImageUri =
     "http://192.168.68.110:9000/assets/c9e425db06fe2c64c1921fe8a96229a1_full.jpg";
   const { colors } = useTheme();
   const { t } = useTranslation();
   const [messages, setMessages] = useState([]);
+  const getMessagesApi = useApi(messagesApi.getMessages);
 
-  const sendMessage = () => {
+  const sendMessage = (message) => {
     //call the api
     setMessages([
       ...messages,
-      { text: draftMessage, isFrom: true, date: Date.now() },
+      { text: message, isFrom: true, date: Date.now() },
     ]);
   };
   const sendRecording = (uri) => {
@@ -74,8 +59,12 @@ function MessagesScreen({ navigation }) {
       title: "",
     });
   });
+  const initData = async () => {
+    const messages = await getMessagesApi.request("user id");
+    setMessages(messages);
+  };
   useEffect(() => {
-    setMessages(seedMessages);
+    initData();
   }, []);
   return (
     <ImageBackground
