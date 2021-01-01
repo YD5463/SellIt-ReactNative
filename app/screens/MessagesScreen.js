@@ -24,6 +24,8 @@ import { TextInput } from "react-native";
 //import { io } from "socket.io-client";
 import { Audio } from "expo-av";
 import AudioMessage from "./../components/chat/AudioMessage";
+import LeftHeader from "./../components/chat/LeftHeader";
+import RightHeader from "./../components/chat/RightHeader";
 
 const seedMessages = [
   { text: "how are you?", isFrom: true, date: "01-30-2020::11:30:22", _id: 1 },
@@ -52,6 +54,7 @@ function MessagesScreen({ navigation }) {
   const [messages, setMessages] = useState([]);
   const [draftMessage, setDraftMessage] = useState("");
   const [recording, setRecording] = useState();
+  const [secondsRecord, setSecondsRecord] = useState(0);
 
   const sendMessage = () => {
     //call the api
@@ -61,7 +64,9 @@ function MessagesScreen({ navigation }) {
     ]);
     setDraftMessage("");
   };
+
   const startRecording = async () => {
+    countRecordSecondsTime();
     try {
       console.log("Requesting permissions..");
       await Audio.requestPermissionsAsync();
@@ -84,6 +89,8 @@ function MessagesScreen({ navigation }) {
   const stopRecording = async () => {
     console.log("Stopping recording..");
     setRecording(undefined);
+    clearInterval(timer);
+    setTimer(null);
     await recording.stopAndUnloadAsync();
     const uri = recording.getURI();
     setMessages([
@@ -99,36 +106,13 @@ function MessagesScreen({ navigation }) {
         backgroundColor: colors.primary,
       },
       headerRight: () => (
-        <View style={styles.rightHeader}>
-          <Text style={{ color: "white", paddingRight: 5 }}>{contactName}</Text>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
-                source={{ uri: contactImageUri }}
-                style={styles.contactImage}
-              />
-              <AntDesign name="arrowright" size={24} color="white" />
-            </View>
-          </TouchableOpacity>
-        </View>
+        <RightHeader
+          contactImageUri={contactImageUri}
+          contactName={contactName}
+          onBack={() => navigation.goBack()}
+        />
       ),
-      headerLeft: () => (
-        <View style={styles.leftHeader}>
-          <TouchableWithoutFeedback>
-            <Ionicons name="md-more" size={24} color="white" />
-          </TouchableWithoutFeedback>
-          <View style={styles.headerIcon}>
-            <TouchableWithoutFeedback>
-              <MaterialIcons name="call" size={24} color="white" />
-            </TouchableWithoutFeedback>
-          </View>
-          <View style={styles.headerIcon}>
-            <TouchableWithoutFeedback>
-              <MaterialCommunityIcons name="video" size={26} color="white" />
-            </TouchableWithoutFeedback>
-          </View>
-        </View>
-      ),
+      headerLeft: () => <LeftHeader />,
       title: "",
     });
   });
@@ -143,7 +127,7 @@ function MessagesScreen({ navigation }) {
       }}
       style={styles.backgroundImage}
     >
-      <View style={styles.container}>
+      <View>
         <KeyboardAvoidingView
           behavior="position"
           keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 10}
@@ -185,7 +169,7 @@ function MessagesScreen({ navigation }) {
                 />
               </View>
             </View>
-
+            {recording && <Text>{secondsRecord}</Text>}
             {draftMessage.length > 0 ? (
               <TouchableOpacity onPress={sendMessage}>
                 <View
@@ -227,27 +211,6 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: "cover",
-  },
-  container: {},
-  contactImage: {
-    width: 35,
-    height: 35,
-    borderRadius: 18,
-  },
-  leftHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingLeft: 15,
-  },
-  rightHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingRight: 8,
-  },
-  headerIcon: {
-    paddingLeft: 15,
   },
   keyboard: {
     flexDirection: "row",
