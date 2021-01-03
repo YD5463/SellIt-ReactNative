@@ -7,6 +7,7 @@ import routes from "../navigation/routes";
 import Screen from "./../components/Screen";
 import { useTheme } from "react-native-paper";
 import ListItemSeparator from "./../components/lists/ListItemSeparator";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 function ChatsListScreen({ navigation }) {
   const getChatsApi = useApi(chats.getChats);
@@ -19,22 +20,25 @@ function ChatsListScreen({ navigation }) {
   }, []);
   console.log(getChatsApi.data);
   return (
-    <Screen style={[styles.container, { backgroundColor: colors.light }]}>
-      <FlatList
-        data={getChatsApi.data}
-        keyExtractor={(item) => item.contactId}
-        renderItem={({ item }) => (
-          <ListItem
-            image={item.contactProfileImage}
-            title={item.contactName}
-            subTitle={item.lastMessage.text}
-            onPress={() => navigation.navigate(routes.MESSAGES, item)}
-            iconName=""
-          />
-        )}
-        ItemSeparatorComponent={ListItemSeparator}
-      />
-    </Screen>
+    <>
+      <ActivityIndicator visible={getChatsApi.loading} />
+      <Screen style={[styles.container, { backgroundColor: colors.light }]}>
+        <FlatList
+          data={getChatsApi.data}
+          keyExtractor={(item) => item.contactId}
+          renderItem={({ item }) => (
+            <ListItem
+              image={item.contactProfileImage}
+              title={item.contactName}
+              subTitle={item.lastMessage.text}
+              onPress={() => navigation.navigate(routes.MESSAGES, item)}
+              iconName=""
+            />
+          )}
+          ItemSeparatorComponent={ListItemSeparator}
+        />
+      </Screen>
+    </>
   );
 }
 
