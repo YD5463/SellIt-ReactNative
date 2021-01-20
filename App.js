@@ -15,6 +15,7 @@ import { Provider as PaperProvider } from "react-native-paper";
 import auth from "./app/api/auth";
 import { ThemeProvider } from "styled-components";
 import { ToastProvider } from "react-native-styled-toast";
+import CameraScreen from "./app/screens/CameraScreen";
 languageSupport.init();
 
 export default function App() {
