@@ -8,6 +8,7 @@ import Screen from "./../components/Screen";
 import { useTheme } from "react-native-paper";
 import ListItemSeparator from "./../components/lists/ListItemSeparator";
 import ActivityIndicator from "../components/ActivityIndicator";
+import ContactChat from "../components/ContactChat";
 
 function ChatsListScreen({ navigation }) {
   const getChatsApi = useApi(chats.getChats);
@@ -27,12 +28,9 @@ function ChatsListScreen({ navigation }) {
           data={getChatsApi.data}
           keyExtractor={(item) => item.contactId}
           renderItem={({ item }) => (
-            <ListItem
-              image={item.contactProfileImage}
-              title={item.contactName}
-              subTitle={item.lastMessage.text}
+            <ContactChat
+              item={item}
               onPress={() => navigation.navigate(routes.MESSAGES, item)}
-              iconName=""
             />
           )}
           ItemSeparatorComponent={ListItemSeparator}
