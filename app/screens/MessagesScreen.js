@@ -15,28 +15,39 @@ import LeftHeader from "./../components/chat/LeftHeader";
 import RightHeader from "./../components/chat/RightHeader";
 import Keyboard from "../components/chat/Keyboard";
 import messagesApi from "../api/messages";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import authStorage from "../auth/storage";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 function MessagesScreen({ navigation, route }) {
   const [socket, setSocket] = useState();
+  const [userId, setUserId] = useState();
+
   const { contactName, contactId } = route.params;
-  const contactImageUri = route.params.contactProfileImage.url;
+  const contactImageUri = route.params.contactProfileImage
+    ? route.params.contactProfileImage.url
+    : null;
 
   const { colors } = useTheme();
   const { t } = useTranslation();
   const [messages, setMessages] = useState([]);
-  const getMessagesApi = useApi(messagesApi.getMessages);
+  const [loading, setLoading] = useState(false);
   const messageListRef = useRef();
 
   const sendMessage = (message) => {
     //call the api
     const newMessages = [
       ...messages,
-      { text: message, isFrom: true, date: Date.now() },
+      {
+        content: message,
+        contentType: "text",
+        fromUserId: userId,
+        toUserId: contactId,
+        dateTime: Date.now(),
+      },
     ];
     setMessages(newMessages);
-    socket.emit("chat message", message);
+    // socket.emit("chat message", { message, contactId });
   };
   const sendRecording = (uri) => {
     setMessages([
@@ -63,20 +74,12 @@ function MessagesScreen({ navigation, route }) {
     });
   });
   const initData = async () => {
-    const token = await authStorage.getToken();
-    const sock = io("http://192.168.68.110:9000", {
-      query: { token, peerId: contactId },
-    });
-    const messages = await getMessagesApi.request("user id");
-    setMessages(messages);
-    sock.on("chat message", (msg) => {
-      const newMessages = [
-        ...messages,
-        { text: msg, isFrom: false, date: Date.now() },
-      ];
-      setMessages(newMessages);
-    });
-    setSocket(sock);
+    const user = await authStorage.getUser();
+    setUserId(user.userId);
+    setLoading(true);
+    const reponse = await messagesApi.getMessages(contactId);
+    setLoading(false);
+    if (reponse.ok) setMessages(reponse.data);
   };
   useEffect(() => {
     initData();
@@ -86,29 +89,38 @@ function MessagesScreen({ navigation, route }) {
       source={require("../assets/chatBackground.png")}
       style={styles.backgroundImage}
     >
-      <View>
-        <KeyboardAvoidingView
-          behavior="position"
-          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 10}
-        >
-          <View style={{ height: "91%", width: "100%" }}>
-            <FlatList
-              ref={messageListRef}
-              onContentSizeChange={() => messageListRef.current.scrollToEnd()}
-              data={messages}
-              keyExtractor={(message) => message.date.toString()}
-              renderItem={({ item }) =>
-                item.text ? (
-                  <TextMessage meesageData={item} />
-                ) : (
-                  <AudioMessage {...item} />
-                )
-              }
-            />
-          </View>
-          <Keyboard sendMessage={sendMessage} sendRecording={sendRecording} />
-        </KeyboardAvoidingView>
-      </View>
+      <>
+        <ActivityIndicator visible={loading} />
+        <View>
+          <KeyboardAvoidingView
+            behavior="position"
+            keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 10}
+          >
+            <View style={{ height: "91%", width: "100%" }}>
+              <FlatList
+                ref={messageListRef}
+                onContentSizeChange={() => messageListRef.current.scrollToEnd()}
+                data={messages}
+                keyExtractor={(message) => message.dateTime}
+                renderItem={({ item, index }) =>
+                  item.contentType === "text" ? (
+                    <TextMessage
+                      userId={userId}
+                      meesageData={item}
+                      lastMessageDate={
+                        index !== 0 ? messages[index - 1].dateTime : null
+                      }
+                    />
+                  ) : (
+                    <AudioMessage userId={userId} {...item} />
+                  )
+                }
+              />
+            </View>
+            <Keyboard sendMessage={sendMessage} sendRecording={sendRecording} />
+          </KeyboardAvoidingView>
+        </View>
+      </>
     </ImageBackground>
   );
 }

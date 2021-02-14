@@ -23,7 +23,7 @@ function ChatsListScreen({ navigation }) {
   return (
     <>
       <ActivityIndicator visible={getChatsApi.loading} />
-      <Screen style={[styles.container, { backgroundColor: colors.light }]}>
+      <Screen style={[styles.container, { backgroundColor: colors.white }]}>
         <FlatList
           data={getChatsApi.data}
           keyExtractor={(item) => item.contactId}

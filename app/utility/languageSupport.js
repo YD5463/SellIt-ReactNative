@@ -68,6 +68,7 @@ const init = () => {
             "Countinue Shooping": "Countinue Shooping...",
             keyboardPlaceholder: "Type a message...",
             chats: "Chats",
+            picture: "Picture",
           },
         },
         he: {
@@ -131,6 +132,7 @@ const init = () => {
             "Countinue Shooping": "המשך בקנייה...",
             keyboardPlaceholder: "הקלד/י הודעה...",
             chats: "צ'אטים",
+            picture: "תמונה",
           },
         },
       },
