@@ -50,9 +50,16 @@ function MessagesScreen({ navigation, route }) {
     // socket.emit("chat message", { message, contactId });
   };
   const sendRecording = (uri) => {
+    console.log("sending ", uri);
     setMessages([
       ...messages,
-      { audoiUri: uri, isFrom: true, date: Date.now() },
+      {
+        content: uri,
+        contentType: "audio",
+        dateTime: Date.now(),
+        fromUserId: userId,
+        toUserId: contactId,
+      },
     ]);
     // socket.emit("chat message", "this.state.chatMessage");
   };
@@ -117,7 +124,11 @@ function MessagesScreen({ navigation, route }) {
                       }
                     />
                   ) : (
-                    <AudioMessage userId={userId} {...item} />
+                    <AudioMessage
+                      userId={userId}
+                      content={item.content}
+                      dateTime={item.dateTime}
+                    />
                   )
                 }
               />

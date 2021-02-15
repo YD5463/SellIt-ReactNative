@@ -2,21 +2,36 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { useTheme } from "react-native-paper";
 import { FontAwesome5 } from "@expo/vector-icons";
-// import { Audio } from "expo-av";
-import AudioRecorderPlayer, {
-  AVEncoderAudioQualityIOSType,
-  AVEncodingOption,
-  AudioEncoderAndroidType,
-  AudioSet,
-  AudioSourceAndroidType,
-} from "react-native-audio-recorder-player";
+import { Audio } from "expo-av";
 import colors from "../../config/colors";
 
-function AudioMessage({ isFrom, audoiUri: audioUri, date }) {
+function AudioMessage({ content, dateTime, isFrom = false }) {
   const { colors } = useTheme();
-  const [record, setRecord] = useState();
+  const [sound, setSound] = useState();
   const [playing, setPlaying] = useState();
-  console.log(audioUri);
+  console.log(content);
+
+  const playSound = async () => {
+    setPlaying(true);
+    console.log("Loading Sound");
+    const { sound } = await Audio.Sound.createAsync({ uri: content });
+    setSound(sound);
+
+    console.log("Playing Sound");
+    await sound.playAsync();
+  };
+
+  const pauseSound = () => {
+    setPlaying(false);
+  };
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log("Unloading Sound");
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
 
   return (
     <View
@@ -25,9 +40,13 @@ function AudioMessage({ isFrom, audoiUri: audioUri, date }) {
         !isFrom ? styles.toMessage : styles.fromMessage,
       ]}
     >
-      <TouchableOpacity>
+      <TouchableOpacity onPress={playSound}>
         <View style={{ paddingLeft: 10 }}>
-          <FontAwesome5 name={"play"} size={28} color={colors.medium} />
+          <FontAwesome5
+            name={!sound ? "play" : "stop"}
+            size={28}
+            color={colors.medium}
+          />
         </View>
       </TouchableOpacity>
     </View>
