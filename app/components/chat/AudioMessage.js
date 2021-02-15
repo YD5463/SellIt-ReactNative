@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, StyleSheet, TouchableOpacity, Animated } from "react-native";
-import { useTheme, ProgressBar, Colors } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import colors from "../../config/colors";
@@ -42,7 +42,8 @@ function AudioMessage({ content, dateTime, isFrom = false }) {
       duration: 50,
     }).start();
   }, [position]);
-  const width = animation.current.interpolate({
+
+  const left = animation.current.interpolate({
     inputRange: [0, 1],
     outputRange: ["0%", "100%"],
     extrapolate: "clamp",
@@ -55,23 +56,20 @@ function AudioMessage({ content, dateTime, isFrom = false }) {
       ]}
     >
       <View style={styles.progressBar}>
-        <Animated.View
-          style={
-            ([StyleSheet.absoluteFill], { backgroundColor: "white", width })
-          }
-        />
+        <Animated.View style={[styles.dot, { left: left }]} />
       </View>
-      <TouchableOpacity
-        onPress={!sound || !sound.isPlaying ? playSound : pauseSound}
-      >
-        <View style={{ paddingLeft: 10 }}>
+
+      <View style={styles.btn}>
+        <TouchableOpacity
+          onPress={!sound || !sound.isPlaying ? playSound : pauseSound}
+        >
           <FontAwesome5
             name={!sound || !sound.isPlaying ? "play" : "stop"}
             size={28}
             color={colors.medium}
           />
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -85,6 +83,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 15,
     paddingRight: 5,
+    paddingLeft: 10,
   },
   toMessage: {
     alignItems: "flex-end",
@@ -95,12 +94,24 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     flexDirection: "row",
-    height: 20,
+    height: 3,
     width: "70%",
-    backgroundColor: "black",
-    borderColor: "#000",
-    borderWidth: 2,
-    borderRadius: 5,
+    backgroundColor: colors.medium,
+    alignSelf: "center",
+  },
+  btn: {
+    paddingLeft: 10,
+    justifyContent: "center",
+  },
+  dot: {
+    width: 13,
+    height: 13,
+    backgroundColor: colors.medium,
+    borderRadius: 8,
+    position: "absolute",
+    top: -5,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
