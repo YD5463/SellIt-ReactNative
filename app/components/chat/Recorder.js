@@ -4,30 +4,50 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
 import { Audio } from "expo-av";
 
-function Recorder({ setRecording, sendRecording }) {
+const maxTime = 120;
+
+function Recorder({ setRecordingTime, sendRecording }) {
   const [audioRecord, setAudioRecord] = useState();
 
   const onStartRecord = async () => {
-    await Audio.setAudioModeAsync({
-      allowsRecordingIOS: true,
-      playsInSilentModeIOS: true,
-    });
-    console.log("Starting recording..");
-    const recording = new Audio.Recording();
-    await recording.prepareToRecordAsync(
-      Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
-    );
-    await recording.startAsync();
-    setAudioRecord(recording);
+    try {
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
+      console.log("Starting recording..");
+      const recording = new Audio.Recording();
+      await recording.prepareToRecordAsync(
+        Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+      );
+      recording.setOnRecordingStatusUpdate((status) => {
+        if (status.isRecording) {
+          const seconds = Math.round(status.durationMillis / 1000);
+          setRecordingTime(seconds);
+          if (seconds >= maxTime) onStopRecord();
+        }
+      });
+      await recording.startAsync();
+      setAudioRecord(recording);
+    } catch (e) {
+      console.log("Error", e);
+    }
   };
 
   const onStopRecord = async () => {
-    setRecording(0);
-    await audioRecord.stopAndUnloadAsync();
-    const uri = audioRecord.getURI();
-    sendRecording(uri);
+    setRecordingTime(0);
+    try {
+      await audioRecord.stopAndUnloadAsync();
+      const uri = audioRecord.getURI();
+      sendRecording(uri);
+    } catch (e) {
+      console.log("Error", e);
+    }
   };
 
+  useEffect(() => {
+    Audio.requestPermissionsAsync();
+  }, []);
   return (
     <View style={styles.container}>
       <TouchableOpacity onPressIn={onStartRecord} onPressOut={onStopRecord}>

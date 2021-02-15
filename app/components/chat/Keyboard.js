@@ -75,7 +75,7 @@ function Keyboard({ sendMessage, sendRecording }) {
         </TouchableOpacity>
       ) : (
         <Recorder
-          setRecording={setRecordingTime}
+          setRecordingTime={setRecordingTime}
           sendRecording={sendRecording}
         />
       )}
