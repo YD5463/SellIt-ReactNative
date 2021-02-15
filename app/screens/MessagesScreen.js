@@ -97,6 +97,11 @@ function MessagesScreen({ navigation, route }) {
             keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 10}
           >
             <View style={{ height: "91%", width: "100%" }}>
+              <AudioMessage
+                userId={userId}
+                audoiUri="https://voca.ro/1kNy14XL2EuZ"
+                date={new Date()}
+              />
               <FlatList
                 ref={messageListRef}
                 onContentSizeChange={() => messageListRef.current.scrollToEnd()}
