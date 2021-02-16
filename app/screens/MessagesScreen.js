@@ -21,6 +21,7 @@ import ActivityIndicator from "../components/ActivityIndicator";
 import RenderMessage from "../components/chat/RenderMessage";
 import moment from "moment";
 import routes from "../navigation/routes";
+import ImageMessage from "./../components/chat/ImageMessage";
 
 function MessagesScreen({ navigation, route }) {
   const [socket, setSocket] = useState();
@@ -59,9 +60,9 @@ function MessagesScreen({ navigation, route }) {
     addMessage("audio", uri);
     // socket.emit("chat message", "this.state.chatMessage");
   };
-  const sendImage = (uri) => {
-    console.log("sending message located in ", uri);
-    addMessage("image", uri);
+  const sendImage = (imageData) => {
+    console.log("sending message located in ", Object.keys(imageData));
+    addMessage("image", imageData.base64);
   };
   useLayoutEffect(() => {
     navigation.setOptions({

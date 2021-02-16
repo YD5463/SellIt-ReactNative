@@ -53,6 +53,7 @@ function RenderMessage({ item, lastMessageDate, userId }) {
         style={[
           styles.container,
           isFrom ? styles.fromMessage : styles.toMessage,
+          item.contentType === "image" ? { maxWidth: "65%" } : {},
         ]}
       >
         {render()}

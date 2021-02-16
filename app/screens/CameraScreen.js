@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Camera } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
+import * as FileSystem from "expo-file-system";
 
 function CameraScreen({ navigation, route }) {
   const { sendImage } = route.params;
@@ -37,8 +38,8 @@ function CameraScreen({ navigation, route }) {
     );
   };
   const onTakePicture = async () => {
-    const photo = await cameraRef.current.takePictureAsync();
-    sendImage(photo.uri);
+    const photo = await cameraRef.current.takePictureAsync({ base64: true });
+    sendImage(photo);
     navigation.goBack();
   };
   return (
