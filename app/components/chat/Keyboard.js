@@ -104,6 +104,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   recordingTime: {},
+  micophone: {
+    marginLeft: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
 });
 
 export default Keyboard;
