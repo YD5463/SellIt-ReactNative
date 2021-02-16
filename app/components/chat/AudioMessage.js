@@ -6,11 +6,11 @@ import { Audio } from "expo-av";
 import colors from "../../config/colors";
 import Text from "../Text";
 
-function AudioMessage({ content, dateTime, isFrom = false }) {
+function AudioMessage({ content, dateTime, isFrom }) {
   const { colors } = useTheme();
   const [sound, setSound] = useState();
   const [position, setPosition] = useState(0);
-  console.log(content);
+  // console.log(content);
 
   const playSound = async () => {
     console.log("Loading Sound");
@@ -49,12 +49,7 @@ function AudioMessage({ content, dateTime, isFrom = false }) {
     extrapolate: "clamp",
   });
   return (
-    <View
-      style={[
-        styles.container,
-        !isFrom ? styles.toMessage : styles.fromMessage,
-      ]}
-    >
+    <View style={[styles.container]}>
       <View style={styles.progressBar}>
         <Animated.View style={[styles.dot, { left: left }]} />
       </View>
@@ -76,21 +71,13 @@ function AudioMessage({ content, dateTime, isFrom = false }) {
 
 const styles = StyleSheet.create({
   container: {
-    width: "60%",
+    width: "100%",
     height: 70,
     borderRadius: 10,
     alignItems: "center",
     flexDirection: "row",
-    marginTop: 15,
     paddingRight: 5,
     paddingLeft: 10,
-  },
-  toMessage: {
-    alignItems: "flex-end",
-    backgroundColor: colors.white,
-  },
-  fromMessage: {
-    backgroundColor: colors.primary,
   },
   progressBar: {
     flexDirection: "row",

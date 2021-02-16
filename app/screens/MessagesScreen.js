@@ -18,6 +18,7 @@ import messagesApi from "../api/messages";
 // import io from "socket.io-client";
 import authStorage from "../auth/storage";
 import ActivityIndicator from "../components/ActivityIndicator";
+import RenderMessage from "../components/chat/RenderMessage";
 
 function MessagesScreen({ navigation, route }) {
   const [socket, setSocket] = useState();
@@ -104,33 +105,20 @@ function MessagesScreen({ navigation, route }) {
             keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 10}
           >
             <View style={{ height: "91%", width: "100%" }}>
-              <AudioMessage
-                userId={userId}
-                audoiUri="https://voca.ro/1kNy14XL2EuZ"
-                date={new Date()}
-              />
               <FlatList
                 ref={messageListRef}
                 onContentSizeChange={() => messageListRef.current.scrollToEnd()}
                 data={messages}
                 keyExtractor={(message) => message.dateTime}
-                renderItem={({ item, index }) =>
-                  item.contentType === "text" ? (
-                    <TextMessage
-                      userId={userId}
-                      meesageData={item}
-                      lastMessageDate={
-                        index !== 0 ? messages[index - 1].dateTime : null
-                      }
-                    />
-                  ) : (
-                    <AudioMessage
-                      userId={userId}
-                      content={item.content}
-                      dateTime={item.dateTime}
-                    />
-                  )
-                }
+                renderItem={({ item, index }) => (
+                  <RenderMessage
+                    item={item}
+                    userId={userId}
+                    lastMessageDate={
+                      index !== 0 ? messages[index - 1].dateTime : null
+                    }
+                  />
+                )}
               />
             </View>
             <Keyboard sendMessage={sendMessage} sendRecording={sendRecording} />
