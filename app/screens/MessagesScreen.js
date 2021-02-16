@@ -19,6 +19,7 @@ import messagesApi from "../api/messages";
 import authStorage from "../auth/storage";
 import ActivityIndicator from "../components/ActivityIndicator";
 import RenderMessage from "../components/chat/RenderMessage";
+import moment from "moment";
 
 function MessagesScreen({ navigation, route }) {
   const [socket, setSocket] = useState();
@@ -44,7 +45,7 @@ function MessagesScreen({ navigation, route }) {
         contentType: "text",
         fromUserId: userId,
         toUserId: contactId,
-        dateTime: Date.now(),
+        dateTime: moment().toString(),
       },
     ];
     setMessages(newMessages);
@@ -57,7 +58,7 @@ function MessagesScreen({ navigation, route }) {
       {
         content: uri,
         contentType: "audio",
-        dateTime: Date.now(),
+        dateTime: moment().toString(),
         fromUserId: userId,
         toUserId: contactId,
       },

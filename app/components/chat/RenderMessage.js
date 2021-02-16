@@ -19,13 +19,13 @@ function RenderMessage({ item, lastMessageDate, userId }) {
 
   const firstMesageInDate = () =>
     !lastMessageDate ||
-    moment.duration(messageDate.diff(moment(lastMessageDate))).asDays() > 0;
+    moment.duration(messageDate.diff(moment(lastMessageDate))).asDays() >= 1;
 
   const dispalyDate = () => {
     const today = moment();
-    if (moment(messageDate).isSame(today, "day")) return "today";
-    else if (moment(messageDate).isSame(today.subtract(1, "day"), "day"))
-      return "yestardy";
+    if (messageDate.isSame(today, "day")) return t("today");
+    else if (messageDate.isSame(today.subtract(1, "day"), "day"))
+      return t("yestardy");
     return messageDate.format("D in MMMM YYYY");
   };
 

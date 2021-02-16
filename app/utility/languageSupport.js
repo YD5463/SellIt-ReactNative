@@ -69,6 +69,8 @@ const init = () => {
             keyboardPlaceholder: "Type a message...",
             chats: "Chats",
             picture: "Picture",
+            today: "today",
+            yesterday: "yesterday",
           },
         },
         he: {
@@ -133,6 +135,8 @@ const init = () => {
             keyboardPlaceholder: "הקלד/י הודעה...",
             chats: "צ'אטים",
             picture: "תמונה",
+            yesterday: "אתמול",
+            today: "היום",
           },
         },
       },

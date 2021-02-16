@@ -26,6 +26,11 @@ function Keyboard({ sendMessage, sendRecording }) {
     sendMessage(draftMessage);
     setDraftMessage("");
   };
+  console.log(recordingTime);
+  const dispalyRecordTime = () =>
+    `${String(Math.round(recordingTime / 60)).padStart(2, "0")}:${String(
+      Math.round(recordingTime % 60)
+    ).padStart(2, "0")}`;
 
   return (
     <View style={styles.allKeyboard}>
@@ -42,7 +47,7 @@ function Keyboard({ sendMessage, sendRecording }) {
         <View style={{ flex: 1 }}>
           {recordingTime !== 0 ? (
             <View>
-              <Text>{recordingTime}</Text>
+              <Text>{dispalyRecordTime()}</Text>
             </View>
           ) : (
             <TextInput
@@ -97,6 +102,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     flexDirection: "row",
   },
+  recordingTime: {},
 });
 
 export default Keyboard;

@@ -25,7 +25,7 @@ function Recorder({ setRecordingTime, sendRecording }) {
           const seconds = Math.round(status.durationMillis / 1000);
           setRecordingTime(seconds);
           if (seconds >= maxTime) onStopRecord();
-        }
+        } else setRecordingTime(0);
       });
       await recording.startAsync();
       setAudioRecord(recording);
