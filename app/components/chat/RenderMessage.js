@@ -30,18 +30,16 @@ function RenderMessage({ item, lastMessageDate, userId }) {
   };
 
   const render = () => {
-    if (item.contentType === "text")
-      return <TextMessage meesageData={item} isFrom={isFrom} />;
+    if (item.contentType === "text") return <TextMessage meesageData={item} />;
     else if (item.contentType === "audio")
       return (
         <AudioMessage
           content={item.content}
           userId={userId}
           dateTime={item.dateTime}
-          isFrom={isFrom}
         />
       );
-    else return <ImageMessage meesageData={item} isFrom={isFrom} />;
+    else return <ImageMessage meesageData={item} />;
   };
 
   return (

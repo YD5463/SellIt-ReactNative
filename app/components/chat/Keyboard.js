@@ -14,7 +14,7 @@ import Recorder from "./Recorder";
 
 const initHeight = 45;
 
-function Keyboard({ sendMessage, sendRecording }) {
+function Keyboard({ sendMessage, sendRecording, onPressCamera }) {
   const { colors } = useTheme();
   const [draftMessage, setDraftMessage] = useState("");
   const [recordingTime, setRecordingTime] = useState(0);
@@ -26,7 +26,7 @@ function Keyboard({ sendMessage, sendRecording }) {
     sendMessage(draftMessage);
     setDraftMessage("");
   };
-  console.log(recordingTime);
+
   const dispalyRecordTime = () =>
     `${String(Math.round(recordingTime / 60)).padStart(2, "0")}:${String(
       Math.round(recordingTime % 60)
@@ -67,7 +67,7 @@ function Keyboard({ sendMessage, sendRecording }) {
           <Entypo name="attachment" size={24} color={colors.medium} />
         </TouchableOpacity>
         <View style={{ paddingLeft: 15, paddingRight: 10 }}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onPressCamera}>
             <FontAwesome name="camera" size={24} color={colors.medium} />
           </TouchableOpacity>
         </View>
@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     paddingLeft: 8,
     paddingRight: 8,
+    marginTop: 5,
   },
   allKeyboard: {
     paddingLeft: 10,

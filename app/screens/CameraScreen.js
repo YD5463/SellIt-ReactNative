@@ -1,38 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Camera } from "expo-camera";
-import * as Permissions from "expo-permissions";
-import { Dimensions } from "react-native";
-import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-import useBackButton from "./../hooks/useBackButton";
+import { Ionicons } from "@expo/vector-icons";
 
-function CameraScreen(props) {
+function CameraScreen({ navigation, route }) {
+  const { sendImage } = route.params;
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
+  const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
+  const [autoFocus, setAutoFocus] = useState(Camera.Constants.AutoFocus.on);
+  const [zoom, setZoom] = useState(0);
+  const [whiteBalance, setWhiteBalance] = useState(
+    Camera.Constants.WhiteBalance.auto
+  );
+  const [focusDepth, setFocusDepth] = useState(0);
   const cameraRef = useRef();
-  const [blinking, setBlinking] = useState();
-  const [captures, setCaptures] = useState([]);
-  const [flash, setFlash] = useState();
-  const [photoUrl, setPhotoUrl] = useState();
-  useBackButton(() => setPhotoUrl(null));
 
-  const initData = async () => {
-    const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
-    const camera = await Permissions.askAsync(Permissions.CAMERA);
-    setHasPermission(audio.status === "granted" && camera.status === "granted");
-  };
-  const onPress = async () => {
-    setBlinking(true);
-    const photo = await cameraRef.current.takePictureAsync();
-    setTimeout(() => setBlinking(false), 1000);
-    const new_captures = [...captures, photo];
-    setCaptures(new_captures);
-    setPhotoUrl(photo.uri);
-  };
-  const onRotate = () => {};
-  const onFlash = () => {};
   useEffect(() => {
-    initData();
+    (async () => {
+      const { status } = await Camera.requestPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
   }, []);
 
   if (hasPermission === null) {
@@ -41,46 +29,40 @@ function CameraScreen(props) {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
-  return photoUrl ? (
-    <Image source={{ uri: photoUrl }} style={styles.camera} />
-  ) : (
+  const onFlip = () => {
+    setType(
+      type === Camera.Constants.Type.back
+        ? Camera.Constants.Type.front
+        : Camera.Constants.Type.back
+    );
+  };
+  const onTakePicture = async () => {
+    const photo = await cameraRef.current.takePictureAsync();
+    sendImage(photo.uri);
+    navigation.goBack();
+  };
+  return (
     <View style={styles.container}>
-      <View style={{ flex: 1 }}>
-        <Camera
-          style={styles.camera}
-          type={type}
-          ref={cameraRef}
-          flashMode={flash}
-        />
-      </View>
-      <View style={{ alignItems: "center", paddingBottom: 15 }}>
-        <View
-          style={{
-            flexDirection: "row",
-          }}
-        >
-          <View style={{ padding: 15 }}>
-            <TouchableOpacity onPress={() => setFlash(!flash)}>
-              <MaterialCommunityIcons
-                name={flash ? "flash" : "flash-off"}
-                size={30}
-                color="white"
-              />
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity onPress={onPress}>
-            <View style={styles.takeShotsBtn}></View>
+      <Camera
+        style={styles.camera}
+        type={type}
+        ref={cameraRef}
+        flashMode={flashMode}
+        zoom={zoom}
+        whiteBalance={whiteBalance}
+        focusDepth={focusDepth}
+      >
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.reverseButton} onPress={onFlip}>
+            <Ionicons name="ios-reverse-camera" size={35} color="white" />
           </TouchableOpacity>
-          <View style={{ padding: 15 }}>
-            <TouchableOpacity onPress={onRotate}>
-              <Ionicons name="ios-reverse-camera" size={40} color="white" />
+          <View style={{ alignSelf: "center", justifyContent: "flex-end" }}>
+            <TouchableOpacity onPress={onTakePicture}>
+              <View style={styles.takePictureBtn}></View>
             </TouchableOpacity>
           </View>
         </View>
-        <Text style={{ color: "white" }}>
-          Hold to record, tap to to capture photo
-        </Text>
-      </View>
+      </Camera>
     </View>
   );
 }
@@ -91,19 +73,23 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
-    width: Dimensions.get("screen").width,
-    height: Dimensions.get("screen").height,
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
   },
-  takeShotsBtn: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+  buttonContainer: {
+    flex: 1,
+    backgroundColor: "transparent",
+    flexDirection: "row",
+    margin: 20,
+  },
+  reverseButton: {
+    flex: 0.1,
+    alignSelf: "flex-end",
+    alignItems: "center",
+  },
+  takePictureBtn: {
+    width: 70,
+    height: 70,
     backgroundColor: "white",
+    borderRadius: 50,
   },
 });
 

@@ -23,5 +23,7 @@ export default Object.freeze({
   ADD_ADDRESS: "AddAddress",
   OPTIONS_PICKER: "OptionsPicker",
   ORDERED_ITEMS: "Orderd Listings",
+  CHAT:"Chat",
   CHATS: "Chats",
+  CAMERA: "Camera",
 });

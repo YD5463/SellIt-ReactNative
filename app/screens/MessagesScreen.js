@@ -20,6 +20,7 @@ import authStorage from "../auth/storage";
 import ActivityIndicator from "../components/ActivityIndicator";
 import RenderMessage from "../components/chat/RenderMessage";
 import moment from "moment";
+import routes from "../navigation/routes";
 
 function MessagesScreen({ navigation, route }) {
   const [socket, setSocket] = useState();
@@ -36,36 +37,32 @@ function MessagesScreen({ navigation, route }) {
   const [loading, setLoading] = useState(false);
   const messageListRef = useRef();
 
-  const sendMessage = (message) => {
-    //call the api
-    const newMessages = [
-      ...messages,
-      {
-        content: message,
-        contentType: "text",
-        fromUserId: userId,
-        toUserId: contactId,
-        dateTime: moment().toString(),
-      },
-    ];
-    setMessages(newMessages);
-    // socket.emit("chat message", { message, contactId });
-  };
-  const sendRecording = (uri) => {
-    console.log("sending ", uri);
+  const addMessage = (contentType, content) => {
     setMessages([
       ...messages,
       {
-        content: uri,
-        contentType: "audio",
+        content: content,
+        contentType: contentType,
         dateTime: moment().toString(),
         fromUserId: userId,
         toUserId: contactId,
       },
     ]);
+  };
+  const sendMessage = (message) => {
+    //call the api
+    addMessage("text", message);
+    // socket.emit("chat message", { message, contactId });
+  };
+  const sendRecording = (uri) => {
+    console.log("sending ", uri);
+    addMessage("audio", uri);
     // socket.emit("chat message", "this.state.chatMessage");
   };
-
+  const sendImage = (uri) => {
+    console.log("sending message located in ", uri);
+    addMessage("image", uri);
+  };
   useLayoutEffect(() => {
     navigation.setOptions({
       headerStyle: {
@@ -122,7 +119,13 @@ function MessagesScreen({ navigation, route }) {
                 )}
               />
             </View>
-            <Keyboard sendMessage={sendMessage} sendRecording={sendRecording} />
+            <Keyboard
+              sendMessage={sendMessage}
+              sendRecording={sendRecording}
+              onPressCamera={() =>
+                navigation.navigate(routes.CAMERA, { sendImage })
+              }
+            />
           </KeyboardAvoidingView>
         </View>
       </>

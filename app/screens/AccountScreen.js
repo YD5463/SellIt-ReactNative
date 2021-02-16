@@ -26,7 +26,7 @@ const menuItems = [
       name: "chat",
       backgroundColor: "secondary",
     },
-    targetScreen: routes.CHATS,
+    targetScreen: routes.CHAT,
   },
   {
     title: "Ordered Products",
