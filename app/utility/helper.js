@@ -5,4 +5,9 @@ const showText = (text, maxLen) => {
   return text;
 };
 
-export default { showText };
+const dispalyTimeFromSeconds = (recordingTime) =>
+  `${String(Math.round(recordingTime / 60)).padStart(2, "0")}:${String(
+    Math.round(recordingTime % 60)
+  ).padStart(2, "0")}`;
+
+export default { showText, dispalyTimeFromSeconds };

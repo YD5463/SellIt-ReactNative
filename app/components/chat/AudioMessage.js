@@ -5,8 +5,9 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import colors from "../../config/colors";
 import Text from "../Text";
+import helper from "../../utility/helper";
 
-function AudioMessage({ content, dateTime, isFrom }) {
+function AudioMessage({ content, duration }) {
   const { colors } = useTheme();
   const [sound, setSound] = useState();
   const [position, setPosition] = useState(0);
@@ -65,6 +66,11 @@ function AudioMessage({ content, dateTime, isFrom }) {
           />
         </TouchableOpacity>
       </View>
+      <View style={styles.duration}>
+        <Text style={{ fontSize: 13, color: "#404040" }}>
+          {helper.dispalyTimeFromSeconds(duration)}
+        </Text>
+      </View>
     </View>
   );
 }
@@ -99,6 +105,12 @@ const styles = StyleSheet.create({
     top: -5,
     justifyContent: "center",
     alignItems: "center",
+  },
+  duration: {
+    alignSelf: "flex-end",
+    left: 3,
+    bottom: -17,
+    position: "absolute",
   },
 });
 

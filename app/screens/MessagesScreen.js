@@ -38,7 +38,7 @@ function MessagesScreen({ navigation, route }) {
   const [loading, setLoading] = useState(false);
   const messageListRef = useRef();
 
-  const addMessage = (contentType, content) => {
+  const addMessage = (contentType, content, other = {}) => {
     setMessages([
       ...messages,
       {
@@ -47,6 +47,7 @@ function MessagesScreen({ navigation, route }) {
         dateTime: moment().toString(),
         fromUserId: userId,
         toUserId: contactId,
+        ...other,
       },
     ]);
   };
@@ -55,13 +56,12 @@ function MessagesScreen({ navigation, route }) {
     addMessage("text", message);
     // socket.emit("chat message", { message, contactId });
   };
-  const sendRecording = (uri) => {
-    console.log("sending ", uri);
-    addMessage("audio", uri);
+  const sendRecording = (uri, duration) => {
+    console.log("duration: ", duration);
+    addMessage("audio", uri, { duration: duration });
     // socket.emit("chat message", "this.state.chatMessage");
   };
   const sendImage = (imageData) => {
-    console.log("sending message located in ", Object.keys(imageData));
     addMessage("image", imageData.base64);
   };
   useLayoutEffect(() => {

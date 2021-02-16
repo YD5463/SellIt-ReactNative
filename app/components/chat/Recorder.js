@@ -8,6 +8,7 @@ const maxTime = 120;
 
 function Recorder({ setRecordingTime, sendRecording }) {
   const [audioRecord, setAudioRecord] = useState();
+  const [duration, setDuration] = useState(0);
 
   const onStartRecord = async () => {
     try {
@@ -24,6 +25,7 @@ function Recorder({ setRecordingTime, sendRecording }) {
         if (status.isRecording) {
           const seconds = Math.round(status.durationMillis / 1000);
           setRecordingTime(seconds);
+          setDuration(seconds);
           if (seconds >= maxTime) onStopRecord();
         } else setRecordingTime(0);
       });
@@ -39,7 +41,7 @@ function Recorder({ setRecordingTime, sendRecording }) {
     try {
       await audioRecord.stopAndUnloadAsync();
       const uri = audioRecord.getURI();
-      sendRecording(uri);
+      sendRecording(uri, duration);
     } catch (e) {
       console.log("Error", e);
     }

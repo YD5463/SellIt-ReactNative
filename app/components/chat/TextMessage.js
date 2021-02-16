@@ -5,14 +5,13 @@ import moment from "moment";
 import { useTheme } from "react-native-paper";
 import colors from "../../config/colors";
 
-function TextMessage({ meesageData, isFrom }) {
+function TextMessage({ meesageData }) {
   const { content, dateTime } = meesageData;
 
   const { colors } = useTheme();
   return (
     <View style={styles.messageView}>
       <Text style={styles.message}>{content}</Text>
-      <Text style={styles.messageTime}>{moment(dateTime).format("HH:mm")}</Text>
     </View>
   );
 }

@@ -9,6 +9,7 @@ import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
 import colors from "../../config/colors";
+// import helper from "../../utility/helper";
 
 function RenderMessage({ item, lastMessageDate, userId }) {
   const { dateTime } = item;
@@ -32,13 +33,7 @@ function RenderMessage({ item, lastMessageDate, userId }) {
   const render = () => {
     if (item.contentType === "text") return <TextMessage meesageData={item} />;
     else if (item.contentType === "audio")
-      return (
-        <AudioMessage
-          content={item.content}
-          userId={userId}
-          dateTime={item.dateTime}
-        />
-      );
+      return <AudioMessage content={item.content} duration={item.duration} />;
     else return <ImageMessage meesageData={item} />;
   };
 
@@ -52,11 +47,17 @@ function RenderMessage({ item, lastMessageDate, userId }) {
       <View
         style={[
           styles.container,
-          isFrom ? styles.fromMessage : styles.toMessage,
           item.contentType === "image" ? { maxWidth: "65%" } : {},
+          isFrom ? { alignSelf: "flex-end" } : {},
         ]}
       >
-        {render()}
+        <View style={[isFrom ? styles.fromMessage : styles.toMessage]}>
+          {render()}
+
+          <Text style={styles.messageTime}>
+            {moment(dateTime).format("HH:mm")}
+          </Text>
+        </View>
       </View>
     </>
   );
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     maxWidth: "48%",
     marginLeft: 10,
     marginRight: 10,
-    borderRadius: 5,
+    borderRadius: 10,
   },
   dispalyDate: {
     marginTop: 10,
@@ -76,22 +77,29 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     height: 30,
-    width: 100,
     maxWidth: 150,
     backgroundColor: "#AEE7FF",
     borderRadius: 5,
   },
   toMessage: {
-    alignSelf: "flex-end",
     backgroundColor: colors.white,
+    borderRadius: 5,
   },
   fromMessage: {
     backgroundColor: colors.primary,
+    borderRadius: 5,
   },
   dateText: {
     padding: 5,
     fontSize: 15,
     color: colors.medium,
+  },
+  messageTime: {
+    fontSize: 13,
+    color: "#404040",
+    alignSelf: "flex-end",
+    marginRight: 8,
+    marginLeft: 5,
   },
 });
 
