@@ -4,17 +4,26 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "./Icon";
 import Text from "./Text";
 
-function CategoryPickerItem({ item, onPress }) {
+function CategoryPickerItem({
+  item,
+  onPress,
+  iconSize = 80,
+  labelStyle = {},
+  iconSizeRatio,
+  additionalStyle = {},
+}) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, additionalStyle]}>
       <TouchableOpacity onPress={onPress}>
         <Icon
           backgroundColor={item.backgroundColor}
           name={item.icon}
-          size={80}
+          size={iconSize}
+          IconComponent={item.IconComponent}
+          iconSizeRatio={iconSizeRatio}
         />
       </TouchableOpacity>
-      <Text style={styles.label}>{item.name}</Text>
+      <Text style={[styles.label, labelStyle]}>{item.name}</Text>
     </View>
   );
 }

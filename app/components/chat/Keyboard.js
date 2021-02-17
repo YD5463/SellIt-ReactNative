@@ -11,6 +11,7 @@ import { Audio } from "expo-av";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import Recorder from "./Recorder";
+import AttachmentModal from "./AttachmentModal";
 
 const initHeight = 45;
 
@@ -18,8 +19,8 @@ function Keyboard({ sendMessage, sendRecording, onPressCamera }) {
   const { colors } = useTheme();
   const [draftMessage, setDraftMessage] = useState("");
   const [recordingTime, setRecordingTime] = useState(0);
+  const [visible, setVisible] = useState(false);
 
-  let sec = 0;
   const { t } = useTranslation();
 
   const onSendTextMessage = () => {
@@ -33,58 +34,69 @@ function Keyboard({ sendMessage, sendRecording, onPressCamera }) {
     ).padStart(2, "0")}`;
 
   return (
-    <View style={styles.allKeyboard}>
-      <View style={[styles.keyboard, { height: initHeight }]}>
-        <View style={{ paddingRight: 10 }}>
-          <TouchableOpacity>
-            <MaterialIcons
-              name="insert-emoticon"
-              color={colors.medium}
-              size={24}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={{ flex: 1 }}>
-          {recordingTime !== 0 ? (
-            <View>
-              <Text>{dispalyRecordTime()}</Text>
-            </View>
-          ) : (
-            <TextInput
-              placeholder={t("keyboardPlaceholder")}
-              placeholderTextColor={colors.medium}
-              onChangeText={(text) => setDraftMessage(text)}
-              value={draftMessage}
-              selectionColor={colors.primary}
-              multiline
-              numberOfLines={10}
-              style={{ maxHeight: 5 * initHeight }}
-            />
-          )}
-        </View>
+    <>
+      <AttachmentModal visible={visible} />
 
-        <TouchableOpacity>
-          <Entypo name="attachment" size={24} color={colors.medium} />
-        </TouchableOpacity>
-        <View style={{ paddingLeft: 15, paddingRight: 10 }}>
-          <TouchableOpacity onPress={onPressCamera}>
-            <FontAwesome name="camera" size={24} color={colors.medium} />
-          </TouchableOpacity>
-        </View>
-      </View>
-      {draftMessage.length > 0 ? (
-        <TouchableOpacity onPress={onSendTextMessage}>
-          <View style={[styles.micophone, { backgroundColor: colors.primary }]}>
-            <MaterialCommunityIcons name="send" size={24} color="white" />
+      <View style={styles.allKeyboard}>
+        <View style={[styles.keyboard, { height: initHeight }]}>
+          <View style={{ paddingRight: 10 }}>
+            <TouchableOpacity>
+              <MaterialIcons
+                name="insert-emoticon"
+                color={colors.medium}
+                size={24}
+              />
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-      ) : (
-        <Recorder
-          setRecordingTime={setRecordingTime}
-          sendRecording={sendRecording}
-        />
-      )}
-    </View>
+          <View style={{ flex: 1 }}>
+            {recordingTime !== 0 ? (
+              <View>
+                <Text>{dispalyRecordTime()}</Text>
+              </View>
+            ) : (
+              <TextInput
+                placeholder={t("keyboardPlaceholder")}
+                placeholderTextColor={colors.medium}
+                onChangeText={(text) => setDraftMessage(text)}
+                value={draftMessage}
+                selectionColor={colors.primary}
+                multiline
+                numberOfLines={10}
+                style={{ maxHeight: 5 * initHeight }}
+              />
+            )}
+          </View>
+
+          <TouchableOpacity
+            onPress={() => {
+              setVisible(!visible);
+              console.log("im heer", visible);
+            }}
+          >
+            <Entypo name="attachment" size={24} color={colors.medium} />
+          </TouchableOpacity>
+          <View style={{ paddingLeft: 15, paddingRight: 10 }}>
+            <TouchableOpacity onPress={onPressCamera}>
+              <FontAwesome name="camera" size={24} color={colors.medium} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        {draftMessage.length > 0 ? (
+          <TouchableOpacity onPress={onSendTextMessage}>
+            <View
+              style={[styles.micophone, { backgroundColor: colors.primary }]}
+            >
+              <MaterialCommunityIcons name="send" size={24} color="white" />
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <Recorder
+            setRecordingTime={setRecordingTime}
+            sendRecording={sendRecording}
+          />
+        )}
+      </View>
+    </>
   );
 }
 
