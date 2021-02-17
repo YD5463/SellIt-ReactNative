@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   Animated,
+  StatusBar,
+  BackHandler,
 } from "react-native";
 import { Camera } from "expo-camera";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -12,6 +14,7 @@ import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import ResizableImage from "./../components/ResizableImage";
 import colors from "../config/colors";
+import ImagesList from "./../components/chat/ImagesList";
 
 function CameraScreen({ navigation, route }) {
   const { sendImage } = route.params;
@@ -31,11 +34,28 @@ function CameraScreen({ navigation, route }) {
 
   const cameraRef = useRef();
 
+  const onBackPress = () => {
+    if (!photo) navigation.goBack();
+    else setPhoto(null);
+    return true;
+  };
+  const UpdateBackHandler = () => {
+    BackHandler.addEventListener("hardwareBackPress", onBackPress);
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    };
+  };
+
+  const init = async () => {
+    const { status } = await Camera.requestPermissionsAsync();
+    setHasPermission(status === "granted");
+  };
+
+  useEffect(() => UpdateBackHandler(), [photo]);
+
   useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
+    init();
+    return UpdateBackHandler();
   }, []);
 
   if (hasPermission === null) {
@@ -53,7 +73,7 @@ function CameraScreen({ navigation, route }) {
   };
   const onTakePicture = async () => {
     setPictureTaken(true);
-    const photo = await cameraRef.current.takePictureAsync({ base64: true });
+    const photo = await cameraRef.current.takePictureAsync();
     setPictureTaken(false);
     setPhoto(photo);
   };
@@ -76,6 +96,7 @@ function CameraScreen({ navigation, route }) {
 
   return (
     <View style={[styles.container]}>
+      <StatusBar hidden />
       {!photo ? (
         <Camera
           style={styles.camera}
@@ -87,6 +108,9 @@ function CameraScreen({ navigation, route }) {
           focusDepth={focusDepth}
         >
           <View style={{ flex: 1 }}></View>
+          <View style={styles.images}>
+            <ImagesList onPress={(photo) => setPhoto(photo)} />
+          </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.reverseButton} onPress={onFlip}>
               <Ionicons name="ios-reverse-camera" size={35} color="white" />
@@ -109,10 +133,7 @@ function CameraScreen({ navigation, route }) {
         </Camera>
       ) : (
         <View style={{ flex: 1 }}>
-          <ResizableImage
-            uri={`data:image/jpg;base64,${photo.base64}`}
-            style={styles.resultImage}
-          />
+          <ResizableImage uri={photo.uri} style={styles.resultImage} />
           <View style={styles.sendView}>
             <TouchableOpacity onPress={onSend}>
               <View
@@ -168,6 +189,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 5,
     bottom: 15,
+  },
+  images: {
+    width: "100%",
+    marginBottom: 20,
   },
 });
 
