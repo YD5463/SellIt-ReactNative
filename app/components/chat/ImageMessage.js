@@ -19,7 +19,7 @@ function ImageMessage({ meesageData }) {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 15,
+    marginTop: 8,
     width: "95%",
     height: 300,
     justifyContent: "center",

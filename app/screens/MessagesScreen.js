@@ -103,7 +103,7 @@ function MessagesScreen({ navigation, route }) {
             behavior="position"
             keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 10}
           >
-            <View style={{ height: "91%", width: "100%" }}>
+            <View style={{ height: "89%", width: "100%" }}>
               <FlatList
                 ref={messageListRef}
                 onContentSizeChange={() => messageListRef.current.scrollToEnd()}

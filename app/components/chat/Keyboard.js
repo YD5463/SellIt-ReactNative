@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
   allKeyboard: {
     paddingLeft: 10,
     flexDirection: "row",
+    paddingTop: 15,
   },
   recordingTime: {},
   micophone: {
