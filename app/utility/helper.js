@@ -10,4 +10,6 @@ const dispalyTimeFromSeconds = (recordingTime) =>
     Math.round(recordingTime % 60)
   ).padStart(2, "0")}`;
 
+const imageUriFromBase64 = (photo) => `data:image/jpg;base64,${photo.base64}`; //todo:check image Format(jpg,png...)
+
 export default { showText, dispalyTimeFromSeconds };

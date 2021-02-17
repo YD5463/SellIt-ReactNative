@@ -47,7 +47,7 @@ function RenderMessage({ item, lastMessageDate, userId }) {
       <View
         style={[
           styles.container,
-          item.contentType === "image" ? { maxWidth: "65%" } : {},
+          item.contentType === "image" ? { width: "75%" } : { maxWidth: "48%" },
           isFrom ? { alignSelf: "flex-end" } : {},
         ]}
       >
@@ -66,7 +66,6 @@ function RenderMessage({ item, lastMessageDate, userId }) {
 const styles = StyleSheet.create({
   container: {
     marginTop: 15,
-    maxWidth: "48%",
     marginLeft: 10,
     marginRight: 10,
     borderRadius: 10,

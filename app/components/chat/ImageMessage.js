@@ -1,20 +1,29 @@
 import React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableWithoutFeedback,
+} from "react-native";
 
 function ImageMessage({ meesageData }) {
   return (
-    <Image
-      style={styles.container}
-      source={{ uri: `data:image/jpg;base64,${meesageData.content}` }}
-    />
+    <TouchableWithoutFeedback onPress={() => console.log("im here")}>
+      <Image
+        style={styles.container}
+        source={{ uri: `data:image/jpg;base64,${meesageData.content}` }}
+      />
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     margin: 15,
-    width: "85%",
+    width: "95%",
     height: 300,
+    justifyContent: "center",
+    alignSelf: "center",
     borderRadius: 10,
   },
 });
