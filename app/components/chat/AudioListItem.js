@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  TouchableHighlight,
   Image,
 } from "react-native";
 import colors from "../../config/colors";
@@ -12,10 +13,13 @@ import Icon from "../Icon";
 import helper from "../../utility/helper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-function AudioListItem({ sendFile, songData }) {
-  const playSong = () => {};
-  console.log(songData);
-
+function AudioListItem({
+  sendFile,
+  songData,
+  playSong,
+  isPlayingSong,
+  pauseSong,
+}) {
   return (
     <TouchableOpacity onPress={sendFile}>
       <View style={styles.container}>
@@ -25,7 +29,7 @@ function AudioListItem({ sendFile, songData }) {
 
         <View style={styles.detail}>
           <Text numberOfLines={1} style={styles.songName}>
-            {songData.filename}
+            {songData.filename.slice(0, -4)}
           </Text>
           {songData.author && <Text>{songData.author}</Text>}
           <View style={{ flexDirection: "row" }}>
@@ -36,14 +40,14 @@ function AudioListItem({ sendFile, songData }) {
           </View>
         </View>
 
-        <TouchableWithoutFeedback onPress={playSong}>
+        <TouchableHighlight onPress={isPlayingSong ? pauseSong : playSong}>
           <Icon
-            name="play"
+            name={isPlayingSong ? "pause" : "play"}
             size={30}
             backgroundColor={colors.light}
             iconColor={colors.medium}
           />
-        </TouchableWithoutFeedback>
+        </TouchableHighlight>
       </View>
     </TouchableOpacity>
   );
