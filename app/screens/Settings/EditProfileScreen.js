@@ -17,20 +17,20 @@ import {
   FormField,
   StandartFormPicker,
   ErrorMessage,
-} from "../components/forms";
+} from "../../components/forms";
 import * as Yup from "yup";
-import TextInputWithLine from "../components/TextInputs/TextInputWithLine";
-import Screen from "./../components/Screen";
-import ProfileImagePicker from "./../components/ProfileImagePicker";
+import TextInputWithLine from "../../components/TextInputs/TextInputWithLine";
+import Screen from "../../components/Screen";
+import ProfileImagePicker from "../../components/ProfileImagePicker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import users from "../api/users";
+import users from "../../api/users";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useTheme } from "react-native-paper";
 import { useToast } from "react-native-styled-toast";
 // import { Snackbar } from "react-native-paper";
-import useApi from "./../hooks/useApi";
-import ActivityIndicator from "../components/ActivityIndicator";
-import storage from "../auth/storage";
+import useApi from "../../hooks/useApi";
+import ActivityIndicator from "../../components/ActivityIndicator";
+import storage from "../../auth/storage";
 import { useTranslation } from "react-i18next";
 
 const phone_regex = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;

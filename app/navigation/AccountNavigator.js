@@ -2,7 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import AccountScreen from "../screens/Settings/AccountScreen";
 import AccountListingsScreen from "./../screens/AccountListingsScreen";
-import EditProfileScreen from "./../screens/EditProfileScreen";
+import EditProfileScreen from "../screens/Settings/EditProfileScreen";
 import OrderedListingsScreen from "../screens/Listings/OrderedListingsScreen";
 import ChatNavigator from "./ChatNavigator";
 

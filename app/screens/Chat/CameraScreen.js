@@ -12,9 +12,9 @@ import { Camera } from "expo-camera";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 // import * as FileSystem from "expo-file-system";
 
-import ResizableImage from "./../components/ResizableImage";
-import colors from "../config/colors";
-import ImagesList from "./../components/chat/ImagesList";
+import ResizableImage from "../../components/ResizableImage";
+import colors from "../../config/colors";
+import ImagesList from "../../components/chat/ImagesList";
 
 function CameraScreen({ navigation, route }) {
   const { sendImage } = route.params;

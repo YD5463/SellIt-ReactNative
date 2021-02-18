@@ -8,20 +8,20 @@ import {
 } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "react-i18next";
-import TextMessage from "../components/chat/TextMessage";
-import useApi from "./../hooks/useApi";
-import AudioMessage from "./../components/chat/AudioMessage";
-import LeftHeader from "./../components/chat/LeftHeader";
-import RightHeader from "./../components/chat/RightHeader";
-import Keyboard from "../components/chat/Keyboard";
-import messagesApi from "../api/messages";
+import TextMessage from "../../components/chat/TextMessage";
+import useApi from "../../hooks/useApi";
+import AudioMessage from "../../components/chat/AudioMessage";
+import LeftHeader from "../../components/chat/LeftHeader";
+import RightHeader from "../../components/chat/RightHeader";
+import Keyboard from "../../components/chat/Keyboard";
+import messagesApi from "../../api/messages";
 // import io from "socket.io-client";
-import authStorage from "../auth/storage";
-import ActivityIndicator from "../components/ActivityIndicator";
-import RenderMessage from "../components/chat/RenderMessage";
+import authStorage from "../../auth/storage";
+import ActivityIndicator from "../../components/ActivityIndicator";
+import RenderMessage from "../../components/chat/RenderMessage";
 import moment from "moment";
-import routes from "../navigation/routes";
-import ImageMessage from "./../components/chat/ImageMessage";
+import routes from "../../navigation/routes";
+import ImageMessage from "../../components/chat/ImageMessage";
 
 function MessagesScreen({ navigation, route }) {
   const [socket, setSocket] = useState();
