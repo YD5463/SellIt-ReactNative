@@ -17,7 +17,7 @@ import {
 import colors from "../../config/colors";
 import CategoryPickerItem from "../CategoryPickerItem";
 
-function AttachmentModal({ visible, setVisible,buttonsCallback }) {
+function AttachmentModal({ visible, setVisible, buttonsCallback }) {
   if (!visible) return null;
   const options = [
     {
@@ -87,7 +87,10 @@ function AttachmentModal({ visible, setVisible,buttonsCallback }) {
               renderItem={({ item }) => (
                 <CategoryPickerItem
                   item={item}
-                  onPress={item.onPress}
+                  onPress={() => {
+                    setVisible(false);
+                    item.onPress();
+                  }}
                   iconSize={55}
                   labelStyle={styles.label}
                   iconSizeRatio={0.5}

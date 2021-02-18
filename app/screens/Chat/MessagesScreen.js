@@ -102,12 +102,13 @@ function MessagesScreen({ navigation, route }) {
   };
   const onAudio = () => {
     console.log("onAudio");
+    navigation.navigate(routes.AUDIO_PICKER);
   };
   const onLocation = () => {};
   const onContact = () => {};
   return (
     <ImageBackground
-      source={require("../assets/chatBackground.png")}
+      source={require("../../assets/chatBackground.png")}
       style={styles.backgroundImage}
     >
       <>

@@ -10,4 +10,5 @@ export default {
   blue: "#5DB0F9",
   hardLight: "#606060",
   green: "#00C92F",
+  audio: "#EC8E12",
 };
