@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -14,19 +14,35 @@ import helper from "../../utility/helper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 function AudioListItem({
-  sendFile,
+  pickItem,
+  unpickItem,
   songData,
   playSong,
   isPlayingSong,
   pauseSong,
 }) {
+  const [pick, setPick] = useState(false);
+  const onPick = () => {
+    setPick(!pick);
+    if (!pick) pickItem();
+    else unpickItem();
+  };
   return (
-    <TouchableOpacity onPress={sendFile}>
+    <TouchableOpacity onPress={onPick}>
       <View style={styles.container}>
         <View style={styles.pictureSize}>
           <MaterialCommunityIcons name="headphones" color="white" size={35} />
+          {pick && (
+            <View style={styles.pickedSign}>
+              <Icon
+                name="check"
+                size={20}
+                backgroundColor={colors.primary}
+                iconColor="white"
+              />
+            </View>
+          )}
         </View>
-
         <View style={styles.detail}>
           <Text numberOfLines={1} style={styles.songName}>
             {songData.filename.slice(0, -4)}
@@ -82,6 +98,11 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginLeft: 15,
     flex: 1,
+  },
+  pickedSign: {
+    position: "absolute",
+    right: -6,
+    bottom: -6,
   },
 });
 

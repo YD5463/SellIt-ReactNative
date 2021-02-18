@@ -93,6 +93,7 @@ function CameraScreen({ navigation, route }) {
       setFlashIconName("flash");
     }
   };
+  //todo:change send button to use Icon component
 
   return (
     <View style={[styles.container]}>

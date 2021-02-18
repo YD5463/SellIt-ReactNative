@@ -64,6 +64,7 @@ function MessagesScreen({ navigation, route }) {
   const sendImage = (imageData) => {
     addMessage("image", imageData.base64);
   };
+  const sendAudio = (audioData) => {};
   useLayoutEffect(() => {
     navigation.setOptions({
       headerStyle: {
@@ -102,7 +103,7 @@ function MessagesScreen({ navigation, route }) {
   };
   const onAudio = () => {
     console.log("onAudio");
-    navigation.navigate(routes.AUDIO_PICKER);
+    navigation.navigate(routes.AUDIO_PICKER, { contactName, sendAudio });
   };
   const onLocation = () => {};
   const onContact = () => {};
