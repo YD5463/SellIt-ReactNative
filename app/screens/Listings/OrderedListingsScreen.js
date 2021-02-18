@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { View, StyleSheet, FlatList, Text } from "react-native";
-import useApi from "./../hooks/useApi";
-import Screen from "./../components/Screen";
-import transactions from "../api/transactions";
-import ActivityIndicator from "../components/ActivityIndicator";
+import useApi from "../../hooks/useApi";
+import Screen from "../../components/Screen";
+import transactions from "../../api/transactions";
+import ActivityIndicator from "../../components/ActivityIndicator";
 
 function OrderedListingsScreen(props) {
   const getOrderedListingsApi = useApi(transactions.getOrderedListings);

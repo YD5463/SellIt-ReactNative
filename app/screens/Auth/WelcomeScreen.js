@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ImageBackground, StyleSheet, View, Image, Text } from "react-native";
-import Button from "../components/Button";
-import routes from "../navigation/routes";
+import Button from "../../components/Button";
+import routes from "../../navigation/routes";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
 import { Audio } from "expo-av";
@@ -12,7 +12,7 @@ function WelcomeScreen({ navigation }) {
   const [song, setSong] = useState();
   const playSong = async () => {
     const { sound } = await Audio.Sound.createAsync(
-      require("../assets/song.mp3"),
+      require("../../assets/song.mp3"),
       {
         shouldPlay: true,
         isLooping: true,
@@ -31,10 +31,10 @@ function WelcomeScreen({ navigation }) {
     <ImageBackground
       blurRadius={10}
       style={styles.background}
-      source={require("../assets/background.jpg")}
+      source={require("../../assets/background.jpg")}
     >
       <View style={styles.logoContainer}>
-        <Image style={styles.logo} source={require("../assets/logo-red.png")} />
+        <Image style={styles.logo} source={require("../../assets/logo-red.png")} />
         <Text style={styles.tagline}>Sell What You Don't Need</Text>
       </View>
       <View style={styles.buttonsContainer}>

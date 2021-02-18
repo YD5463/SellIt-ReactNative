@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, StyleSheet, ActivityIndicator, Keyboard } from "react-native";
-import TextInputWithLine from "../components/TextInputs/TextInputWithLine";
+import TextInputWithLine from "../../components/TextInputs/TextInputWithLine";
 import { useTheme } from "react-native-paper";
-import Screen from "./../components/Screen";
+import Screen from "../../components/Screen";
 import * as Yup from "yup";
 import { FontAwesome } from "@expo/vector-icons";
-import users from "../api/users";
-import Text from "../components/Text";
+import users from "../../api/users";
+import Text from "../../components/Text";
 
 import {
   ErrorMessage,
   Form,
   FormField,
   SubmitButton,
-} from "../components/forms";
+} from "../../components/forms";
 
 const validationSchema = Yup.object().shape({
   password: Yup.string().required().min(5).label("Password"),

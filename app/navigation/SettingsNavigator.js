@@ -1,15 +1,15 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import ChangePasswordScreen from "./../screens/ChangePasswordScreen";
+import ChangePasswordScreen from "../screens/Settings/ChangePasswordScreen";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import AccountNavigator from "./AccountNavigator";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useTranslation } from "react-i18next";
-import ChangeThemeScreen from "./../screens/ChangeThemeScreen";
+import ChangeThemeScreen from "../screens/Settings/ChangeThemeScreen";
 import { useTheme } from "react-native-paper";
-import MyActivityScreen from "./../screens/MyActivityScreen";
-import ChangeSubscriptionScreen from "./../screens/ChangeSubscriptionScreen";
-import ManagePrivacyScreen from "./../screens/ManagePrivacyScreen";
+import MyActivityScreen from "../screens/Settings/MyActivityScreen";
+import ChangeSubscriptionScreen from "../screens/Settings/ChangeSubscriptionScreen";
+import ManagePrivacyScreen from "../screens/Settings/ManagePrivacyScreen";
 import OptionsPickerScreen from "./../screens/OptionsPickerScreen";
 
 const Drawer = createDrawerNavigator();

@@ -2,11 +2,11 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { View, StyleSheet } from "react-native";
 import * as Yup from "yup";
-import Screen from "./../components/Screen";
-import ActivityIndicator from "../components/ActivityIndicator";
-import useApi from "./../hooks/useApi";
-import users from "../api/users";
-import routes from "../navigation/routes";
+import Screen from "../../components/Screen";
+import ActivityIndicator from "../../components/ActivityIndicator";
+import useApi from "../../hooks/useApi";
+import users from "../../api/users";
+import routes from "../../navigation/routes";
 import { useToast } from "react-native-styled-toast";
 
 import {
@@ -14,7 +14,7 @@ import {
   Form,
   FormField,
   SubmitButton,
-} from "../components/forms";
+} from "../../components/forms";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required().label("Email"),

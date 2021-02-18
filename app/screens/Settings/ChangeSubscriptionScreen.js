@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
-import Screen from "./../components/Screen";
-import Text from "../components/Text";
-import { ListItemSeparator } from "../components/lists";
+import Screen from "../../components/Screen";
+import Text from "../../components/Text";
+import { ListItemSeparator } from "../../components/lists";
 import { useTheme } from "react-native-paper";
 
 const data = [

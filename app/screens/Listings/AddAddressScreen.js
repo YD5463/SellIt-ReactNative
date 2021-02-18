@@ -11,15 +11,15 @@ import {
   FormField,
   ErrorMessage,
   FormPickerWithManyOptions,
-} from "../components/forms";
-import useApi from "./../hooks/useApi";
-import checkout from "../api/checkout";
-import address from "../api/address";
-import ActivityIndicator from "../components/ActivityIndicator";
-import Screen from "../components/Screen";
-import GoBackButton from "../components/GoBackButton";
-import routes from "../navigation/routes";
-import RectTextInput from "./../components/TextInputs/RectTextInput";
+} from "../../components/forms";
+import useApi from "../../hooks/useApi";
+import checkout from "../../api/checkout";
+import address from "../../api/address";
+import ActivityIndicator from "../../components/ActivityIndicator";
+import Screen from "../../components/Screen";
+import GoBackButton from "../../components/GoBackButton";
+import routes from "../../navigation/routes";
+import RectTextInput from "../../components/TextInputs/RectTextInput";
 
 Yup.addMethod(Yup.string, "integer", function () {
   return this.matches(/^\d+$/, "The field should have digits only");

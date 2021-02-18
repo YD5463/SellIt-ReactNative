@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { BarChart, XAxis } from "react-native-svg-charts";
-import Text from "../components/Text";
-import Screen from "./../components/Screen";
+import Text from "../../components/Text";
+import Screen from "../../components/Screen";
 import { useTheme } from "react-native-paper";
-import colors from "../config/colors";
-import auth from "../api/auth";
-import useApi from "./../hooks/useApi";
+import colors from "../../config/colors";
+import auth from "../../api/auth";
+import useApi from "../../hooks/useApi";
 import { useTranslation } from "react-i18next";
 
 function MyActivityScreen(props) {

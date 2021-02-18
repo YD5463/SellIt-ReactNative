@@ -1,18 +1,18 @@
 import React, { useState, useContext, useEffect } from "react";
 import { View, StyleSheet, TextInput, Text } from "react-native";
-import useApi from "./../hooks/useApi";
-import authApi from "../api/auth";
-import Button from "../components/Button";
+import useApi from "../../hooks/useApi";
+import authApi from "../../api/auth";
+import Button from "../../components/Button";
 import { useTheme } from "react-native-paper";
-import Screen from "./../components/Screen";
+import Screen from "../../components/Screen";
 import {
   CodeField,
   Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
-import { ErrorMessage } from "../components/forms";
-import ActivityIndicator from "../components/ActivityIndicator";
+import { ErrorMessage } from "../../components/forms";
+import ActivityIndicator from "../../components/ActivityIndicator";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 function ValidateEmailScreen({ route }) {

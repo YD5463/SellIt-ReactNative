@@ -12,24 +12,24 @@ import {
 } from "react-native";
 import MapView from "react-native-maps";
 import * as FileSystem from "expo-file-system";
-import messages from "../api/messages";
-import ListItem from "../components/lists/ListItem";
-import Text from "../components/Text";
+import messages from "../../api/messages";
+import ListItem from "../../components/lists/ListItem";
+import Text from "../../components/Text";
 
 import {
   Form,
   FormField,
   SubmitButton,
   ErrorMessage,
-} from "../components/forms";
-import useApi from "./../hooks/useApi";
+} from "../../components/forms";
+import useApi from "../../hooks/useApi";
 import * as Yup from "yup";
 import { Notifications } from "expo";
-import ActivityIndicator from "../components/ActivityIndicator";
-import user from "../api/user";
-import notificationChannel from "../utility/notificationChannel";
-import ImageListScroll from "./../components/ImageListScroll";
-import routes from "../navigation/routes";
+import ActivityIndicator from "../../components/ActivityIndicator";
+import user from "../../api/user";
+import notificationChannel from "../../utility/notificationChannel";
+import ImageListScroll from "../../components/ImageListScroll";
+import routes from "../../navigation/routes";
 import { useTheme } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as MediaLibrary from "expo-media-library";

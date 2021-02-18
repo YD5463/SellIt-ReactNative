@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
-import AuthContext from "./../auth/context";
-import Screen from "./../components/Screen";
-import CheckInput from "./../components/CheckInput";
-import Themes from "../navigation/navigationTheme";
+import AuthContext from "../../auth/context";
+import Screen from "../../components/Screen";
+import CheckInput from "../../components/CheckInput";
+import Themes from "../../navigation/navigationTheme";
 
 function ChangeThemeScreen(props) {
   const { theme, setTheme } = useContext(AuthContext);

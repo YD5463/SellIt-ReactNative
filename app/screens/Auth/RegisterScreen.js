@@ -2,23 +2,23 @@ import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import * as Yup from "yup";
 
-import Screen from "../components/Screen";
-import usersApi from "../api/users";
-import authApi from "../api/auth";
-import useAuth from "../auth/useAuth";
+import Screen from "../../components/Screen";
+import usersApi from "../../api/users";
+import authApi from "../../api/auth";
+import useAuth from "../../auth/useAuth";
 import {
   ErrorMessage,
   Form,
   FormField,
   SubmitButton,
-} from "../components/forms";
-import useApi from "../hooks/useApi";
-import ActivityIndicator from "../components/ActivityIndicator";
-import routes from "../navigation/routes";
-import Text from "../components/Text";
-import ProfileImagePicker from "./../components/ProfileImagePicker";
+} from "../../components/forms";
+import useApi from "../../hooks/useApi";
+import ActivityIndicator from "../../components/ActivityIndicator";
+import routes from "../../navigation/routes";
+import Text from "../../components/Text";
+import ProfileImagePicker from "../../components/ProfileImagePicker";
 import { useTranslation } from "react-i18next";
-import expoPushToken from "../api/expoPushToken";
+import expoPushToken from "../../api/expoPushToken";
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 // import { GoogleSignin, GoogleSigninButton } from '@react-native-community/google-signin';

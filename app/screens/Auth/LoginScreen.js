@@ -2,19 +2,19 @@ import React, { useState } from "react";
 import { StyleSheet, Image, TouchableOpacity, View } from "react-native";
 import * as Yup from "yup";
 
-import Screen from "../components/Screen";
+import Screen from "../../components/Screen";
 import {
   ErrorMessage,
   Form,
   FormField,
   SubmitButton,
-} from "../components/forms";
-import authApi from "../api/auth";
-import useAuth from "../auth/useAuth";
-import routes from "../navigation/routes";
-import Text from "../components/Text";
+} from "../../components/forms";
+import authApi from "../../api/auth";
+import useAuth from "../../auth/useAuth";
+import routes from "../../navigation/routes";
+import Text from "../../components/Text";
 import { useTranslation } from "react-i18next";
-import ActivityIndicator from "../components/ActivityIndicator";
+import ActivityIndicator from "../../components/ActivityIndicator";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -40,7 +40,7 @@ function LoginScreen({ navigation }) {
     <>
       <ActivityIndicator visible={loading} />
       <Screen style={styles.container}>
-        <Image style={styles.logo} source={require("../assets/logo-red.png")} />
+        <Image style={styles.logo} source={require("../../assets/logo-red.png")} />
         <Form
           initialValues={{ email: "", password: "" }}
           onSubmit={handleSubmit}

@@ -6,21 +6,21 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-import ActivityIndicator from "../components/ActivityIndicator";
-import Button from "../components/Button";
-import Card from "../components/Card";
-import listingsApi from "../api/listings";
-import categoriesApi from "../api/categories";
-import routes from "../navigation/routes";
-import Screen from "../components/Screen";
-import AppText from "../components/Text";
-import TagPick from "../components/TagPick";
+import ActivityIndicator from "../../components/ActivityIndicator";
+import Button from "../../components/Button";
+import Card from "../../components/Card";
+import listingsApi from "../../api/listings";
+import categoriesApi from "../../api/categories";
+import routes from "../../navigation/routes";
+import Screen from "../../components/Screen";
+import AppText from "../../components/Text";
+import TagPick from "../../components/TagPick";
 import { useTheme } from "react-native-paper";
-import SearchBar from "./../components/SearchBar";
+import SearchBar from "../../components/SearchBar";
 import { MaterialIcons } from "@expo/vector-icons";
-import Cart from "../components/Cart";
-import cache from "../utility/cache";
-import settings from "../config/settings";
+import Cart from "../../components/Cart";
+import cache from "../../utility/cache";
+import settings from "../../config/settings";
 // import Slider from "@react-native-community/slider";
 
 function ListingsScreen({ navigation }) {

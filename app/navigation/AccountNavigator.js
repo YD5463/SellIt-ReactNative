@@ -1,9 +1,9 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import AccountScreen from "../screens/AccountScreen";
+import AccountScreen from "../screens/Settings/AccountScreen";
 import AccountListingsScreen from "./../screens/AccountListingsScreen";
 import EditProfileScreen from "./../screens/EditProfileScreen";
-import OrderedListingsScreen from "./../screens/OrderedListingsScreen";
+import OrderedListingsScreen from "../screens/Listings/OrderedListingsScreen";
 import ChatNavigator from "./ChatNavigator";
 
 const Stack = createStackNavigator();

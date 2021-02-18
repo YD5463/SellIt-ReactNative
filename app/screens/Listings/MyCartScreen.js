@@ -6,15 +6,15 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import ViewCartItem from "../components/ViewCartItem";
-import Screen from "./../components/Screen";
+import ViewCartItem from "../../components/ViewCartItem";
+import Screen from "../../components/Screen";
 import { useTheme } from "react-native-paper";
-import Text from "../components/Text";
-import { ListItemSeparator } from "../components/lists";
-import AppButton from "../components/Button";
-import cache from "../utility/cache";
-import settings from "../config/settings";
-import routes from "../navigation/routes";
+import Text from "../../components/Text";
+import { ListItemSeparator } from "../../components/lists";
+import AppButton from "../../components/Button";
+import cache from "../../utility/cache";
+import settings from "../../config/settings";
+import routes from "../../navigation/routes";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { TouchableWithoutFeedback } from "react-native";

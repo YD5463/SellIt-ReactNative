@@ -1,16 +1,16 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import Text from "../components/Text";
-import Screen from "./../components/Screen";
+import Text from "../../components/Text";
+import Screen from "../../components/Screen";
 import { useTheme } from "react-native-paper";
-import { Form, SubmitButton, FormField } from "../components/forms";
+import { Form, SubmitButton, FormField } from "../../components/forms";
 import * as Yup from "yup";
 import { Ionicons } from "@expo/vector-icons";
-import RectTextInput from "./../components/TextInputs/RectTextInput";
-import useApi from "./../hooks/useApi";
-import checkout from "../api/checkout";
+import RectTextInput from "../../components/TextInputs/RectTextInput";
+import useApi from "../../hooks/useApi";
+import checkout from "../../api/checkout";
 import { useToast } from "react-native-styled-toast";
-import GoBackButton from "../components/GoBackButton";
+import GoBackButton from "../../components/GoBackButton";
 
 Yup.addMethod(Yup.string, "integer", function () {
   return this.matches(/^\d+$/, "The field should have digits only");

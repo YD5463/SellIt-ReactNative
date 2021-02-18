@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useContext } from "react";
 import { StyleSheet, View, FlatList } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ListItem, ListItemSeparator } from "../components/lists";
-import Icon from "../components/Icon";
-import routes from "../navigation/routes";
-import Screen from "../components/Screen";
-import useAuth from "../auth/useAuth";
+import { ListItem, ListItemSeparator } from "../../components/lists";
+import Icon from "../../components/Icon";
+import routes from "../../navigation/routes";
+import Screen from "../../components/Screen";
+import useAuth from "../../auth/useAuth";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
 import { Image } from "react-native-expo-image-cache";
-import storage from "../auth/storage";
+import storage from "../../auth/storage";
 
 const menuItems = [
   {

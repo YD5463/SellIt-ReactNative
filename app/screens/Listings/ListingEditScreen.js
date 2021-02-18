@@ -7,16 +7,16 @@ import {
   FormField,
   FormPicker as Picker,
   SubmitButton,
-} from "../components/forms";
-import CategoryPickerItem from "../components/CategoryPickerItem";
-import Screen from "../components/Screen";
-import FormImagePicker from "../components/forms/FormImagePicker";
-import listingsApi from "../api/listings";
-import categoriesApi from "../api/categories";
-import useLocation from "../hooks/useLocation";
-import UploadScreen from "./UploadScreen";
-import useApi from "./../hooks/useApi";
-import ActivityIndicator from "../components/ActivityIndicator";
+} from "../../components/forms";
+import CategoryPickerItem from "../../components/CategoryPickerItem";
+import Screen from "../../components/Screen";
+import FormImagePicker from "../../components/forms/FormImagePicker";
+import listingsApi from "../../api/listings";
+import categoriesApi from "../../api/categories";
+import useLocation from "../../hooks/useLocation";
+import UploadScreen from "../UploadScreen";
+import useApi from "../../hooks/useApi";
+import ActivityIndicator from "../../components/ActivityIndicator";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),

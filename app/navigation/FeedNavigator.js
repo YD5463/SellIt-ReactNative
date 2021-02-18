@@ -1,12 +1,12 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import ListingsScreen from "../screens/ListingsScreen";
-import ListingDetailsScreen from "../screens/ListingDetailsScreen";
+import ListingsScreen from "../screens/Listings/ListingsScreen";
+import ListingDetailsScreen from "../screens/Listings/ListingDetailsScreen";
 import ViewImageScreen from "./../screens/ViewImageScreen";
-import MyCartScreen from "./../screens/MyCartScreen";
-import CheckoutScreen from "./../screens/CheckoutScreen";
-import AddPaymentMethodScreen from "./../screens/AddPaymentMethodScreen";
-import AddAddressScreen from "./../screens/AddAddressScreen";
+import MyCartScreen from "../screens/Listings/MyCartScreen";
+import CheckoutScreen from "../screens/Listings/CheckoutScreen";
+import AddPaymentMethodScreen from "../screens/Listings/AddPaymentMethodScreen";
+import AddAddressScreen from "../screens/Listings/AddAddressScreen";
 import OptionsPickerScreen from "./../screens/OptionsPickerScreen";
 
 const Stack = createStackNavigator();
