@@ -35,7 +35,7 @@ function Keyboard({ sendMessage, sendRecording, onPressCamera }) {
 
   return (
     <>
-      <AttachmentModal visible={visible} />
+      <AttachmentModal visible={visible} setVisible={setVisible} />
 
       <View style={styles.allKeyboard}>
         <View style={[styles.keyboard, { height: initHeight }]}>
@@ -70,7 +70,6 @@ function Keyboard({ sendMessage, sendRecording, onPressCamera }) {
           <TouchableOpacity
             onPress={() => {
               setVisible(!visible);
-              console.log("im heer", visible);
             }}
           >
             <Entypo name="attachment" size={24} color={colors.medium} />

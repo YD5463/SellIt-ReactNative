@@ -1,5 +1,12 @@
-import React from "react";
-import { View, StyleSheet, Modal, FlatList } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  StyleSheet,
+  Modal,
+  FlatList,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import {
   Ionicons,
   MaterialCommunityIcons,
@@ -48,30 +55,41 @@ const options = [
     IconComponent: MaterialIcons,
   },
 ];
-function AttachmentModal({ visible }) {
+function AttachmentModal({ visible, setVisible }) {
+  if (!visible) return null;
   return (
     <Modal
       visible={visible}
       animationType="slide"
       transparent={true}
-      onRequestClose={() => {}}
+      onRequestClose={() => console.log("closing...")}
     >
-      <View style={styles.container}>
-        <FlatList
-          data={options}
-          keyExtractor={(option) => option.name}
-          numColumns={3}
-          renderItem={({ item }) => (
-            <CategoryPickerItem
-              item={item}
-              onPress={() => {}}
-              iconSize={55}
-              labelStyle={styles.label}
-              iconSizeRatio={0.5}
+      <TouchableOpacity
+        style={{ flex: 1 }}
+        activeOpacity={1}
+        onPressOut={() => {
+          setVisible(false);
+        }}
+      >
+        <TouchableWithoutFeedback>
+          <View style={styles.container}>
+            <FlatList
+              data={options}
+              keyExtractor={(option) => option.name}
+              numColumns={3}
+              renderItem={({ item }) => (
+                <CategoryPickerItem
+                  item={item}
+                  onPress={() => {}}
+                  iconSize={55}
+                  labelStyle={styles.label}
+                  iconSizeRatio={0.5}
+                />
+              )}
             />
-          )}
-        />
-      </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </TouchableOpacity>
     </Modal>
   );
 }
