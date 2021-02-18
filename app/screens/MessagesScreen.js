@@ -91,6 +91,20 @@ function MessagesScreen({ navigation, route }) {
   useEffect(() => {
     initData();
   }, []);
+  const onDocument = () => {
+    console.log("onDocument");
+  };
+  const onCamera = () => {
+    console.log("onCamera");
+  };
+  const onGallery = () => {
+    console.log("onGallery");
+  };
+  const onAudio = () => {
+    console.log("onAudio");
+  };
+  const onLocation = () => {};
+  const onContact = () => {};
   return (
     <ImageBackground
       source={require("../assets/chatBackground.png")}
@@ -126,6 +140,14 @@ function MessagesScreen({ navigation, route }) {
               onPressCamera={() =>
                 navigation.navigate(routes.CAMERA, { sendImage })
               }
+              buttonsCallback={{
+                onDocument,
+                onCamera,
+                onGallery,
+                onAudio,
+                onLocation,
+                onContact,
+              }}
             />
           </KeyboardAvoidingView>
         </View>

@@ -15,7 +15,12 @@ import AttachmentModal from "./AttachmentModal";
 
 const initHeight = 45;
 
-function Keyboard({ sendMessage, sendRecording, onPressCamera }) {
+function Keyboard({
+  sendMessage,
+  sendRecording,
+  onPressCamera,
+  buttonsCallback,
+}) {
   const { colors } = useTheme();
   const [draftMessage, setDraftMessage] = useState("");
   const [recordingTime, setRecordingTime] = useState(0);
@@ -35,7 +40,11 @@ function Keyboard({ sendMessage, sendRecording, onPressCamera }) {
 
   return (
     <>
-      <AttachmentModal visible={visible} setVisible={setVisible} />
+      <AttachmentModal
+        visible={visible}
+        setVisible={setVisible}
+        buttonsCallback={buttonsCallback}
+      />
 
       <View style={styles.allKeyboard}>
         <View style={[styles.keyboard, { height: initHeight }]}>
