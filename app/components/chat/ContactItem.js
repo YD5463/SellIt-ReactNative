@@ -10,27 +10,33 @@ const imageSize = 50;
 function ContactItem({ contactData }) {
   return (
     <TouchableOpacity>
-      {contactData.imageAvailable ? (
-        <Image />
-      ) : (
-        <Icon
-          name="user"
-          iconColor={colors.white}
-          IconComponent={FontAwesome}
-          backgroundColor={colors.contactBackground}
-          size={50}
-        />
-      )}
-      <View style={styles.container}>
-        <Text style={styles.name}>{contactData.name}</Text>
+      <View style={styles.main}>
+        {contactData.imageAvailable ? (
+          <Image />
+        ) : (
+          <Icon
+            name="user"
+            iconColor={colors.white}
+            IconComponent={FontAwesome}
+            backgroundColor={colors.contactBackground}
+            size={50}
+          />
+        )}
+        <View style={styles.container}>
+          <Text style={styles.name}>{contactData.name}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  main: {
     padding: 15,
+    flexDirection: "row",
+  },
+  container: {
+    padding: 10,
   },
   name: {
     alignSelf: "flex-start",
