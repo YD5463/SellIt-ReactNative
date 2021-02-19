@@ -1,27 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
-import colors from "../../config/colors";
 import Text from "../Text";
-import Icon from "./../Icon";
-import { FontAwesome } from "@expo/vector-icons";
+import PickedSign from "./PickedSign";
+import DefualtUserImage from "./DefualtUserImage";
 
 const imageSize = 50;
 
-function ContactItem({ contactData }) {
+function ContactItem({ contactData, addItem, removeItem }) {
+  const [isPicked, setIspicked] = useState(false);
+  const onPress = () => {
+    isPicked ? removeItem() : addItem();
+    setIspicked(!isPicked);
+  };
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View style={styles.main}>
-        {contactData.imageAvailable ? (
-          <Image />
-        ) : (
-          <Icon
-            name="user"
-            iconColor={colors.white}
-            IconComponent={FontAwesome}
-            backgroundColor={colors.contactBackground}
-            size={50}
-          />
-        )}
+        <View>
+          {contactData.imageAvailable ? <Image /> : <DefualtUserImage />}
+          {isPicked && <PickedSign />}
+        </View>
         <View style={styles.container}>
           <Text style={styles.name}>{contactData.name}</Text>
         </View>

@@ -71,6 +71,9 @@ const init = () => {
             picture: "Picture",
             today: "today",
             yesterday: "yesterday",
+            sendContactTitle: "Add Contact",
+            sendContactSubTitle:
+              "Do you Want to add this contact to your device?",
           },
         },
         he: {
@@ -137,6 +140,8 @@ const init = () => {
             picture: "תמונה",
             yesterday: "אתמול",
             today: "היום",
+            sendContactTitle: "הוספת איש קשר",
+            sendContactSubTitle: "האם אתה רוצה להוסיף את איש קשר זה למכשירך?",
           },
         },
       },

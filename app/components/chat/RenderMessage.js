@@ -42,7 +42,11 @@ function RenderMessage({ item, lastMessageDate, userId }) {
       return <ContactMessage meesageData={item} />;
     return <View></View>; //location
   };
-
+  const getWidth = () => {
+    if (item.contentType === contentTypes.IMAGE) return { width: "75%" };
+    else if (item.contentType === contentTypes.CONTACT) return { width: "70%" };
+    return { maxWidth: "48%" };
+  };
   return (
     <>
       {firstMesageInDate() && (
@@ -53,7 +57,7 @@ function RenderMessage({ item, lastMessageDate, userId }) {
       <View
         style={[
           styles.container,
-          item.contentType === "image" ? { width: "75%" } : { maxWidth: "48%" },
+          getWidth(),
           isFrom ? { alignSelf: "flex-end" } : {},
         ]}
       >

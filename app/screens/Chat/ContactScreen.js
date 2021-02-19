@@ -12,9 +12,16 @@ import ListItemSeparator from "./../../components/lists/ListItemSeparator";
 import colors from "../../config/colors";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import Text from "../../components/Text";
+import ActivityIndicator from "./../../components/ActivityIndicator";
+import Icon from "./../../components/Icon";
 
-function ContactScreen({ navigation }) {
+function ContactScreen({ navigation, route }) {
+  const { sendContact } = route.params;
+
   const [contacts, setContacts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [pickedItems, setPickedItems] = useState([]);
+
   const getPlatformBack = () =>
     Platform.OS === "android" ? "md-arrow-round-back" : "ios-arrow-back";
 
@@ -37,7 +44,9 @@ function ContactScreen({ navigation }) {
           </TouchableOpacity>
           <View style={styles.headerTextView}>
             <Text style={{ color: "white" }}>Contact To Send</Text>
-            <Text style={styles.pickedCount}>0 Picked</Text>
+            <Text
+              style={styles.pickedCount}
+            >{`${pickedItems.length} Picked`}</Text>
           </View>
         </View>
       ),
@@ -48,6 +57,7 @@ function ContactScreen({ navigation }) {
   const init = async () => {
     const permission = await Contacts.requestPermissionsAsync();
     if (permission.granted) {
+      setLoading(true);
       const { data } = await Contacts.getContactsAsync({
         fields: [
           Contacts.Fields.Emails,
@@ -56,23 +66,51 @@ function ContactScreen({ navigation }) {
           Contacts.Fields.LastName,
         ],
       });
+      data.sort((a, b) => a.name.localeCompare(b.name));
+      setLoading(false);
       setContacts(data);
     }
+  };
+  const onSend = () => {
+    sendContact(pickedItems);
+    navigation.goBack();
   };
   useEffect(() => {
     init();
   }, []);
   return (
     <View style={styles.container}>
-      {contacts.length === 0 ? (
+      <ActivityIndicator visible={loading} />
+      {contacts.length === 0 && !loading ? (
         <Text>No contacts to display</Text>
       ) : (
         <FlatList
           data={contacts}
           keyExtractor={(contact) => contact.id}
-          renderItem={({ item }) => <ContactItem contactData={item} />}
+          renderItem={({ item }) => (
+            <ContactItem
+              contactData={item}
+              addItem={() => setPickedItems([...pickedItems, item])}
+              removeItem={() =>
+                setPickedItems(pickedItems.filter((c) => c.id !== item.id))
+              }
+            />
+          )}
           ItemSeparatorComponent={ListItemSeparator}
         />
+      )}
+      {pickedItems.length !== 0 && (
+        <View style={styles.send}>
+          <TouchableOpacity onPress={onSend}>
+            <Icon
+              name="send"
+              size={60}
+              iconColor="white"
+              backgroundColor={colors.primary}
+              iconSizeRatio={0.5}
+            />
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   );
@@ -90,6 +128,11 @@ const styles = StyleSheet.create({
   },
   headerTextView: {
     paddingLeft: 15,
+  },
+  send: {
+    position: "absolute",
+    left: 20,
+    bottom: 20,
   },
 });
 

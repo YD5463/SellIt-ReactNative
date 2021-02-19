@@ -79,7 +79,15 @@ function MessagesScreen({ navigation, route }) {
     }
     setMessages([...messages, ...newMessages]);
   };
-  const sendContact = (contactListData) => {};
+  const sendContact = (contactListData) => {
+    const newMessages = [];
+    for (let contactData of contactListData) {
+      newMessages.push(
+        generateMessage(contentTypes.CONTACT, contactData.name, contactData)
+      );
+    }
+    setMessages([...messages, ...newMessages]);
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
