@@ -8,6 +8,7 @@ import colors from "../config/colors";
 import Text from "./Text";
 import moment from "moment";
 import Icon from "./Icon";
+import contentTypes from "../config/contentTypes";
 
 const imageSize = 65;
 
@@ -15,16 +16,17 @@ function ContactChat({ item, onPress }) {
   const { colors } = useTheme();
   const { t } = useTranslation();
 
+  //todo: move this function to a reusable place
   const displayContent = () => {
     const type = item.lastMessage.contentType;
     let text = "";
     let icon = "";
-    if (type === "text") {
+    if (type === contentTypes.TEXT) {
       text = item.lastMessage.content;
-    } else if (type === "image") {
+    } else if (type === contentTypes.IMAGE) {
       text = "Picture";
       icon = "image";
-    } else if (type === "audio") {
+    } else if (type === contentTypes.AUDIO) {
       text = item.lastMessage.content.duration;
       icon = "microphone";
     } else {

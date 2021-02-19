@@ -59,7 +59,7 @@ function AudioPicker({ navigation, route }) {
   }, [currSong]);
 
   const onSend = () => {
-    sendAudio(audioList);
+    sendAudio(pickedAudio);
     navigation.goBack();
   };
   const onPickItem = (item) => {
@@ -70,7 +70,6 @@ function AudioPicker({ navigation, route }) {
   const unpickItem = (item) => {
     setPickedAudio(pickedAudio.filter((audio) => audio.uri !== item.uri));
   };
-  console.log(pickedAudio);
 
   return (
     <View style={styles.container}>

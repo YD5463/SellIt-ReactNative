@@ -11,4 +11,5 @@ export default {
   hardLight: "#606060",
   green: "#00C92F",
   audio: "#EC8E12",
+  contactBackground: "#C0C0C0",
 };

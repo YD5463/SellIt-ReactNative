@@ -9,7 +9,8 @@ import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
 import colors from "../../config/colors";
-// import helper from "../../utility/helper";
+import contentTypes from "../../config/contentTypes";
+import ContactMessage from "./ContactMessage";
 
 function RenderMessage({ item, lastMessageDate, userId }) {
   const { dateTime } = item;
@@ -31,10 +32,15 @@ function RenderMessage({ item, lastMessageDate, userId }) {
   };
 
   const render = () => {
-    if (item.contentType === "text") return <TextMessage meesageData={item} />;
-    else if (item.contentType === "audio")
+    if (item.contentType === contentTypes.TEXT)
+      return <TextMessage meesageData={item} />;
+    else if (item.contentType === contentTypes.AUDIO)
       return <AudioMessage content={item.content} duration={item.duration} />;
-    else return <ImageMessage meesageData={item} />;
+    else if (item.contentType === contentTypes.IMAGE)
+      return <ImageMessage meesageData={item} />;
+    else if (item.contentType === contentTypes.CONTACT)
+      return <ContactMessage meesageData={item} />;
+    return <View></View>; //location
   };
 
   return (

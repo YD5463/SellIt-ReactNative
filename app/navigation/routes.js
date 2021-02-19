@@ -27,4 +27,5 @@ export default Object.freeze({
   CHATS: "Chats",
   CAMERA: "Camera",
   AUDIO_PICKER: "AudioList",
+  CONTACTS_LIST: "ContactList",
 });

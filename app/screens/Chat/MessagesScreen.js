@@ -21,7 +21,7 @@ import ActivityIndicator from "../../components/ActivityIndicator";
 import RenderMessage from "../../components/chat/RenderMessage";
 import moment from "moment";
 import routes from "../../navigation/routes";
-import ImageMessage from "../../components/chat/ImageMessage";
+import contentTypes from "../../config/contentTypes";
 
 function MessagesScreen({ navigation, route }) {
   const [socket, setSocket] = useState();
@@ -38,33 +38,49 @@ function MessagesScreen({ navigation, route }) {
   const [loading, setLoading] = useState(false);
   const messageListRef = useRef();
 
-  const addMessage = (contentType, content, other = {}) => {
-    setMessages([
-      ...messages,
-      {
-        content: content,
-        contentType: contentType,
-        dateTime: moment().toString(),
-        fromUserId: userId,
-        toUserId: contactId,
-        ...other,
-      },
-    ]);
+  const generateMessage = (contentType, content, other = {}) => {
+    return {
+      content: content,
+      contentType: contentType,
+      dateTime: moment().toString(),
+      fromUserId: userId,
+      toUserId: contactId,
+      ...other,
+    };
   };
   const sendMessage = (message) => {
     //call the api
-    addMessage("text", message);
+    const newMessage = generateMessage(contentTypes.TEXT, message);
+    setMessages([...messages, newMessage]);
     // socket.emit("chat message", { message, contactId });
   };
   const sendRecording = (uri, duration) => {
     console.log("duration: ", duration);
-    addMessage("audio", uri, { duration: duration });
+    const newMessage = generateMessage(contentTypes.AUDIO, uri, {
+      duration: duration,
+    });
+    setMessages([...messages, newMessage]);
     // socket.emit("chat message", "this.state.chatMessage");
   };
   const sendImage = (imageData) => {
-    addMessage("image", imageData.base64);
+    const newMessage = generateMessage(contentTypes.IMAGE, imageData.base64);
+    setMessages([...messages, newMessage]);
   };
-  const sendAudio = (audioData) => {};
+  const sendAudio = (audioDataList) => {
+    const newMessages = [];
+    for (let audioData of audioDataList) {
+      //todo: add custom music audio message
+      newMessages.push(
+        generateMessage(contentTypes.AUDIO, audioData.uri, {
+          name: audioData.filename.slice(0, -4),
+          duration: audioData.duration,
+        })
+      );
+    }
+    setMessages([...messages, ...newMessages]);
+  };
+  const sendContact = (contactListData) => {};
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerStyle: {
@@ -97,6 +113,7 @@ function MessagesScreen({ navigation, route }) {
   };
   const onCamera = () => {
     console.log("onCamera");
+    navigation.navigate(routes.CAMERA, { sendImage });
   };
   const onGallery = () => {
     console.log("onGallery");
@@ -106,7 +123,9 @@ function MessagesScreen({ navigation, route }) {
     navigation.navigate(routes.AUDIO_PICKER, { contactName, sendAudio });
   };
   const onLocation = () => {};
-  const onContact = () => {};
+  const onContact = () => {
+    navigation.navigate(routes.CONTACTS_LIST, { contactName, sendContact });
+  };
   return (
     <ImageBackground
       source={require("../../assets/chatBackground.png")}
