@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { FlatList, StyleSheet, View, TouchableOpacity } from "react-native";
 
 import ActivityIndicator from "../../components/ActivityIndicator";
 import Button from "../../components/Button";
@@ -22,6 +17,7 @@ import Cart from "../../components/Cart";
 import cache from "../../utility/cache";
 import settings from "../../config/settings";
 // import Slider from "@react-native-community/slider";
+import FilterListingsModal from "./../../components/FilterListingsModal";
 
 function ListingsScreen({ navigation }) {
   const { colors } = useTheme();
@@ -34,6 +30,8 @@ function ListingsScreen({ navigation }) {
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState({});
   const [cartSize, setCartSize] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
+
   const setCachedCart = async () => {
     const cachedCart = await cache.get(settings.CartCacheKey, false);
     if (cachedCart) {
@@ -96,10 +94,41 @@ function ListingsScreen({ navigation }) {
     setSearch(val);
     setListing(getFilteredListing(val, filterdCategories));
   };
+  const [minPrice, setMinPrice] = useState();
+  const [maxPrice, setMaxPrice] = useState();
+
+  useEffect(() => {
+    let min, max;
+    for (let element of listing) {
+      if (!min || element.price < min) min = element.price;
+      if (!max || element.price > max) max = element.price;
+    }
+    setMinPrice(min);
+    setMaxPrice(max);
+  }, [listing]);
+  const onAdvencedFilter = (minPrice, maxPrice) => {
+    //todo: filter for the rate also
+    console.log(minPrice, "  ", maxPrice);
+
+    setListing(
+      originalListing.filter(
+        (element) =>
+          parseInt(element.price, 10) >= minPrice &&
+          parseInt(element.price, 10) <= maxPrice
+      )
+    );
+  };
   return (
     <>
       <ActivityIndicator visible={loading} />
       <Screen style={[styles.screen, { backgroundColor: colors.light }]}>
+        <FilterListingsModal
+          visible={modalVisible}
+          setVisible={setModalVisible}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          onFilterChanged={onAdvencedFilter}
+        />
         <View style={styles.head}>
           <Cart
             elementsNumber={cartSize}
@@ -110,9 +139,9 @@ function ListingsScreen({ navigation }) {
 
           <SearchBar search={search} onChange={searchFilter} width="85%" />
           <View style={{ marginLeft: 5 }}>
-            <TouchableWithoutFeedback onPress={() => {}}>
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
               <MaterialIcons name="sort" size={30} color={colors.medium} />
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
           </View>
         </View>
 
