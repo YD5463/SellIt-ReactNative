@@ -28,4 +28,5 @@ export default Object.freeze({
   CAMERA: "Camera",
   AUDIO_PICKER: "AudioList",
   CONTACTS_LIST: "ContactList",
+  DOCUMENT_PICKER: "DocumentPicker",
 });

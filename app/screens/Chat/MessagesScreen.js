@@ -22,6 +22,7 @@ import RenderMessage from "../../components/chat/RenderMessage";
 import moment from "moment";
 import routes from "../../navigation/routes";
 import contentTypes from "../../config/contentTypes";
+import * as ImagePicker from "expo-image-picker";
 
 function MessagesScreen({ navigation, route }) {
   const [socket, setSocket] = useState();
@@ -88,6 +89,7 @@ function MessagesScreen({ navigation, route }) {
     }
     setMessages([...messages, ...newMessages]);
   };
+  const sendDocument = (documentData) => {};
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -118,6 +120,7 @@ function MessagesScreen({ navigation, route }) {
   }, []);
   const onDocument = () => {
     console.log("onDocument");
+    navigation.navigate(routes.DOCUMENT_PICKER, { contactName, sendDocument });
   };
   const onCamera = () => {
     console.log("onCamera");
@@ -125,6 +128,7 @@ function MessagesScreen({ navigation, route }) {
   };
   const onGallery = () => {
     console.log("onGallery");
+    //use image picker here
   };
   const onAudio = () => {
     console.log("onAudio");
