@@ -9,10 +9,7 @@ import {
 function ImageMessage({ meesageData }) {
   return (
     <TouchableWithoutFeedback onPress={() => console.log("im here")}>
-      <Image
-        style={styles.container}
-        source={{ uri: `data:image/jpg;base64,${meesageData.content}` }}
-      />
+      <Image style={styles.container} source={{ uri: meesageData.content }} />
     </TouchableWithoutFeedback>
   );
 }

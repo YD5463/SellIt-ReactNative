@@ -64,7 +64,7 @@ function MessagesScreen({ navigation, route }) {
     // socket.emit("chat message", "this.state.chatMessage");
   };
   const sendImage = (imageData) => {
-    const newMessage = generateMessage(contentTypes.IMAGE, imageData.base64);
+    const newMessage = generateMessage(contentTypes.IMAGE, imageData.uri);
     setMessages([...messages, newMessage]);
   };
   const sendAudio = (audioDataList) => {
