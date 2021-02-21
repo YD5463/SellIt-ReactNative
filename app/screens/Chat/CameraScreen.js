@@ -11,10 +11,15 @@ import {
 import { Camera } from "expo-camera";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 // import * as FileSystem from "expo-file-system";
+import * as FileSystem from "expo-file-system";
 
 import ResizableImage from "../../components/ResizableImage";
 import colors from "../../config/colors";
 import ImagesList from "../../components/chat/ImagesList";
+import contentTypes from "../../config/contentTypes";
+
+//todo: move this...
+const APP_ASSETS_URI = "file://Sellit";
 
 function CameraScreen({ navigation, route }) {
   const { sendImage } = route.params;
@@ -71,9 +76,25 @@ function CameraScreen({ navigation, route }) {
         : Camera.Constants.Type.back
     );
   };
+  const saveAssets = async (type, filename) => {
+    const photo = await cameraRef.current.takePictureAsync();
+    const dir = `${FileSystem.documentDirectory}${type}`;
+    const uri = `${dir}//${filename}`;
+    try {
+      FileSystem.makeDirectoryAsync(dir);
+    } catch (e) {
+      console.log("bugggg ", e);
+    }
+    await FileSystem.moveAsync({
+      from: photo.uri,
+      to: uri,
+    });
+    return uri;
+  };
   const onTakePicture = async () => {
     setPictureTaken(true);
     const photo = await cameraRef.current.takePictureAsync();
+    photo.uri = await saveAssets(contentTypes.IMAGE, photo.name);
     setPictureTaken(false);
     setPhoto(photo);
   };
