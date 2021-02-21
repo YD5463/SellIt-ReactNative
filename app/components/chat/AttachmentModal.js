@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     height: 220,
     position: "absolute",
     borderRadius: 15,
-    bottom: 120,
+    bottom: "17%",
   },
   label: {
     textAlign: "center",

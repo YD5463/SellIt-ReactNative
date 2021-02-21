@@ -13,8 +13,10 @@ function AudioPicker({ navigation, route }) {
   const [currSong, setCurrSong] = useState();
   const [playingSongUri, setPlayingSongUri] = useState();
   const [pickedAudio, setPickedAudio] = useState([]);
-
+  const [cursor, setCursor] = useState();
+  const [audioList, setAudioList] = useState([]);
   const { contactName, sendAudio } = route.params;
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerStyle: {
@@ -23,22 +25,32 @@ function AudioPicker({ navigation, route }) {
       title: `Sending to ${contactName}`,
     });
   });
-  const [audioList, setAudioList] = useState([]);
+  const addPage = async () => {
+    const after = cursor ? { after: cursor } : {};
+    const audio = await MediaLibrary.getAssetsAsync({
+      mediaType: MediaLibrary.MediaType.audio,
+      first: 150,
+      ...after,
+    });
+    setAudioList([...audioList, ...audio.assets]);
+    if (audio.hasNextPage) setCursor(audio.endCursor);
+  };
   const initAudio = async () => {
     const permission = await MediaLibrary.requestPermissionsAsync();
     if (permission.granted) {
-      const audio = await MediaLibrary.getAssetsAsync({
-        mediaType: MediaLibrary.MediaType.audio,
-      });
-      setAudioList(audio.assets);
+      await addPage();
     }
   };
+  useEffect(() => {
+    addPage();
+  }, [cursor]);
   const playSong = async (uri) => {
     console.log("im here");
     if (currSong) {
       await currSong.unloadAsync();
     }
     const { sound } = await Audio.Sound.createAsync({ uri: uri });
+    //todo: add animation by the duration
     // sound.setOnPlaybackStatusUpdate((status) =>
     //   setPosition(status.positionMillis / status.durationMillis)
     // );
