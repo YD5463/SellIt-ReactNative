@@ -59,8 +59,10 @@ function Keyboard({
           </View>
           <View style={{ flex: 1 }}>
             {recordingTime !== 0 ? (
-              <View>
-                <Text>{dispalyRecordTime()}</Text>
+              <View style={{ alignItems: "flex-end", padding: 3 }}>
+                <Text style={{ color: colors.medium }}>
+                  {dispalyRecordTime()}
+                </Text>
               </View>
             ) : (
               <TextInput

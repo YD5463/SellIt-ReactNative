@@ -11,21 +11,29 @@ function AudioMessage({ content, duration }) {
   const { colors } = useTheme();
   const [sound, setSound] = useState();
   const [position, setPosition] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
   // console.log(content);
 
   const playSound = async () => {
-    console.log("Loading Sound");
-    const { sound } = await Audio.Sound.createAsync({ uri: content });
-    sound.setOnPlaybackStatusUpdate((status) =>
-      setPosition(status.positionMillis / status.durationMillis)
-    );
-    setSound(sound);
-
-    console.log("Playing Sound");
-    await sound.playAsync();
+    setIsPlaying(true);
+    if (!sound) {
+      console.log("Loading Sound");
+      const { sound: createdSound } = await Audio.Sound.createAsync({
+        uri: content,
+      });
+      createdSound.setOnPlaybackStatusUpdate((status) => {
+        setPosition(status.positionMillis / status.durationMillis);
+      });
+      setSound(createdSound);
+      await createdSound.playAsync();
+    } else {
+      console.log("Playing Sound");
+      await sound.playAsync();
+    }
   };
 
   const pauseSound = () => {
+    setIsPlaying(false);
     sound.pauseAsync();
   };
   useEffect(() => {
@@ -37,11 +45,20 @@ function AudioMessage({ content, duration }) {
       : undefined;
   }, [sound]);
   let animation = useRef(new Animated.Value(0));
+  const resetSound = async () => {
+    await sound.setPositionAsync(0);
+    await sound.pauseAsync();
+  };
   useEffect(() => {
     Animated.timing(animation.current, {
       toValue: position,
-      duration: 50,
+      duration: 10,
     }).start();
+    if (position === 1) {
+      resetSound();
+      setPosition(0);
+      setIsPlaying(false);
+    }
   }, [position]);
 
   const left = animation.current.interpolate({
@@ -56,11 +73,9 @@ function AudioMessage({ content, duration }) {
       </View>
 
       <View style={styles.btn}>
-        <TouchableOpacity
-          onPress={!sound || !sound.isPlaying ? playSound : pauseSound}
-        >
+        <TouchableOpacity onPress={!isPlaying ? playSound : pauseSound}>
           <FontAwesome5
-            name={!sound || !sound.isPlaying ? "play" : "stop"}
+            name={!isPlaying ? "play" : "stop"}
             size={28}
             color={colors.medium}
           />
