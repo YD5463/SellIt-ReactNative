@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import colors from "../../config/colors";
-import Icon from './../Icon';
+import colors from "../../../config/colors";
+import Icon from '../../Icon';
 
 function PickedSign(props) {
   return (

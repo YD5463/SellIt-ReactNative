@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useLayoutEffect } from "react";
 import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import * as MediaLibrary from "expo-media-library";
-import AudioListItem from "../../components/chat/AudioListItem";
+import AudioListItem from "../../components/chat/Items/AudioListItem";
 import ListItemSeparator from "./../../components/lists/ListItemSeparator";
 import { Audio } from "expo-av";
 import Icon from "../../components/Icon";

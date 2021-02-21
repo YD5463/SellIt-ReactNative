@@ -7,7 +7,7 @@ import {
   Platform,
 } from "react-native";
 import * as Contacts from "expo-contacts";
-import ContactItem from "./../../components/chat/ContactItem";
+import ContactItem from "../../components/chat/Items/ContactItem";
 import ListItemSeparator from "./../../components/lists/ListItemSeparator";
 import colors from "../../config/colors";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";

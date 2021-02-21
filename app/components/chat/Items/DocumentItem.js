@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import Text from "../Text";
+import Text from "../../Text";
 
 function DocumentItem({ documentData, addItem, removeItem }) {
   return (

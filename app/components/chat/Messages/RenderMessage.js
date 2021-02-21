@@ -3,13 +3,13 @@ import { View, StyleSheet } from "react-native";
 import ImageMessage from "./ImageMessage";
 import AudioMessage from "./AudioMessage";
 import TextMessage from "./TextMessage";
-import Text from "../Text";
+import Text from "../../Text";
 
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
-import colors from "../../config/colors";
-import contentTypes from "../../config/contentTypes";
+import colors from "../../../config/colors";
+import contentTypes from "../../../config/contentTypes";
 import ContactMessage from "./ContactMessage";
 
 function RenderMessage({ item, lastMessageDate, userId }) {

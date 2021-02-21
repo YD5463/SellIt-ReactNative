@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import ResizableImage from "../../ResizableImage";
 import {
   View,
   StyleSheet,
@@ -7,8 +8,9 @@ import {
 } from "react-native";
 
 function ImageMessage({ meesageData }) {
+  const [fullScreen, setFullScreen] = useState(false);
   return (
-    <TouchableWithoutFeedback onPress={() => console.log("im here")}>
+    <TouchableWithoutFeedback onPress={() => setFullScreen(true)}>
       <Image style={styles.container} source={{ uri: meesageData.content }} />
     </TouchableWithoutFeedback>
   );

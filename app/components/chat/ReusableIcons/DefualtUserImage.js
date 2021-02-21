@@ -1,7 +1,7 @@
 import React from "react";
-import Icon from "./../Icon";
+import Icon from "../../Icon";
 import { FontAwesome } from "@expo/vector-icons";
-import colors from "../../config/colors";
+import colors from "../../../config/colors";
 
 function DefualtUserImage({ size = 50 }) {
   return (

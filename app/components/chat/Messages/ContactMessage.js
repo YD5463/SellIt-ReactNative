@@ -1,8 +1,8 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Alert } from "react-native";
-import colors from "../../config/colors";
-import Text from "../Text";
-import DefualtUserImage from "./DefualtUserImage";
+import colors from "../../../config/colors";
+import Text from "../../Text";
+import DefualtUserImage from "../ReusableIcons/DefualtUserImage";
 import * as Contacts from "expo-contacts";
 import { useTranslation } from 'react-i18next';
 

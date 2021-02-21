@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
-import Text from "../Text";
-import PickedSign from "./PickedSign";
-import DefualtUserImage from "./DefualtUserImage";
+import Text from "../../Text";
+import PickedSign from "../ReusableIcons/PickedSign";
+import DefualtUserImage from "../ReusableIcons/DefualtUserImage";
 
 const imageSize = 50;
 

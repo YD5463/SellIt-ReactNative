@@ -7,10 +7,10 @@ import {
   TouchableHighlight,
   Image,
 } from "react-native";
-import colors from "../../config/colors";
-import Text from "../Text";
-import Icon from "../Icon";
-import helper from "../../utility/helper";
+import colors from "../../../config/colors";
+import Text from "../../Text";
+import Icon from "../../Icon";
+import helper from "../../../utility/helper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 function AudioListItem({

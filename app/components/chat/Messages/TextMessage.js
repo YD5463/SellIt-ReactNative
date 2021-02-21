@@ -1,9 +1,9 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import Text from "../Text";
+import Text from "../../Text";
 import moment from "moment";
 import { useTheme } from "react-native-paper";
-import colors from "../../config/colors";
+import colors from "../../../config/colors";
 
 function TextMessage({ meesageData }) {
   const { content, dateTime } = meesageData;

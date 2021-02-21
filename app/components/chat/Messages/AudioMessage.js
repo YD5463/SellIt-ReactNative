@@ -3,9 +3,9 @@ import { View, StyleSheet, TouchableOpacity, Animated } from "react-native";
 import { useTheme } from "react-native-paper";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Audio } from "expo-av";
-import colors from "../../config/colors";
-import Text from "../Text";
-import helper from "../../utility/helper";
+import colors from "../../../config/colors";
+import Text from "../../Text";
+import helper from "../../../utility/helper";
 
 function AudioMessage({ content, duration }) {
   const { colors } = useTheme();
