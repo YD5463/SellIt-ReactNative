@@ -13,22 +13,27 @@ import DefualtUserImage from "../ReusableIcons/DefualtUserImage";
 
 const imageSize = 60;
 
-function ContactChat({ item, onPress }) {
+function ContactChat({
+  lastMessage,
+  contactProfileImage,
+  contactName,
+  onPress,
+}) {
   const { colors } = useTheme();
   const { t } = useTranslation();
 
   //todo: move this function to a reusable place
   const displayContent = () => {
-    const type = item.lastMessage.contentType;
+    const type = lastMessage.contentType;
     let text = "";
     let icon = "";
     if (type === contentTypes.TEXT) {
-      text = item.lastMessage.content;
+      text = lastMessage.content;
     } else if (type === contentTypes.IMAGE) {
       text = "Picture";
       icon = "image";
     } else if (type === contentTypes.AUDIO) {
-      text = item.lastMessage.content.duration;
+      text = lastMessage.content.duration;
       icon = "microphone";
     } else {
       console.log("not supported");
@@ -49,7 +54,7 @@ function ContactChat({ item, onPress }) {
     );
   };
   const displayTime = () => {
-    const date = moment(item.lastMessage.dateTime);
+    const date = moment(lastMessage.dateTime);
     const yesterday = moment().subtract(1, "day");
     const today = moment();
     if (moment(date).isSame(today, "day")) return date.format("HH:mm");
@@ -60,11 +65,11 @@ function ContactChat({ item, onPress }) {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
-        {item.contactProfileImage ? (
+        {contactProfileImage ? (
           <Image
-            uri={item.contactProfileImage.url}
+            uri={contactProfileImage.url}
             preview={{
-              uri: item.contactProfileImage.thumbnailUrl,
+              uri: contactProfileImage.thumbnailUrl,
             }}
             style={styles.image}
             tint="light"
@@ -74,7 +79,7 @@ function ContactChat({ item, onPress }) {
         )}
         <View style={{ flexDirection: "column", marginLeft: 10 }}>
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.contactName}>{item.contactName}</Text>
+            <Text style={styles.contactName}>{contactName}</Text>
             <View style={{ justifyContent: "center" }}>
               <Text style={styles.messageDateTime}>{displayTime()}</Text>
             </View>

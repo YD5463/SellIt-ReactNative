@@ -14,16 +14,17 @@ import { useTranslation } from "react-i18next";
 import SearchBar from "./../../components/SearchBar";
 
 function ChatsListScreen({ navigation }) {
-  const getChatsApi = useApi(chats.getChats);
   const [chatsList, setChatsList] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useTranslation();
   const { colors } = useTheme();
 
   const initData = async () => {
-    await getChatsApi.request();
-    console.log(getChatsApi);
-    setChatsList(getChatsApi.data);
+    setLoading(true);
+    const res = await chats.getChats();
+    setLoading(false);
+    setChatsList(res.data);
   };
   useEffect(() => {
     initData();
@@ -48,7 +49,7 @@ function ChatsListScreen({ navigation }) {
   };
   return (
     <>
-      <ActivityIndicator visible={getChatsApi.loading} />
+      <ActivityIndicator visible={loading} />
       <Screen style={[styles.container, { backgroundColor: colors.white }]}>
         <View style={{ alignItems: "center", marginBottom: 10 }}>
           <SearchBar
@@ -58,16 +59,16 @@ function ChatsListScreen({ navigation }) {
             backgroundColor={colors.boldLight}
           />
         </View>
-        {!getChatsApi.loading && chatsList.length === 0 && (
-          <Text>No chats to diaply</Text>
-        )}
+        {!loading && chatsList.length === 0 && <Text>No chats to diaply</Text>}
 
         <FlatList
           data={chatsList}
           keyExtractor={(item) => item.contactId}
           renderItem={({ item }) => (
             <ContactChat
-              item={item}
+              contactName={item.contactName}
+              contactProfileImage={item.contactProfileImage}
+              lastMessage={item.messages[item.messages.length - 1]}
               onPress={() => navigation.navigate(routes.MESSAGES, item)}
             />
           )}

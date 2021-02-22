@@ -12,7 +12,6 @@ import { useTranslation } from "react-i18next";
 import RightHeader from "../../components/chat/Headers/RightHeader";
 import LeftHeader from "../../components/chat/Headers/LeftHeader";
 import Keyboard from "../../components/chat/Keyboard";
-import messagesApi from "../../api/messages";
 import authStorage from "../../auth/storage";
 import ActivityIndicator from "../../components/ActivityIndicator";
 import RenderMessage from "../../components/chat/Messages/RenderMessage";
@@ -36,7 +35,7 @@ function MessagesScreen({ navigation, route }) {
 
   const { colors } = useTheme();
   const { t } = useTranslation();
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(route.params.messages);
   const [loading, setLoading] = useState(false);
   const [allowCopy, setAllowCopy] = useState(true);
 
@@ -155,12 +154,10 @@ function MessagesScreen({ navigation, route }) {
     });
   });
   const initData = async () => {
+    setLoading(true);
     const user = await authStorage.getUser();
     setUserData(user);
-    setLoading(true);
-    const reponse = await messagesApi.getMessages(contactId);
     setLoading(false);
-    if (reponse.ok) setMessages(reponse.data);
   };
   useEffect(() => {
     initData();
@@ -188,7 +185,7 @@ function MessagesScreen({ navigation, route }) {
   const onContact = () => {
     navigation.navigate(routes.CONTACTS_LIST, { contactName, sendContact });
   };
-
+  console.log(userData, messages);
   return (
     <ImageBackground
       source={require("../../assets/chatBackground.png")}
@@ -202,25 +199,29 @@ function MessagesScreen({ navigation, route }) {
             keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 10}
           >
             <View style={{ height: "89%", width: "100%" }}>
-              <FlatList
-                ref={messageListRef}
-                onContentSizeChange={() => messageListRef.current.scrollToEnd()}
-                data={messages}
-                keyExtractor={(message) => message.dateTime}
-                renderItem={({ item, index }) => (
-                  <RenderMessage
-                    item={item}
-                    userId={userData.userId}
-                    lastMessageDate={
-                      index !== 0 ? messages[index - 1].dateTime : null
-                    }
-                    pickMessage={onPickMessage}
-                    unpickMessage={onUnpickMessage}
-                    isPicked={pickedMessages.includes(item)}
-                    pickedCount={pickedMessages.length}
-                  />
-                )}
-              />
+              {userData && (
+                <FlatList
+                  ref={messageListRef}
+                  onContentSizeChange={() =>
+                    messageListRef.current.scrollToEnd()
+                  }
+                  data={messages}
+                  keyExtractor={(message) => message.dateTime}
+                  renderItem={({ item, index }) => (
+                    <RenderMessage
+                      item={item}
+                      userId={userData.userId}
+                      lastMessageDate={
+                        index !== 0 ? messages[index - 1].dateTime : null
+                      }
+                      pickMessage={onPickMessage}
+                      unpickMessage={onUnpickMessage}
+                      isPicked={pickedMessages.includes(item)}
+                      pickedCount={pickedMessages.length}
+                    />
+                  )}
+                />
+              )}
             </View>
             <Keyboard
               sendMessage={sendMessage}
