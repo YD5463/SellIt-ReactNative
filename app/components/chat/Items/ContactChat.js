@@ -4,13 +4,14 @@ import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import { Image } from "react-native-expo-image-cache";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "react-i18next";
-import colors from "../config/colors";
-import Text from "./Text";
+import colors from "../../../config/colors";
+import Text from "../../Text";
 import moment from "moment";
-import Icon from "./Icon";
-import contentTypes from "../config/contentTypes";
+import Icon from "../../Icon";
+import contentTypes from "../../../config/contentTypes";
+import DefualtUserImage from "../ReusableIcons/DefualtUserImage";
 
-const imageSize = 65;
+const imageSize = 60;
 
 function ContactChat({ item, onPress }) {
   const { colors } = useTheme();
@@ -55,6 +56,7 @@ function ContactChat({ item, onPress }) {
     else if (moment(date).isSame(yesterday, "day")) return "yesterday";
     return date.format("MM.DD.YYYY");
   };
+
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
@@ -68,13 +70,7 @@ function ContactChat({ item, onPress }) {
             tint="light"
           />
         ) : (
-          <Icon
-            name="user"
-            iconColor={colors.white}
-            IconComponent={FontAwesome}
-            backgroundColor={colors.medium}
-            size={imageSize}
-          />
+          <DefualtUserImage size={imageSize} />
         )}
         <View style={{ flexDirection: "column", marginLeft: 10 }}>
           <View style={{ flexDirection: "row" }}>

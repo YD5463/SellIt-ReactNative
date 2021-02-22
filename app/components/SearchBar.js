@@ -3,13 +3,18 @@ import { View, StyleSheet, TextInput } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTheme } from "react-native-paper";
 import defaultStyles from "../config/styles";
-function SearchBar({ onChange, search, width = "100%" }) {
+function SearchBar({
+  onChange,
+  search,
+  width = "100%",
+  backgroundColor = "white",
+}) {
   const { colors } = useTheme();
   return (
     <View
       style={[
         styles.container,
-        { backgroundColor: colors.white, width: width },
+        { backgroundColor: backgroundColor, width: width },
       ]}
     >
       <MaterialCommunityIcons name="magnify" size={35} color={colors.medium} />

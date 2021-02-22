@@ -2,14 +2,14 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity, Platform } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
-function BackArrow({ onBack }) {
+function BackArrow({ onBack, size = 24 }) {
   return (
     <TouchableOpacity onPress={onBack}>
       <View style={styles.container}>
         {Platform.OS === "ios" ? (
-          <Ionicons name="ios-arrow-back" size={24} color="white" />
+          <Ionicons name="ios-arrow-back" size={size} color="white" />
         ) : (
-          <AntDesign name="arrowleft" size={24} color="white" />
+          <AntDesign name="arrowleft" size={size} color="white" />
         )}
       </View>
     </TouchableOpacity>

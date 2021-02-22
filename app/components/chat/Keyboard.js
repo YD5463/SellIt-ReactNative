@@ -57,7 +57,7 @@ function Keyboard({
               />
             </TouchableOpacity>
           </View>
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, paddingRight: 10 }}>
             {recordingTime !== 0 ? (
               <View style={{ alignItems: "flex-end", padding: 3 }}>
                 <Text style={{ color: colors.medium }}>
@@ -73,7 +73,7 @@ function Keyboard({
                 selectionColor={colors.primary}
                 multiline
                 numberOfLines={10}
-                style={{ maxHeight: 5 * initHeight }}
+                style={{ maxHeight: 5 * initHeight, fontSize: 15 }}
               />
             )}
           </View>
