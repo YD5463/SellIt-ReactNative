@@ -5,6 +5,7 @@ import {
   FlatList,
   ImageBackground,
   KeyboardAvoidingView,
+  Clipboard,
 } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "react-i18next";
@@ -21,6 +22,7 @@ import contentTypes from "../../config/contentTypes";
 // import io from "socket.io-client";
 // import * as ImagePicker from "expo-image-picker";
 import OnPickingRightHeader from "./../../components/chat/Headers/OnPickingRightHeader";
+// import Clipboard from "@react-native-clipboard/clipboard";
 
 function MessagesScreen({ navigation, route }) {
   // const [socket, setSocket] = useState();
@@ -36,6 +38,8 @@ function MessagesScreen({ navigation, route }) {
   const { t } = useTranslation();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [allowCopy, setAllowCopy] = useState(true);
+
   const messageListRef = useRef();
 
   const generateMessage = (contentType, content, other = {}) => {
@@ -90,16 +94,28 @@ function MessagesScreen({ navigation, route }) {
   };
   const sendDocument = (documentData) => {};
   const onPickMessage = (item) => {
+    if (item.contentType !== contentTypes.TEXT) setAllowCopy(false);
     setPickedMessages([...pickedMessages, item]);
   };
   const onUnpickMessage = (item) => {
+    setAllowCopy(true);
     setPickedMessages(
-      pickedMessages.filter(
-        (m) => m.content !== item.content || m.dateTime !== item.dateTime
-      )
+      pickedMessages.filter((m) => {
+        if (m.contentType !== contentTypes.TEXT) setAllowCopy(false);
+        return m.content !== item.content || m.dateTime !== item.dateTime;
+      })
     );
   };
 
+  const onDeleteMessages = () => {
+    //call api with picked messaegs array...
+    setMessages(messages.filter((m) => !pickedMessages.includes(m)));
+    setPickedMessages([]);
+  };
+  const onCopy = () => {
+    Clipboard.setString("hello world");
+    setPickedMessages([]);
+  };
   useLayoutEffect(() => {
     navigation.setOptions({
       headerStyle: {
@@ -109,7 +125,11 @@ function MessagesScreen({ navigation, route }) {
         pickedMessages.length === 0 ? (
           <RightHeader />
         ) : (
-          <OnPickingRightHeader />
+          <OnPickingRightHeader
+            allowCopy={allowCopy}
+            onDelete={onDeleteMessages}
+            onCopy={onCopy}
+          />
         ),
       headerLeft: () => (
         <LeftHeader
@@ -157,7 +177,7 @@ function MessagesScreen({ navigation, route }) {
   const onContact = () => {
     navigation.navigate(routes.CONTACTS_LIST, { contactName, sendContact });
   };
-  console.log(pickedMessages.length);
+
   return (
     <ImageBackground
       source={require("../../assets/chatBackground.png")}
@@ -185,6 +205,8 @@ function MessagesScreen({ navigation, route }) {
                     }
                     pickMessage={onPickMessage}
                     unpickMessage={onUnpickMessage}
+                    isPicked={pickedMessages.includes(item)}
+                    pickedCount={pickedMessages.length}
                   />
                 )}
               />

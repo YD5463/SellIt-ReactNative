@@ -1,10 +1,5 @@
-import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from "react-native";
+import React from "react";
+import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import ImageMessage from "./ImageMessage";
 import AudioMessage from "./AudioMessage";
 import TextMessage from "./TextMessage";
@@ -23,13 +18,14 @@ function RenderMessage({
   userId,
   pickMessage,
   unpickMessage,
+  isPicked,
+  pickedCount,
 }) {
   const { dateTime } = item;
   const messageDate = moment(dateTime);
   const isFrom = userId === item.fromUserId;
   const { t } = useTranslation();
   const { colors } = useTheme();
-  const [isPicked, setIsPicked] = useState(false);
 
   const firstMesageInDate = () =>
     !lastMessageDate ||
@@ -69,20 +65,13 @@ function RenderMessage({
       )}
       <View>
         {isPicked && (
-          <TouchableWithoutFeedback
-            onPress={() => {
-              setIsPicked(false);
-              unpickMessage(item);
-            }}
-          >
+          <TouchableWithoutFeedback onPress={() => unpickMessage(item)}>
             <View style={styles.picked}></View>
           </TouchableWithoutFeedback>
         )}
-        <TouchableOpacity
-          onLongPress={() => {
-            setIsPicked(true);
-            pickMessage(item);
-          }}
+        <TouchableWithoutFeedback
+          onLongPress={() => pickMessage(item)}
+          onPress={pickedCount === 0 ? () => {} : () => pickMessage(item)}
         >
           <View
             style={[
@@ -99,7 +88,7 @@ function RenderMessage({
               </Text>
             </View>
           </View>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       </View>
     </>
   );
