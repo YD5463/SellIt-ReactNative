@@ -8,25 +8,23 @@ import {
 } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "react-i18next";
-import TextMessage from "../../components/chat/Messages/TextMessage";
-import useApi from "../../hooks/useApi";
-import AudioMessage from "../../components/chat/Messages/AudioMessage";
-import LeftHeader from "../../components/chat/LeftHeader";
-import RightHeader from "../../components/chat/RightHeader";
+import LeftHeader from "../../components/chat/Headers/RightHeader";
+import RightHeader from "../../components/chat/Headers/LeftHeader";
 import Keyboard from "../../components/chat/Keyboard";
 import messagesApi from "../../api/messages";
-// import io from "socket.io-client";
 import authStorage from "../../auth/storage";
 import ActivityIndicator from "../../components/ActivityIndicator";
 import RenderMessage from "../../components/chat/Messages/RenderMessage";
 import moment from "moment";
 import routes from "../../navigation/routes";
 import contentTypes from "../../config/contentTypes";
-import * as ImagePicker from "expo-image-picker";
+// import io from "socket.io-client";
+// import * as ImagePicker from "expo-image-picker";
 
 function MessagesScreen({ navigation, route }) {
-  const [socket, setSocket] = useState();
+  // const [socket, setSocket] = useState();
   const [userId, setUserId] = useState();
+  const [pickedMessages, setPickedMessages] = useState([]);
 
   const { contactName, contactId } = route.params;
   const contactImageUri = route.params.contactProfileImage
@@ -96,14 +94,14 @@ function MessagesScreen({ navigation, route }) {
       headerStyle: {
         backgroundColor: colors.primary,
       },
-      headerRight: () => (
+      headerLeft: () => (
         <RightHeader
           contactImageUri={contactImageUri}
           contactName={contactName}
           onBack={() => navigation.goBack()}
         />
       ),
-      headerLeft: () => <LeftHeader />,
+      headerRight: () => <LeftHeader />,
       title: "",
     });
   });
@@ -138,6 +136,16 @@ function MessagesScreen({ navigation, route }) {
   const onContact = () => {
     navigation.navigate(routes.CONTACTS_LIST, { contactName, sendContact });
   };
+  const pickMessage = (item) => {
+    setPickedMessages([...pickedMessages, item]);
+  };
+  const unpickMessage = (item) => {
+    setPickedMessages(
+      messages.filter(
+        (m) => m.content === item.content && m.dateTime === item.dateTime
+      )
+    );
+  };
   return (
     <ImageBackground
       source={require("../../assets/chatBackground.png")}
@@ -163,6 +171,8 @@ function MessagesScreen({ navigation, route }) {
                     lastMessageDate={
                       index !== 0 ? messages[index - 1].dateTime : null
                     }
+                    pickMessage={pickMessage}
+                    unpickMessage={unpickMessage}
                   />
                 )}
               />

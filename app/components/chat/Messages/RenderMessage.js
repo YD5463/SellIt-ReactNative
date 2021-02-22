@@ -1,5 +1,5 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import ImageMessage from "./ImageMessage";
 import AudioMessage from "./AudioMessage";
 import TextMessage from "./TextMessage";
@@ -12,12 +12,19 @@ import colors from "../../../config/colors";
 import contentTypes from "../../../config/contentTypes";
 import ContactMessage from "./ContactMessage";
 
-function RenderMessage({ item, lastMessageDate, userId }) {
+function RenderMessage({
+  item,
+  lastMessageDate,
+  userId,
+  pickMessage,
+  unpickMessage,
+}) {
   const { dateTime } = item;
   const messageDate = moment(dateTime);
   const isFrom = userId === item.fromUserId;
   const { t } = useTranslation();
   const { colors } = useTheme();
+  const [isPicked, setIsPicked] = useState(false);
 
   const firstMesageInDate = () =>
     !lastMessageDate ||
@@ -47,6 +54,12 @@ function RenderMessage({ item, lastMessageDate, userId }) {
     else if (item.contentType === contentTypes.CONTACT) return { width: "70%" };
     return { maxWidth: "48%" };
   };
+
+  const onLongPress = () => {
+    if (isPicked) pickMessage(item);
+    else unpickMessage(item);
+    setIsPicked(!isPicked);
+  };
   return (
     <>
       {firstMesageInDate() && (
@@ -54,21 +67,23 @@ function RenderMessage({ item, lastMessageDate, userId }) {
           <Text style={styles.dateText}>{dispalyDate()}</Text>
         </View>
       )}
-      <View
-        style={[
-          styles.container,
-          getWidth(),
-          isFrom ? { alignSelf: "flex-end" } : {},
-        ]}
-      >
-        <View style={[isFrom ? styles.fromMessage : styles.toMessage]}>
-          {render()}
+      <TouchableOpacity onLongPress={onLongPress}>
+        <View
+          style={[
+            styles.container,
+            getWidth(),
+            isFrom ? { alignSelf: "flex-end" } : {},
+          ]}
+        >
+          <View style={[isFrom ? styles.fromMessage : styles.toMessage]}>
+            {render()}
 
-          <Text style={styles.messageTime}>
-            {moment(dateTime).format("HH:mm")}
-          </Text>
+            <Text style={styles.messageTime}>
+              {moment(dateTime).format("HH:mm")}
+            </Text>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </>
   );
 }

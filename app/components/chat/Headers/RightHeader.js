@@ -6,36 +6,36 @@ import {
   Ionicons,
 } from "@expo/vector-icons";
 
-function LeftHeader(props) {
+function RightHeader(props) {
   return (
-    <View style={styles.leftHeader}>
-      <TouchableWithoutFeedback>
-        <Ionicons name="md-more" size={24} color="white" />
-      </TouchableWithoutFeedback>
-      <View style={styles.headerIcon}>
-        <TouchableWithoutFeedback>
-          <MaterialIcons name="call" size={24} color="white" />
-        </TouchableWithoutFeedback>
-      </View>
+    <View style={styles.rightHeader}>
       <View style={styles.headerIcon}>
         <TouchableWithoutFeedback>
           <MaterialCommunityIcons name="video" size={26} color="white" />
         </TouchableWithoutFeedback>
       </View>
+      <View style={styles.headerIcon}>
+        <TouchableWithoutFeedback>
+          <MaterialIcons name="call" size={24} color="white" />
+        </TouchableWithoutFeedback>
+      </View>
+      <TouchableWithoutFeedback>
+        <Ionicons name="md-more" size={24} color="white" />
+      </TouchableWithoutFeedback>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  leftHeader: {
+  rightHeader: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingLeft: 15,
+    paddingRight: 15,
   },
   headerIcon: {
-    paddingLeft: 15,
+    paddingRight: 15,
   },
 });
 
-export default LeftHeader;
+export default RightHeader;

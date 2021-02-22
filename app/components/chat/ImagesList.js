@@ -10,7 +10,7 @@ import * as MediaLibrary from "expo-media-library";
 
 function ImagesList({ onPress }) {
   const [photos, setPhotos] = useState([]);
-  const [offset, setOffset] = useState();
+  const [cursor, setCursor] = useState();
   const [loading, setLoading] = useState(true);
 
   const getImages = async () => {
@@ -20,12 +20,14 @@ function ImagesList({ onPress }) {
     }
   };
   const getPartImages = async () => {
-    const res = await MediaLibrary.getAssetsAsync(
-      offset ? { after: offset, first: 100 } : { first: 100 }
-    );
+    const after = cursor ? { after: cursor } : {};
+    const res = await MediaLibrary.getAssetsAsync({
+      first: 100000,
+      mediaType: [MediaLibrary.MediaType.photo, MediaLibrary.MediaType.video],
+      ...after,
+    });
     setPhotos([...photos, ...res.assets]);
-    setOffset(res.endCursor);
-    setLoading(res.hasNextPage);
+    if (res.hasNextPage) setCursor(res.endCursor);
   };
   useEffect(() => {
     getImages();
@@ -47,7 +49,6 @@ function ImagesList({ onPress }) {
         horizontal={true}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        onEndReachedThreshold={0.5}
       />
     </View>
   );
