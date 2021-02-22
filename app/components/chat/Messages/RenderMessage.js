@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import ImageMessage from "./ImageMessage";
 import AudioMessage from "./AudioMessage";
 import TextMessage from "./TextMessage";
@@ -55,11 +60,6 @@ function RenderMessage({
     return { maxWidth: "48%" };
   };
 
-  const onLongPress = () => {
-    if (isPicked) pickMessage(item);
-    else unpickMessage(item);
-    setIsPicked(!isPicked);
-  };
   return (
     <>
       {firstMesageInDate() && (
@@ -67,23 +67,40 @@ function RenderMessage({
           <Text style={styles.dateText}>{dispalyDate()}</Text>
         </View>
       )}
-      <TouchableOpacity onLongPress={onLongPress}>
-        <View
-          style={[
-            styles.container,
-            getWidth(),
-            isFrom ? { alignSelf: "flex-end" } : {},
-          ]}
+      <View>
+        {isPicked && (
+          <TouchableWithoutFeedback
+            onPress={() => {
+              setIsPicked(false);
+              unpickMessage(item);
+            }}
+          >
+            <View style={styles.picked}></View>
+          </TouchableWithoutFeedback>
+        )}
+        <TouchableOpacity
+          onLongPress={() => {
+            setIsPicked(true);
+            pickMessage(item);
+          }}
         >
-          <View style={[isFrom ? styles.fromMessage : styles.toMessage]}>
-            {render()}
+          <View
+            style={[
+              styles.container,
+              getWidth(),
+              isFrom ? { alignSelf: "flex-end" } : {},
+            ]}
+          >
+            <View style={[isFrom ? styles.fromMessage : styles.toMessage]}>
+              {render()}
 
-            <Text style={styles.messageTime}>
-              {moment(dateTime).format("HH:mm")}
-            </Text>
+              <Text style={styles.messageTime}>
+                {moment(dateTime).format("HH:mm")}
+              </Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
     </>
   );
 }
@@ -124,6 +141,17 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     marginRight: 8,
     marginLeft: 5,
+  },
+  picked: {
+    backgroundColor: "#9BDFEC",
+    zIndex: 5,
+    width: 1000,
+    position: "absolute",
+    left: 0,
+    top: 0,
+    flex: 1,
+    height: "100%",
+    opacity: 0.5,
   },
 });
 

@@ -11,23 +11,29 @@ function LeftHeader({
   contactName,
   onBack,
   ContactDetailScreen,
+  pickedCount,
+  onResetPicked,
 }) {
   return (
     <View style={styles.leftHeader}>
-      <BackArrow onBack={onBack} />
-      <TouchableOpacity onPress={ContactDetailScreen}>
-        <View style={styles.leftHeader}>
-          {contactImageUri ? (
-            <Image
-              source={{ uri: contactImageUri }}
-              style={styles.contactImage}
-            />
-          ) : (
-            <DefualtUserImage size={40} />
-          )}
-          <Text style={styles.contactName}>{contactName}</Text>
-        </View>
-      </TouchableOpacity>
+      <BackArrow onBack={pickedCount === 0 ? onBack : onResetPicked} />
+      {pickedCount === 0 ? (
+        <TouchableOpacity onPress={ContactDetailScreen}>
+          <View style={styles.leftHeader}>
+            {contactImageUri ? (
+              <Image
+                source={{ uri: contactImageUri }}
+                style={styles.contactImage}
+              />
+            ) : (
+              <DefualtUserImage size={40} />
+            )}
+            <Text style={styles.contactName}>{contactName}</Text>
+          </View>
+        </TouchableOpacity>
+      ) : (
+        <Text style={styles.countPicked}>{pickedCount}</Text>
+      )}
     </View>
   );
 }
@@ -47,6 +53,10 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   contactName: {
+    color: "white",
+    paddingLeft: 5,
+  },
+  countPicked: {
     color: "white",
     paddingLeft: 5,
   },

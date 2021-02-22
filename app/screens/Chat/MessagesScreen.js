@@ -8,8 +8,8 @@ import {
 } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "react-i18next";
-import LeftHeader from "../../components/chat/Headers/RightHeader";
-import RightHeader from "../../components/chat/Headers/LeftHeader";
+import RightHeader from "../../components/chat/Headers/RightHeader";
+import LeftHeader from "../../components/chat/Headers/LeftHeader";
 import Keyboard from "../../components/chat/Keyboard";
 import messagesApi from "../../api/messages";
 import authStorage from "../../auth/storage";
@@ -20,6 +20,7 @@ import routes from "../../navigation/routes";
 import contentTypes from "../../config/contentTypes";
 // import io from "socket.io-client";
 // import * as ImagePicker from "expo-image-picker";
+import OnPickingRightHeader from "./../../components/chat/Headers/OnPickingRightHeader";
 
 function MessagesScreen({ navigation, route }) {
   // const [socket, setSocket] = useState();
@@ -88,20 +89,37 @@ function MessagesScreen({ navigation, route }) {
     setMessages([...messages, ...newMessages]);
   };
   const sendDocument = (documentData) => {};
+  const onPickMessage = (item) => {
+    setPickedMessages([...pickedMessages, item]);
+  };
+  const onUnpickMessage = (item) => {
+    setPickedMessages(
+      pickedMessages.filter(
+        (m) => m.content !== item.content || m.dateTime !== item.dateTime
+      )
+    );
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerStyle: {
         backgroundColor: colors.primary,
       },
+      headerRight: () =>
+        pickedMessages.length === 0 ? (
+          <RightHeader />
+        ) : (
+          <OnPickingRightHeader />
+        ),
       headerLeft: () => (
-        <RightHeader
+        <LeftHeader
           contactImageUri={contactImageUri}
           contactName={contactName}
           onBack={() => navigation.goBack()}
+          pickedCount={pickedMessages.length}
+          onResetPicked={() => setPickedMessages([])}
         />
       ),
-      headerRight: () => <LeftHeader />,
       title: "",
     });
   });
@@ -118,7 +136,10 @@ function MessagesScreen({ navigation, route }) {
   }, []);
   const onDocument = () => {
     console.log("onDocument");
-    navigation.navigate(routes.DOCUMENT_PICKER, { contactName, sendDocument });
+    navigation.navigate(routes.DOCUMENT_PICKER, {
+      contactName,
+      sendDocument,
+    });
   };
   const onCamera = () => {
     console.log("onCamera");
@@ -136,16 +157,7 @@ function MessagesScreen({ navigation, route }) {
   const onContact = () => {
     navigation.navigate(routes.CONTACTS_LIST, { contactName, sendContact });
   };
-  const pickMessage = (item) => {
-    setPickedMessages([...pickedMessages, item]);
-  };
-  const unpickMessage = (item) => {
-    setPickedMessages(
-      messages.filter(
-        (m) => m.content === item.content && m.dateTime === item.dateTime
-      )
-    );
-  };
+  console.log(pickedMessages.length);
   return (
     <ImageBackground
       source={require("../../assets/chatBackground.png")}
@@ -171,8 +183,8 @@ function MessagesScreen({ navigation, route }) {
                     lastMessageDate={
                       index !== 0 ? messages[index - 1].dateTime : null
                     }
-                    pickMessage={pickMessage}
-                    unpickMessage={unpickMessage}
+                    pickMessage={onPickMessage}
+                    unpickMessage={onUnpickMessage}
                   />
                 )}
               />

@@ -7,21 +7,35 @@ import {
 } from "@expo/vector-icons";
 
 function RightHeader(props) {
+  const options = [
+    {
+      icon: "video",
+      IconComponent: MaterialCommunityIcons,
+      callback: () => {},
+    },
+    {
+      IconComponent: MaterialIcons,
+      icon: "call",
+      callback: () => {},
+    },
+    {
+      IconComponent: Ionicons,
+      icon: "md-more",
+      callback: () => {},
+    },
+  ];
   return (
     <View style={styles.rightHeader}>
-      <View style={styles.headerIcon}>
-        <TouchableWithoutFeedback>
-          <MaterialCommunityIcons name="video" size={26} color="white" />
-        </TouchableWithoutFeedback>
-      </View>
-      <View style={styles.headerIcon}>
-        <TouchableWithoutFeedback>
-          <MaterialIcons name="call" size={24} color="white" />
-        </TouchableWithoutFeedback>
-      </View>
-      <TouchableWithoutFeedback>
-        <Ionicons name="md-more" size={24} color="white" />
-      </TouchableWithoutFeedback>
+      {options.map((item, index) => (
+        <View
+          style={index === options.length - 1 ? {} : styles.headerIcon}
+          key={item.icon}
+        >
+          <TouchableWithoutFeedback onPress={item.callback}>
+            <item.IconComponent name={item.icon} size={25} color="white" />
+          </TouchableWithoutFeedback>
+        </View>
+      ))}
     </View>
   );
 }
