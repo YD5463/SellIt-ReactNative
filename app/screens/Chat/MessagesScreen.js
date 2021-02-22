@@ -26,7 +26,7 @@ import OnPickingRightHeader from "./../../components/chat/Headers/OnPickingRight
 
 function MessagesScreen({ navigation, route }) {
   // const [socket, setSocket] = useState();
-  const [userId, setUserId] = useState();
+  const [userData, setUserData] = useState();
   const [pickedMessages, setPickedMessages] = useState([]);
 
   const { contactName, contactId } = route.params;
@@ -47,7 +47,7 @@ function MessagesScreen({ navigation, route }) {
       content: content,
       contentType: contentType,
       dateTime: moment().toString(),
-      fromUserId: userId,
+      fromUserId: userData.userId,
       toUserId: contactId,
       ...other,
     };
@@ -112,8 +112,19 @@ function MessagesScreen({ navigation, route }) {
     setMessages(messages.filter((m) => !pickedMessages.includes(m)));
     setPickedMessages([]);
   };
+  const joinPickedMessages = () => {
+    if (pickedMessages.length === 1) return pickedMessages[0].content;
+    let joinedMessages = "";
+    for (let message of pickedMessages) {
+      const name =
+        message.toUserId === userData.userId ? userData.name : contactName;
+      const time = moment(message.dateTime).format("DD.M,HH:mm");
+      joinedMessages += `[${time}] ${name}: ${message.content}\n`;
+    }
+    return joinedMessages;
+  };
   const onCopy = () => {
-    Clipboard.setString("hello world");
+    Clipboard.setString(joinPickedMessages());
     setPickedMessages([]);
   };
   useLayoutEffect(() => {
@@ -145,7 +156,7 @@ function MessagesScreen({ navigation, route }) {
   });
   const initData = async () => {
     const user = await authStorage.getUser();
-    setUserId(user.userId);
+    setUserData(user);
     setLoading(true);
     const reponse = await messagesApi.getMessages(contactId);
     setLoading(false);
@@ -199,7 +210,7 @@ function MessagesScreen({ navigation, route }) {
                 renderItem={({ item, index }) => (
                   <RenderMessage
                     item={item}
-                    userId={userId}
+                    userId={userData.userId}
                     lastMessageDate={
                       index !== 0 ? messages[index - 1].dateTime : null
                     }
