@@ -13,7 +13,7 @@ import Screen from "../../components/Screen";
 import FormImagePicker from "../../components/forms/FormImagePicker";
 import listingsApi from "../../api/listings";
 import categoriesApi from "../../api/categories";
-import useLocation from "../../hooks/useLocation";
+import locationHelper from "../../utility/location";
 import UploadScreen from "../UploadScreen";
 import useApi from "../../hooks/useApi";
 import ActivityIndicator from "../../components/ActivityIndicator";
@@ -28,7 +28,6 @@ const validationSchema = Yup.object().shape({
 
 function ListingEditScreen({ route }) {
   const listing = route && route.params ? route.params.listing : {};
-  const location = useLocation();
   const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
   const getCategoriesApi = useApi(categoriesApi.getCategories);
@@ -40,13 +39,17 @@ function ListingEditScreen({ route }) {
   const handleSubmit = async (listing, { resetForm }) => {
     setProgress(0);
     setUploadVisible(true);
-    const newListing = { ...listing, location };
+    const { latitude, longitude } = await locationHelper.getLocation();
+
+    const newListing = { ...listing, location: { latitude, longitude } };
     delete newListing.category;
     newListing["categoryId"] = listing.category._id;
+
     const result = await listingsApi.addListing(newListing, (progress) =>
       setProgress(progress)
     );
     if (!result.ok) {
+      console.log(result);
       setUploadVisible(false);
       return alert("Could not save the listing");
     }

@@ -31,6 +31,7 @@ function ListingsScreen({ navigation }) {
   const [cart, setCart] = useState({});
   const [cartSize, setCartSize] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const setCachedCart = async () => {
     const cachedCart = await cache.get(settings.CartCacheKey, false);
@@ -46,10 +47,17 @@ function ListingsScreen({ navigation }) {
     }
     console.log(cart);
   };
+  const initListings = async () => {
+    setRefreshing(true);
+    const listingResponse = await listingsApi.getListings();
+    setOriginalListing(listingResponse.data);
+    setListing(listingResponse.data);
+    setRefreshing(false);
+  };
   const initData = async () => {
     setLoading(true);
     const categoryResponse = await categoriesApi.getCategories();
-    const listingResponse = await listingsApi.getListings();
+    await initListings();
     await setCachedCart();
     setLoading(false);
     if (!categoryResponse.ok || !listingResponse.ok) return setError(true);
@@ -59,8 +67,6 @@ function ListingsScreen({ navigation }) {
       newCategoriesMap[c.name] = c._id;
     });
     setCategoriesMap(newCategoriesMap);
-    setOriginalListing(listingResponse.data);
-    setListing(listingResponse.data);
   };
 
   useEffect(() => {
@@ -196,6 +202,8 @@ function ListingsScreen({ navigation }) {
               />
             )}
             extraData={filterdCategories}
+            refreshing={refreshing}
+            onRefresh={initListings}
           />
         </View>
       </Screen>
