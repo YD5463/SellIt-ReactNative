@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     padding: 15,
-    paddingTop: 0,
+    paddingTop: 8,
     alignItems: "center",
   },
   image: {

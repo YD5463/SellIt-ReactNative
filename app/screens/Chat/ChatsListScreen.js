@@ -15,6 +15,7 @@ import SearchBar from "./../../components/SearchBar";
 
 function ChatsListScreen({ navigation }) {
   const [chatsList, setChatsList] = useState([]);
+  const [originalChats, setOriginalList] = useState();
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useTranslation();
@@ -25,6 +26,7 @@ function ChatsListScreen({ navigation }) {
     const res = await chats.getChats();
     setLoading(false);
     setChatsList(res.data);
+    setOriginalList(res.data);
   };
   useEffect(() => {
     initData();
@@ -46,6 +48,12 @@ function ChatsListScreen({ navigation }) {
   });
   const searchFilter = (query) => {
     setSearchQuery(query);
+    if (query === "") return setChatsList(originalChats);
+    setSearchQuery(query);
+    const filtered = chatsList.filter((chat) => {
+      return chat.contactName.toLowerCase().includes(query.toLowerCase()); //todo: make the search more smart
+    });
+    setChatsList(filtered);
   };
   return (
     <>
