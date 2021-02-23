@@ -22,6 +22,7 @@ import contentTypes from "../../config/contentTypes";
 // import * as ImagePicker from "expo-image-picker";
 import OnPickingRightHeader from "./../../components/chat/Headers/OnPickingRightHeader";
 import location from "../../utility/location";
+import MoreOptionsModal from "../../components/chat/MoreOptionsModal";
 
 function MessagesScreen({ navigation, route }) {
   // const [socket, setSocket] = useState();
@@ -38,7 +39,7 @@ function MessagesScreen({ navigation, route }) {
   const [messages, setMessages] = useState(route.params.messages);
   const [loading, setLoading] = useState(false);
   const [allowCopy, setAllowCopy] = useState(true);
-
+  const [moreVisible, setMoreVisible] = useState(false);
   const messageListRef = useRef();
 
   const generateMessage = (contentType, content, other = {}) => {
@@ -133,7 +134,7 @@ function MessagesScreen({ navigation, route }) {
       },
       headerRight: () =>
         pickedMessages.length === 0 ? (
-          <RightHeader />
+          <RightHeader onMore={() => setMoreVisible(true)} />
         ) : (
           <OnPickingRightHeader
             allowCopy={allowCopy}
@@ -203,6 +204,10 @@ function MessagesScreen({ navigation, route }) {
             behavior="position"
             keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 10}
           >
+            <MoreOptionsModal
+              visible={moreVisible}
+              setVisible={setMoreVisible}
+            />
             <View style={{ height: "89%", width: "100%" }}>
               {userData && (
                 <FlatList

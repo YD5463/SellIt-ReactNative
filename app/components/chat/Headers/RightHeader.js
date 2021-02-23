@@ -6,22 +6,22 @@ import {
   Ionicons,
 } from "@expo/vector-icons";
 
-function RightHeader(props) {
+function RightHeader({ onMore, onCall = () => {}, onVideo = () => {} }) {
   const options = [
     {
       icon: "video",
       IconComponent: MaterialCommunityIcons,
-      callback: () => {},
+      callback: onVideo,
     },
     {
       IconComponent: MaterialIcons,
       icon: "call",
-      callback: () => {},
+      callback: onCall,
     },
     {
       IconComponent: Ionicons,
       icon: "md-more",
-      callback: () => {},
+      callback: onMore,
     },
   ];
   return (
