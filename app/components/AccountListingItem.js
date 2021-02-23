@@ -26,6 +26,7 @@ function AccountListingItem({ listing, onEdit, onDelete }) {
         source={{ uri: listing.images[0].url }}
         style={styles.image}
       />
+
       <View style={styles.texts}>
         <Text style={styles.title}>{showText(listing.title, 15)}</Text>
         {listing.description ? (
@@ -39,14 +40,17 @@ function AccountListingItem({ listing, onEdit, onDelete }) {
         )}
         <Text style={styles.price}>{`${listing.price}$`}</Text>
       </View>
-      <View style={{ width: "20%", height: "100%" }}>
-        <TouchableOpacity onPress={onDelete}>
-          <MaterialCommunityIcons
-            name="delete"
-            size={28}
-            color={colors.primary}
-          />
-        </TouchableOpacity>
+
+      <View style={{ padding: 15 }}>
+        <View style={{ marginBottom: 10 }}>
+          <TouchableOpacity onPress={onDelete}>
+            <MaterialCommunityIcons
+              name="delete"
+              size={30}
+              color={colors.primary}
+            />
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity onPress={onEdit}>
           <FontAwesome name="edit" size={28} color={colors.blue} />
         </TouchableOpacity>
@@ -75,18 +79,19 @@ const styles = StyleSheet.create({
   },
   price: {
     color: colors.secondary,
-    alignSelf: "flex-end",
-    fontSize: 20,
+    alignSelf: "flex-start",
+    fontSize: 18,
     fontWeight: "bold",
   },
   description: {
     color: colors.medium,
     paddingLeft: 10,
-    fontSize: 18,
+    fontSize: 16,
   },
   texts: {
     flexDirection: "column",
     padding: 10,
+    flex: 1,
   },
 });
 
