@@ -21,7 +21,7 @@ import contentTypes from "../../config/contentTypes";
 // import io from "socket.io-client";
 // import * as ImagePicker from "expo-image-picker";
 import OnPickingRightHeader from "./../../components/chat/Headers/OnPickingRightHeader";
-// import Clipboard from "@react-native-clipboard/clipboard";
+import location from "../../utility/location";
 
 function MessagesScreen({ navigation, route }) {
   // const [socket, setSocket] = useState();
@@ -181,7 +181,12 @@ function MessagesScreen({ navigation, route }) {
     console.log("onAudio");
     navigation.navigate(routes.AUDIO_PICKER, { contactName, sendAudio });
   };
-  const onLocation = () => {};
+  const onLocation = async () => {
+    console.log("onLocation");
+    const curr_location = await location.getLocation();
+    const newMessage = generateMessage(contentTypes.LOCATION, curr_location);
+    setMessages([...messages, newMessage]);
+  };
   const onContact = () => {
     navigation.navigate(routes.CONTACTS_LIST, { contactName, sendContact });
   };

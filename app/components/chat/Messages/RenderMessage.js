@@ -11,6 +11,7 @@ import { useTheme } from "react-native-paper";
 import colors from "../../../config/colors";
 import contentTypes from "../../../config/contentTypes";
 import ContactMessage from "./ContactMessage";
+import LocationMessage from "./LocationMessage";
 
 function RenderMessage({
   item,
@@ -48,11 +49,13 @@ function RenderMessage({
       return <ImageMessage meesageData={item} />;
     else if (item.contentType === contentTypes.CONTACT)
       return <ContactMessage meesageData={item} />;
-    return <View></View>; //location
+    return <LocationMessage messageData={item} />;
   };
   const getWidth = () => {
     if (item.contentType === contentTypes.IMAGE) return { width: "75%" };
     else if (item.contentType === contentTypes.CONTACT) return { width: "70%" };
+    else if (item.contentType === contentTypes.LOCATION)
+      return { width: "70%" };
     return { maxWidth: "48%" };
   };
 
