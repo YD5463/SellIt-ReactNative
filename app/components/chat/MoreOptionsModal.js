@@ -1,14 +1,8 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  FlatList,
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import Text from "../Text";
 import { useTranslation } from "react-i18next";
+import Modal from "../Modal";
 
 function MoreOptionsModal({ visible, setVisible }) {
   const { t } = useTranslation();
@@ -20,31 +14,26 @@ function MoreOptionsModal({ visible, setVisible }) {
     { name: "Notications", onPress: () => {} },
   ];
   return (
-    <Modal visible={visible} animationType="fade" transparent={true}>
-      <TouchableOpacity
-        style={{ flex: 1 }}
-        activeOpacity={1}
-        onPressOut={() => {
-          setVisible(false);
-        }}
-      >
-        <TouchableWithoutFeedback>
-          <View style={styles.container}>
-            <FlatList
-              data={options}
-              keyExtractor={(option) => option.name}
-              renderItem={({ item }) => (
-                <View style={{ width: "100%", padding: 15 }}>
-                  <TouchableOpacity onPress={item.onPress}>
-                    <Text>{item.name}</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-            />
-          </View>
-        </TouchableWithoutFeedback>
-      </TouchableOpacity>
-    </Modal>
+    <Modal
+      visible={visible}
+      animationType="fade"
+      setVisible={setVisible}
+      MainComponent={() => (
+        <View style={styles.container}>
+          <FlatList
+            data={options}
+            keyExtractor={(option) => option.name}
+            renderItem={({ item }) => (
+              <View style={{ width: "100%", padding: 15 }}>
+                <TouchableOpacity onPress={item.onPress}>
+                  <Text>{item.name}</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+        </View>
+      )}
+    />
   );
 }
 

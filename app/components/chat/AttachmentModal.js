@@ -1,12 +1,5 @@
-import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Modal,
-  FlatList,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from "react-native";
+import React from "react";
+import { View, StyleSheet, FlatList } from "react-native";
 import {
   Ionicons,
   MaterialCommunityIcons,
@@ -16,6 +9,7 @@ import {
 
 import colors from "../../config/colors";
 import CategoryPickerItem from "../CategoryPickerItem";
+import Modal from "../Modal";
 
 function AttachmentModal({ visible, setVisible, buttonsCallback }) {
   if (!visible) return null;
@@ -67,40 +61,29 @@ function AttachmentModal({ visible, setVisible, buttonsCallback }) {
   return (
     <Modal
       visible={visible}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={() => console.log("closing...")}
-    >
-      <TouchableOpacity
-        style={{ flex: 1 }}
-        activeOpacity={1}
-        onPressOut={() => {
-          setVisible(false);
-        }}
-      >
-        <TouchableWithoutFeedback>
-          <View style={styles.container}>
-            <FlatList
-              data={options}
-              keyExtractor={(option) => option.name}
-              numColumns={3}
-              renderItem={({ item }) => (
-                <CategoryPickerItem
-                  item={item}
-                  onPress={() => {
-                    setVisible(false);
-                    item.onPress();
-                  }}
-                  iconSize={55}
-                  labelStyle={styles.label}
-                  iconSizeRatio={0.5}
-                />
-              )}
-            />
-          </View>
-        </TouchableWithoutFeedback>
-      </TouchableOpacity>
-    </Modal>
+      setVisible={setVisible}
+      MainComponent={() => (
+        <View style={styles.container}>
+          <FlatList
+            data={options}
+            keyExtractor={(option) => option.name}
+            numColumns={3}
+            renderItem={({ item }) => (
+              <CategoryPickerItem
+                item={item}
+                onPress={() => {
+                  setVisible(false);
+                  item.onPress();
+                }}
+                iconSize={55}
+                labelStyle={styles.label}
+                iconSizeRatio={0.5}
+              />
+            )}
+          />
+        </View>
+      )}
+    />
   );
 }
 
