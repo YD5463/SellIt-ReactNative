@@ -28,7 +28,11 @@ const addListing = (listing, onUploadProgress) => {
   });
 };
 
+const deleteListing = (listingId) =>
+  client.put(`${endpoint}/delete`, { listingId });
+
 export default {
   addListing,
   getListings,
+  deleteListing,
 };
