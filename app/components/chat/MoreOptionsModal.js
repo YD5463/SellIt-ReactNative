@@ -12,6 +12,7 @@ function MoreOptionsModal({ visible, setVisible, Callbacks }) {
     { name: t("search"), onPress: Callbacks.onSearch },
     { name: t("background"), onPress: () => {} },
     { name: t("notification"), onPress: () => {} },
+    { name: t("report"), onPress: () => {} },
   ];
   return (
     <Modal

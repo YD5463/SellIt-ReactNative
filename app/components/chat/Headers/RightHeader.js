@@ -1,22 +1,34 @@
 import React from "react";
-import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+} from "react-native";
 import {
   MaterialCommunityIcons,
   MaterialIcons,
   Ionicons,
 } from "@expo/vector-icons";
 
-function RightHeader({ onMore, onCall = () => {}, onVideo = () => {} }) {
+function RightHeader({
+  onMore,
+  onCall = () => {},
+  onVideo = () => {},
+  isLoopbackChat = true,
+}) {
   const options = [
     {
       icon: "video",
       IconComponent: MaterialCommunityIcons,
       callback: onVideo,
+      disable: isLoopbackChat,
     },
     {
       IconComponent: MaterialIcons,
       icon: "call",
       callback: onCall,
+      disable: isLoopbackChat,
     },
     {
       IconComponent: Ionicons,
@@ -31,11 +43,15 @@ function RightHeader({ onMore, onCall = () => {}, onVideo = () => {} }) {
           style={index === options.length - 1 ? {} : styles.headerIcon}
           key={item.icon}
         >
-          <TouchableWithoutFeedback onPress={item.callback}>
+          <TouchableOpacity onPress={item.callback}>
             <View style={{ height: 25 }}>
-              <item.IconComponent name={item.icon} size={25} color="white" />
+              <item.IconComponent
+                name={item.icon}
+                size={25}
+                color={`rgba(255, 255, 255, ${item.disable ? "0.5" : "1.0"})`}
+              />
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         </View>
       ))}
     </View>

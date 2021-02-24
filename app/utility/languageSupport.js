@@ -77,6 +77,7 @@ const init = () => {
             search: "Search",
             add_contact: "Add to contacts",
             background: "Background",
+            report: "Report",
           },
         },
         he: {
@@ -148,6 +149,7 @@ const init = () => {
             search: "חיפוש",
             add_contact: "הוסף לאנשי קשר",
             background: "רקע",
+            report: "דווח",
           },
         },
       },
