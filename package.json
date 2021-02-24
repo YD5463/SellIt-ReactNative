@@ -51,6 +51,7 @@
     "react-native-confirmation-code-field": "^6.5.1",
     "react-native-expo-image-cache": "^4.1.0",
     "react-native-gesture-handler": "~1.6.0",
+    "react-native-highlight-words": "^1.0.1",
     "react-native-maps": "0.26.1",
     "react-native-modal-datetime-picker": "^9.1.0",
     "react-native-paper": "^4.1.0",

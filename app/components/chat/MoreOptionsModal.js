@@ -4,14 +4,14 @@ import Text from "../Text";
 import { useTranslation } from "react-i18next";
 import Modal from "../Modal";
 
-function MoreOptionsModal({ visible, setVisible }) {
+function MoreOptionsModal({ visible, setVisible, Callbacks }) {
   const { t } = useTranslation();
 
   const options = [
-    { name: "Add To Contacts", onPress: () => {} },
-    { name: "Search", onPress: () => {} },
-    { name: "Background", onPress: () => {} },
-    { name: "Notications", onPress: () => {} },
+    { name: t("add_contact"), onPress: () => {} },
+    { name: t("search"), onPress: Callbacks.onSearch },
+    { name: t("background"), onPress: () => {} },
+    { name: t("notification"), onPress: () => {} },
   ];
   return (
     <Modal

@@ -74,6 +74,9 @@ const init = () => {
             sendContactTitle: "Add Contact",
             sendContactSubTitle:
               "Do you Want to add this contact to your device?",
+            search: "Search",
+            add_contact: "Add to contacts",
+            background: "Background",
           },
         },
         he: {
@@ -142,6 +145,9 @@ const init = () => {
             today: "היום",
             sendContactTitle: "הוספת איש קשר",
             sendContactSubTitle: "האם אתה רוצה להוסיף את איש קשר זה למכשירך?",
+            search: "חיפוש",
+            add_contact: "הוסף לאנשי קשר",
+            background: "רקע",
           },
         },
       },

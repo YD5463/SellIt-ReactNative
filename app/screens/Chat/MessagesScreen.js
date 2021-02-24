@@ -6,6 +6,7 @@ import {
   ImageBackground,
   KeyboardAvoidingView,
   Clipboard,
+  Text,
 } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "react-i18next";
@@ -23,11 +24,15 @@ import contentTypes from "../../config/contentTypes";
 import OnPickingRightHeader from "./../../components/chat/Headers/OnPickingRightHeader";
 import location from "../../utility/location";
 import MoreOptionsModal from "../../components/chat/MoreOptionsModal";
+import OnSearchRightHeader from "../../components/chat/Headers/OnSearchRightHeader";
+import OnSearchLeftHeader from "../../components/chat/Headers/OnSearchLeftHeader";
+import BackArrow from "./../../components/BackArrow";
 
 function MessagesScreen({ navigation, route }) {
   // const [socket, setSocket] = useState();
   const [userData, setUserData] = useState();
   const [pickedMessages, setPickedMessages] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const { contactName, contactId } = route.params;
   const contactImageUri = route.params.contactProfileImage
@@ -40,8 +45,13 @@ function MessagesScreen({ navigation, route }) {
   const [loading, setLoading] = useState(false);
   const [allowCopy, setAllowCopy] = useState(true);
   const [moreVisible, setMoreVisible] = useState(false);
+  const [searchMode, setSearchMode] = useState(false);
+  const [highlightedMessages, setHighlightedMessages] = useState([]);
+  const [searchIndex, setSearchIndex] = useState(0);
+  const [highlightMode, setHighlightMode] = useState(false);
   const messageListRef = useRef();
 
+  //------------------------message sending----------------------
   const generateMessage = (contentType, content, other = {}) => {
     return {
       content: content,
@@ -93,6 +103,7 @@ function MessagesScreen({ navigation, route }) {
     setMessages([...messages, ...newMessages]);
   };
   const sendDocument = (documentData) => {};
+  // ----------------message picking------------------------
   const onPickMessage = (item) => {
     if (item.contentType !== contentTypes.TEXT) setAllowCopy(false);
     setPickedMessages([...pickedMessages, item]);
@@ -127,13 +138,57 @@ function MessagesScreen({ navigation, route }) {
     Clipboard.setString(joinPickedMessages());
     setPickedMessages([]);
   };
+  //----------------options calbbacks--------------
+  const onBackSearch = () => {
+    setSearchMode(false);
+    setHighlightedMessages([]);
+    setHighlightMode(false);
+    setSearchQuery("");
+  };
+  const onSubmitSearch = () => {
+    setHighlightMode(true);
+    const searchWords = searchQuery.split(" ");
+    const indexes = [];
+    messages.forEach((element, index) => {
+      if (element.contentType !== contentTypes.TEXT) return;
+      for (let word of searchWords) {
+        if (element.content.includes(word)) return indexes.push(index);
+      }
+    });
+    setHighlightedMessages(indexes);
+  };
+  const onScrollPrev = () => {
+    if (highlightedMessages.length === searchIndex + 1) return;
+    messageListRef.current.scrollToIndex({
+      index: highlightedMessages[searchIndex + 1],
+      animated: true,
+    });
+    setSearchIndex(searchIndex + 1);
+  };
+  const onScrollNext = () => {
+    if (searchIndex - 1 < 0) return;
+    messageListRef.current.scrollToIndex({
+      index: highlightedMessages[searchIndex - 1],
+      animated: true,
+    });
+    setSearchIndex(searchIndex - 1);
+  };
+
+  //-----------------headers-----------------------
   useLayoutEffect(() => {
     navigation.setOptions({
       headerStyle: {
         backgroundColor: colors.primary,
       },
-      headerRight: () =>
-        pickedMessages.length === 0 ? (
+      headerRight: () => {
+        if (searchMode)
+          return (
+            <OnSearchRightHeader
+              scrollNext={onScrollNext}
+              scrollPrev={onScrollPrev}
+            />
+          );
+        return pickedMessages.length === 0 ? (
           <RightHeader onMore={() => setMoreVisible(true)} />
         ) : (
           <OnPickingRightHeader
@@ -141,19 +196,59 @@ function MessagesScreen({ navigation, route }) {
             onDelete={onDeleteMessages}
             onCopy={onCopy}
           />
+        );
+      },
+      headerLeft: () =>
+        searchMode ? (
+          <BackArrow onBack={onBackSearch} size={28} />
+        ) : (
+          <LeftHeader
+            contactImageUri={contactImageUri}
+            contactName={contactName}
+            onBack={() => navigation.goBack()}
+            pickedCount={pickedMessages.length}
+            onResetPicked={() => setPickedMessages([])}
+          />
         ),
-      headerLeft: () => (
-        <LeftHeader
-          contactImageUri={contactImageUri}
-          contactName={contactName}
-          onBack={() => navigation.goBack()}
-          pickedCount={pickedMessages.length}
-          onResetPicked={() => setPickedMessages([])}
-        />
-      ),
       title: "",
+      headerTitle: () =>
+        searchMode && (
+          <OnSearchLeftHeader
+            searchVal={searchQuery}
+            setSearchVal={setSearchQuery}
+            onSubmit={onSubmitSearch}
+          />
+        ),
     });
   });
+  //--------atchment modal options callbacks----------------------
+  const onDocument = () =>
+    navigation.navigate(routes.DOCUMENT_PICKER, {
+      contactName,
+      sendDocument,
+    });
+  const onCamera = () => navigation.navigate(routes.CAMERA, { sendImage });
+  const onGallery = () => {
+    console.log("onGallery");
+    //use image picker here
+  };
+  const onAudio = () =>
+    navigation.navigate(routes.AUDIO_PICKER, { contactName, sendAudio });
+
+  const onLocation = async () => {
+    console.log("onLocation");
+    const curr_location = await location.getLocation();
+    const newMessage = generateMessage(contentTypes.LOCATION, curr_location);
+    setMessages([...messages, newMessage]);
+  };
+  const onContact = () =>
+    navigation.navigate(routes.CONTACTS_LIST, { contactName, sendContact });
+
+  const onSearch = () => {
+    setMoreVisible(false);
+    setSearchMode(true);
+  };
+  //-----------init--------------------------
   const initData = async () => {
     setLoading(true);
     const user = await authStorage.getUser();
@@ -163,35 +258,6 @@ function MessagesScreen({ navigation, route }) {
   useEffect(() => {
     initData();
   }, []);
-  const onDocument = () => {
-    console.log("onDocument");
-    navigation.navigate(routes.DOCUMENT_PICKER, {
-      contactName,
-      sendDocument,
-    });
-  };
-  const onCamera = () => {
-    console.log("onCamera");
-    navigation.navigate(routes.CAMERA, { sendImage });
-  };
-  const onGallery = () => {
-    console.log("onGallery");
-    //use image picker here
-  };
-  const onAudio = () => {
-    console.log("onAudio");
-    navigation.navigate(routes.AUDIO_PICKER, { contactName, sendAudio });
-  };
-  const onLocation = async () => {
-    console.log("onLocation");
-    const curr_location = await location.getLocation();
-    const newMessage = generateMessage(contentTypes.LOCATION, curr_location);
-    setMessages([...messages, newMessage]);
-  };
-  const onContact = () => {
-    navigation.navigate(routes.CONTACTS_LIST, { contactName, sendContact });
-  };
-  console.log(userData, messages);
   return (
     <ImageBackground
       source={require("../../assets/chatBackground.png")}
@@ -207,6 +273,7 @@ function MessagesScreen({ navigation, route }) {
             <MoreOptionsModal
               visible={moreVisible}
               setVisible={setMoreVisible}
+              Callbacks={{ onSearch }}
             />
             <View style={{ height: "89%", width: "100%" }}>
               {userData && (
@@ -219,6 +286,11 @@ function MessagesScreen({ navigation, route }) {
                   keyExtractor={(message) => message.dateTime}
                   renderItem={({ item, index }) => (
                     <RenderMessage
+                      searchQuery={
+                        highlightMode && item.contentType === contentTypes.TEXT
+                          ? searchQuery
+                          : ""
+                      }
                       item={item}
                       userId={userData.userId}
                       lastMessageDate={

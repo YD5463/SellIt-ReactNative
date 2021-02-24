@@ -32,7 +32,9 @@ function RightHeader({ onMore, onCall = () => {}, onVideo = () => {} }) {
           key={item.icon}
         >
           <TouchableWithoutFeedback onPress={item.callback}>
-            <item.IconComponent name={item.icon} size={25} color="white" />
+            <View style={{ height: 25 }}>
+              <item.IconComponent name={item.icon} size={25} color="white" />
+            </View>
           </TouchableWithoutFeedback>
         </View>
       ))}
@@ -45,10 +47,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingRight: 15,
+    paddingRight: 20,
   },
   headerIcon: {
-    paddingRight: 15,
+    paddingRight: 25,
   },
 });
 

@@ -21,6 +21,7 @@ function RenderMessage({
   unpickMessage,
   isPicked,
   pickedCount,
+  searchQuery,
 }) {
   const { dateTime } = item;
   const messageDate = moment(dateTime);
@@ -42,7 +43,12 @@ function RenderMessage({
 
   const render = () => {
     if (item.contentType === contentTypes.TEXT)
-      return <TextMessage meesageData={item} />;
+      return (
+        <TextMessage
+          meesageData={item}
+          searchQuery={searchQuery}
+        />
+      );
     else if (item.contentType === contentTypes.AUDIO)
       return <AudioMessage content={item.content} duration={item.duration} />;
     else if (item.contentType === contentTypes.IMAGE)
