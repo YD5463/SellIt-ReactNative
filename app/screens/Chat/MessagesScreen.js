@@ -27,6 +27,9 @@ import MoreOptionsModal from "../../components/chat/MoreOptionsModal";
 import OnSearchRightHeader from "../../components/chat/Headers/OnSearchRightHeader";
 import OnSearchLeftHeader from "../../components/chat/Headers/OnSearchLeftHeader";
 import BackArrow from "./../../components/BackArrow";
+import Alert from "../../components/Alert";
+import CheckBox from "@react-native-community/checkbox";
+import colors from "../../config/colors";
 
 function MessagesScreen({ navigation, route }) {
   // const [socket, setSocket] = useState();
@@ -49,6 +52,8 @@ function MessagesScreen({ navigation, route }) {
   const [highlightedMessages, setHighlightedMessages] = useState([]);
   const [searchIndex, setSearchIndex] = useState(0);
   const [highlightMode, setHighlightMode] = useState(false);
+  const [reportVisible, setReportVisible] = useState(false);
+  const [blockOption, setBlackOption] = useState(false);
   const messageListRef = useRef();
 
   //------------------------message sending----------------------
@@ -243,11 +248,10 @@ function MessagesScreen({ navigation, route }) {
   };
   const onContact = () =>
     navigation.navigate(routes.CONTACTS_LIST, { contactName, sendContact });
-
-  const onSearch = () => {
-    setMoreVisible(false);
-    setSearchMode(true);
-  };
+  //------------more options modal callbacks----------------
+  const onSearch = () => setSearchMode(true);
+  const onBackground = () => navigation.navigate(routes.CHANGE_BACKGROUND);
+  const onReport = () => setReportVisible(true);
   //-----------init--------------------------
   const initData = async () => {
     setLoading(true);
@@ -257,6 +261,7 @@ function MessagesScreen({ navigation, route }) {
   };
   useEffect(() => {
     initData();
+    //get background image
   }, []);
   return (
     <ImageBackground
@@ -273,7 +278,31 @@ function MessagesScreen({ navigation, route }) {
             <MoreOptionsModal
               visible={moreVisible}
               setVisible={setMoreVisible}
-              Callbacks={{ onSearch }}
+              Callbacks={{ onSearch, onBackground, onReport }}
+            />
+            <Alert
+              visible={reportVisible}
+              setVisible={setReportVisible}
+              title={t("reportTitle")}
+              subTitle={t("reportSubTitle")}
+              confirmText={t("report")}
+              onConfirm={() => console.log("report")}
+              AdditionalComponent={() => (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    paddingTop: 15,
+                    alignItems: "center",
+                  }}
+                >
+                  <CheckBox
+                    value={blockOption}
+                    onValueChange={setBlackOption}
+                    
+                  />
+                  <Text style={styles.blockText}>{t("block")}</Text>
+                </View>
+              )}
             />
             <View style={{ height: "89%", width: "100%" }}>
               {userData && (
@@ -331,6 +360,10 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: "cover",
+  },
+  blockText: {
+    color: colors.hardLight,
+    fontSize: 16,
   },
 });
 

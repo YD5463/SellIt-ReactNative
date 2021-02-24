@@ -78,6 +78,10 @@ const init = () => {
             add_contact: "Add to contacts",
             background: "Background",
             report: "Report",
+            reportTitle: "Do report to SellIt on this contact?",
+            reportSubTitle:
+              "the recent message from this contact will move to SellIt for checking...",
+            block: "Block this contact and remove this chat",
           },
         },
         he: {
@@ -150,6 +154,9 @@ const init = () => {
             add_contact: "הוסף לאנשי קשר",
             background: "רקע",
             report: "דווח",
+            reportTitle: "?על איש קשר זה SellIt-האם לדווח ל",
+            reportSubTitle: "לבדיקה SellIt-ההודעות האחרנות ממשתמש זה יועברו ל",
+            block: "חסום/חסמי איש קשר ומחק/י את הודעות צא'ט זה",
           },
         },
       },

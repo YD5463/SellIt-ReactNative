@@ -1,5 +1,11 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  Alert,
+} from "react-native";
 import Text from "../Text";
 import { useTranslation } from "react-i18next";
 import Modal from "../Modal";
@@ -10,9 +16,9 @@ function MoreOptionsModal({ visible, setVisible, Callbacks }) {
   const options = [
     { name: t("add_contact"), onPress: () => {} },
     { name: t("search"), onPress: Callbacks.onSearch },
-    { name: t("background"), onPress: () => {} },
+    { name: t("background"), onPress: Callbacks.onBackground },
     { name: t("notification"), onPress: () => {} },
-    { name: t("report"), onPress: () => {} },
+    { name: t("report"), onPress: Callbacks.onReport },
   ];
   return (
     <Modal
@@ -26,7 +32,12 @@ function MoreOptionsModal({ visible, setVisible, Callbacks }) {
             keyExtractor={(option) => option.name}
             renderItem={({ item }) => (
               <View style={{ width: "100%", padding: 15 }}>
-                <TouchableOpacity onPress={item.onPress}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setVisible(false);
+                    item.onPress();
+                  }}
+                >
                   <Text>{item.name}</Text>
                 </TouchableOpacity>
               </View>
