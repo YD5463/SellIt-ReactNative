@@ -29,4 +29,6 @@ export default Object.freeze({
   AUDIO_PICKER: "AudioList",
   CONTACTS_LIST: "ContactList",
   DOCUMENT_PICKER: "DocumentPicker",
+  CHANGE_BACKGROUND: "Custom Background",
+  BACKFROUND_GALLERY: "Background Gallery",
 });
