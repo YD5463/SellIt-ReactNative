@@ -16,16 +16,15 @@ import LocationMessage from "./LocationMessage";
 function RenderMessage({
   item,
   lastMessageDate,
-  userId,
-  pickMessage,
-  unpickMessage,
-  isPicked,
-  pickedCount,
-  searchQuery,
+  pickMessage = () => {},
+  unpickMessage = () => {},
+  isPicked = false,
+  pickedCount = 0,
+  searchQuery = "",
+  isFrom,
 }) {
-  const { dateTime } = item;
+  const { dateTime, contentType } = item;
   const messageDate = moment(dateTime);
-  const isFrom = userId === item.fromUserId;
   const { t } = useTranslation();
   const { colors } = useTheme();
 
@@ -43,12 +42,7 @@ function RenderMessage({
 
   const render = () => {
     if (item.contentType === contentTypes.TEXT)
-      return (
-        <TextMessage
-          meesageData={item}
-          searchQuery={searchQuery}
-        />
-      );
+      return <TextMessage meesageData={item} searchQuery={searchQuery} />;
     else if (item.contentType === contentTypes.AUDIO)
       return <AudioMessage content={item.content} duration={item.duration} />;
     else if (item.contentType === contentTypes.IMAGE)
@@ -62,7 +56,7 @@ function RenderMessage({
     else if (item.contentType === contentTypes.CONTACT) return { width: "70%" };
     else if (item.contentType === contentTypes.LOCATION)
       return { width: "70%" };
-    return { maxWidth: "48%" };
+    return { maxWidth: "75%" };
   };
 
   return (

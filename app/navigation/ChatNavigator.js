@@ -8,6 +8,7 @@ import ContactScreen from "./../screens/Chat/ContactScreen";
 import DocumentPickerScreen from "../screens/Chat/DocumentPickerScreen";
 import ChangeBakcgroundScreen from "./../screens/Chat/ChangeBakcgroundScreen";
 import BakcgroundGallery from "./../screens/Chat/BakcgroundGallery";
+import BackgroundPreviewScreen from "./../screens/Chat/BackgroundPreviewScreen";
 const Stack = createStackNavigator();
 
 function ChatNavigator(props) {
@@ -28,6 +29,7 @@ function ChatNavigator(props) {
         component={ChangeBakcgroundScreen}
       />
       <Stack.Screen name="Background Gallery" component={BakcgroundGallery} />
+      <Stack.Screen name="Preview" component={BackgroundPreviewScreen} />
     </Stack.Navigator>
   );
 }

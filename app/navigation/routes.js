@@ -31,4 +31,5 @@ export default Object.freeze({
   DOCUMENT_PICKER: "DocumentPicker",
   CHANGE_BACKGROUND: "Custom Background",
   BACKFROUND_GALLERY: "Background Gallery",
+  BACKGROUND_PREVIEW: "Preview",
 });

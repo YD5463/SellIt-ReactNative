@@ -3,7 +3,6 @@ import {
   View,
   StyleSheet,
   FlatList,
-  ImageBackground,
   KeyboardAvoidingView,
   Clipboard,
   Text,
@@ -30,6 +29,9 @@ import BackArrow from "./../../components/BackArrow";
 import Alert from "../../components/Alert";
 import CheckBox from "@react-native-community/checkbox";
 import colors from "../../config/colors";
+import Background from "./../../components/chat/Background";
+import cache from "../../utility/cache";
+import settings from "../../config/settings";
 
 function MessagesScreen({ navigation, route }) {
   // const [socket, setSocket] = useState();
@@ -54,6 +56,7 @@ function MessagesScreen({ navigation, route }) {
   const [highlightMode, setHighlightMode] = useState(false);
   const [reportVisible, setReportVisible] = useState(false);
   const [blockOption, setBlackOption] = useState(false);
+  const [background, setBackground] = useState();
   const messageListRef = useRef();
 
   //------------------------message sending----------------------
@@ -253,21 +256,27 @@ function MessagesScreen({ navigation, route }) {
   const onBackground = () => navigation.navigate(routes.CHANGE_BACKGROUND);
   const onReport = () => setReportVisible(true);
   //-----------init--------------------------
+  const initBackground = async () => {
+    const cachedBackground = await cache.get(settings.ChatBackground, false);
+    setBackground(cachedBackground);
+  };
+
   const initData = async () => {
     setLoading(true);
     const user = await authStorage.getUser();
+    await initBackground();
     setUserData(user);
     setLoading(false);
   };
   useEffect(() => {
     initData();
-    //get background image
+    const unsubscribe = navigation.addListener("focus", () => {
+      initBackground();
+    });
+    return unsubscribe;
   }, []);
   return (
-    <ImageBackground
-      source={require("../../assets/chatBackground.png")}
-      style={styles.backgroundImage}
-    >
+    <Background background={background}>
       <>
         <ActivityIndicator visible={loading} />
         <View>
@@ -288,17 +297,10 @@ function MessagesScreen({ navigation, route }) {
               confirmText={t("report")}
               onConfirm={() => console.log("report")}
               AdditionalComponent={() => (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    paddingTop: 15,
-                    alignItems: "center",
-                  }}
-                >
+                <View style={styles.blockView}>
                   <CheckBox
                     value={blockOption}
                     onValueChange={setBlackOption}
-                    
                   />
                   <Text style={styles.blockText}>{t("block")}</Text>
                 </View>
@@ -321,7 +323,7 @@ function MessagesScreen({ navigation, route }) {
                           : ""
                       }
                       item={item}
-                      userId={userData.userId}
+                      isFrom={userData.userId === item.fromUserId}
                       lastMessageDate={
                         index !== 0 ? messages[index - 1].dateTime : null
                       }
@@ -352,18 +354,19 @@ function MessagesScreen({ navigation, route }) {
           </KeyboardAvoidingView>
         </View>
       </>
-    </ImageBackground>
+    </Background>
   );
 }
 
 const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,
-    resizeMode: "cover",
-  },
   blockText: {
     color: colors.hardLight,
     fontSize: 16,
+  },
+  blockView: {
+    flexDirection: "row",
+    paddingTop: 15,
+    alignItems: "center",
   },
 });
 

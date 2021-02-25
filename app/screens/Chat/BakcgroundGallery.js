@@ -1,6 +1,7 @@
 import React, { useLayoutEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { View, StyleSheet, FlatList, Image } from "react-native";
+import routes from "../../navigation/routes";
 
 function BakcgroundGallery({ navigation, route }) {
   const { images, name, isColor } = route.params.item;
@@ -10,13 +11,19 @@ function BakcgroundGallery({ navigation, route }) {
     });
   });
 
+  const onPressElement = (item) =>
+    navigation.navigate(routes.BACKGROUND_PREVIEW, { image: item, isColor });
+
   return (
     <View>
       <FlatList
         data={images}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => {}} style={{ flex: 1 }}>
+          <TouchableOpacity
+            onPress={() => onPressElement(item)}
+            style={{ flex: 1 }}
+          >
             {!isColor ? (
               <Image style={styles.element} source={{ uri: item }} />
             ) : (
@@ -36,7 +43,6 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 3,
     marginRight: 3,
-
     flex: 1,
   },
 });

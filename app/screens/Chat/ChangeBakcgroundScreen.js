@@ -35,6 +35,9 @@ function ChangeBakcgroundScreen({ navigation }) {
       },
     ]);
   }, []);
+  const onPressElement = (item) =>
+    navigation.navigate(routes.BACKFROUND_GALLERY, { item });
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -43,11 +46,7 @@ function ChangeBakcgroundScreen({ navigation }) {
         keyExtractor={(element) => element.name}
         renderItem={({ item }) => (
           <View style={styles.element}>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate(routes.BACKFROUND_GALLERY, { item })
-              }
-            >
+            <TouchableOpacity onPress={() => onPressElement(item)}>
               {item.isColor ? (
                 <View
                   style={[{ backgroundColor: item.images[0] }, styles.image]}
@@ -61,7 +60,9 @@ function ChangeBakcgroundScreen({ navigation }) {
         )}
       />
 
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate(routes.BACKGROUND_PREVIEW)}
+      >
         <View style={styles.textView}>
           <MaterialCommunityIcons
             name="image-size-select-actual"

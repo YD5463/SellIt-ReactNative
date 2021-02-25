@@ -82,6 +82,9 @@ const init = () => {
             reportSubTitle:
               "the recent message from this contact will move to SellIt for checking...",
             block: "Block this contact and remove this chat",
+            messageDemo1: "Swipe to display more backgrounds",
+            messageDemo2: "Set background to see more options",
+            setBackground: "Set Background",
           },
         },
         he: {
@@ -157,6 +160,9 @@ const init = () => {
             reportTitle: "?על איש קשר זה SellIt-האם לדווח ל",
             reportSubTitle: "לבדיקה SellIt-ההודעות האחרנות ממשתמש זה יועברו ל",
             block: "חסום/חסמי איש קשר ומחק/י את הודעות צא'ט זה",
+            messageDemo1: "החלק/י כדי להציג רקעים נוספים",
+            messageDemo2: "הגדר/י רקע כדי לראות אפשרויות נוספות",
+            setBackground: "הגדר/י רקע",
           },
         },
       },

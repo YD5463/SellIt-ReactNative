@@ -1,11 +1,13 @@
+const cacheKeys = { CartCacheKey: "MyCart", ChatBackground: "ChatBackground" };
+
 const settings = {
   dev: {
     apiUrl: "http://192.168.68.101:9000/api",
-    CartCacheKey: "MyCart",
+    ...cacheKeys,
   },
   production: {
     apiUrl: "https://yad2-backend.herokuapp.com/api/",
-    CartCacheKey: "MyCart",
+    ...cacheKeys,
   },
 };
 
