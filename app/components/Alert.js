@@ -24,7 +24,7 @@ function Alert({
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>{subTitle}</Text>
           <AdditionalComponent />
-          <View style={{ flexDirection: "row", paddingTop: 15 }}>
+          <View style={{ flexDirection: "row", paddingTop: 25 }}>
             <View style={{ marginRight: 25 }}>
               <TouchableOpacity
                 onPress={() => {
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   container: {
     width: "88%",
     top: "25%",
-    padding: 20,
+    padding: 25,
     alignSelf: "center",
     backgroundColor: "white",
     borderRadius: 5,

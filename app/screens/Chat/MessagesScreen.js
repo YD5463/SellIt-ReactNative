@@ -366,6 +366,7 @@ const styles = StyleSheet.create({
   blockView: {
     flexDirection: "row",
     paddingTop: 15,
+    marginRight: 25,
     alignItems: "center",
   },
 });

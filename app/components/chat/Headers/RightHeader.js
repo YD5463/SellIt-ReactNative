@@ -44,7 +44,7 @@ function RightHeader({
           key={item.icon}
           style={styles.headerIcon}
           underlayColor={"#F5CCCD"}
-          activeOpacity={0.5}
+          activeOpacity={0.7}
         >
           <item.IconComponent
             name={item.icon}

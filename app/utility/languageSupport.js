@@ -157,8 +157,9 @@ const init = () => {
             add_contact: "הוסף לאנשי קשר",
             background: "רקע",
             report: "דווח",
-            reportTitle: "?על איש קשר זה SellIt-האם לדווח ל",
-            reportSubTitle: "לבדיקה SellIt-ההודעות האחרנות ממשתמש זה יועברו ל",
+            reportTitle: "האם לדווח ל-SellIt על איש קשר זה?",
+            reportSubTitle:
+              "ההודעות האחרונות ממשתמש זה יוברו ל-SellIt לבדיקה? ",
             block: "חסום/חסמי איש קשר ומחק/י את הודעות צא'ט זה",
             messageDemo1: "החלק/י כדי להציג רקעים נוספים",
             messageDemo2: "הגדר/י רקע כדי לראות אפשרויות נוספות",
