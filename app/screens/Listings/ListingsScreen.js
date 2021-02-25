@@ -50,6 +50,7 @@ function ListingsScreen({ navigation }) {
   const initListings = async () => {
     setRefreshing(true);
     const listingResponse = await listingsApi.getListings();
+    if (!listingResponse.ok) return setError(true);
     setOriginalListing(listingResponse.data);
     setListing(listingResponse.data);
     setRefreshing(false);
@@ -60,7 +61,7 @@ function ListingsScreen({ navigation }) {
     await initListings();
     await setCachedCart();
     setLoading(false);
-    if (!categoryResponse.ok || !listingResponse.ok) return setError(true);
+    if (!categoryResponse.ok) return setError(true);
     setError(false);
     const newCategoriesMap = {};
     categoryResponse.data.forEach((c) => {
@@ -124,6 +125,7 @@ function ListingsScreen({ navigation }) {
       )
     );
   };
+  console.log(categoriesMap);
   return (
     <>
       <ActivityIndicator visible={loading} />
