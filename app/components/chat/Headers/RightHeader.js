@@ -2,7 +2,7 @@ import React from "react";
 import {
   View,
   StyleSheet,
-  TouchableWithoutFeedback,
+  TouchableHighlight,
   TouchableOpacity,
 } from "react-native";
 import {
@@ -39,20 +39,19 @@ function RightHeader({
   return (
     <View style={styles.rightHeader}>
       {options.map((item, index) => (
-        <View
-          style={index === options.length - 1 ? {} : styles.headerIcon}
+        <TouchableHighlight
+          onPress={item.callback}
           key={item.icon}
+          style={styles.headerIcon}
+          underlayColor={"#F5CCCD"}
+          activeOpacity={0.5}
         >
-          <TouchableOpacity onPress={item.callback}>
-            <View style={{ height: 25 }}>
-              <item.IconComponent
-                name={item.icon}
-                size={25}
-                color={`rgba(255, 255, 255, ${item.disable ? "0.5" : "1.0"})`}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
+          <item.IconComponent
+            name={item.icon}
+            size={25}
+            color={`rgba(255, 255, 255, ${item.disable ? "0.5" : "1.0"})`}
+          />
+        </TouchableHighlight>
       ))}
     </View>
   );
@@ -62,11 +61,13 @@ const styles = StyleSheet.create({
   rightHeader: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    paddingRight: 20,
   },
   headerIcon: {
-    paddingRight: 25,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
