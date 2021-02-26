@@ -32,14 +32,14 @@ import colors from "../../config/colors";
 import Background from "./../../components/chat/Background";
 import cache from "../../utility/cache";
 import settings from "../../config/settings";
+// import io from "socket.io-client";
 
 function MessagesScreen({ navigation, route }) {
-  // const [socket, setSocket] = useState();
   const [userData, setUserData] = useState();
   const [pickedMessages, setPickedMessages] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { contactName, contactId } = route.params;
+  const { contactName, contactId, socket } = route.params;
   const contactImageUri = route.params.contactProfileImage
     ? route.params.contactProfileImage.url
     : null;
@@ -74,7 +74,7 @@ function MessagesScreen({ navigation, route }) {
     //call the api
     const newMessage = generateMessage(contentTypes.TEXT, message);
     setMessages([...messages, newMessage]);
-    // socket.emit("chat message", { message, contactId });
+    socket.emit("send message", newMessage);
   };
   const sendRecording = (uri, duration) => {
     console.log("duration: ", duration);
@@ -270,6 +270,10 @@ function MessagesScreen({ navigation, route }) {
   };
   useEffect(() => {
     initData();
+    socket.on("receive message", (message) => {
+      console.log("im here", message);
+      setMessages([...messages, message]);
+    });
     const unsubscribe = navigation.addListener("focus", () => {
       initBackground();
     });

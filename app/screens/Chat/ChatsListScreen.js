@@ -12,6 +12,8 @@ import BackArrow from "../../components/BackArrow";
 import Text from "../../components/Text";
 import { useTranslation } from "react-i18next";
 import SearchBar from "./../../components/SearchBar";
+import io from "socket.io-client";
+import storage from "../../auth/storage";
 
 function ChatsListScreen({ navigation }) {
   const [chatsList, setChatsList] = useState([]);
@@ -20,13 +22,20 @@ function ChatsListScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useTranslation();
   const { colors } = useTheme();
+  const [socket, setSocket] = useState();
 
   const initData = async () => {
     setLoading(true);
-    const res = await chats.getChats();
-    setLoading(false);
-    setChatsList(res.data);
-    setOriginalList(res.data);
+    const token = await storage.getToken();
+    const clientSocket = io("http://192.168.68.112:9000", {
+      auth: { token: token },
+    });
+    clientSocket.on("ExistingMessages", (chats) => {
+      setLoading(false);
+      setChatsList(chats);
+      setOriginalList(chats);
+    });
+    setSocket(clientSocket);
   };
   useEffect(() => {
     initData();
@@ -77,7 +86,9 @@ function ChatsListScreen({ navigation }) {
               contactName={item.contactName}
               contactProfileImage={item.contactProfileImage}
               lastMessage={item.messages[item.messages.length - 1]}
-              onPress={() => navigation.navigate(routes.MESSAGES, item)}
+              onPress={() =>
+                navigation.navigate(routes.MESSAGES, { ...item, socket })
+              }
             />
           )}
           ItemSeparatorComponent={ListItemSeparator}
