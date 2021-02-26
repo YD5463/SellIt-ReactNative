@@ -14,12 +14,13 @@ import {
 import { ErrorMessage } from "../../components/forms";
 import ActivityIndicator from "../../components/ActivityIndicator";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import useAuth from "../../auth/useAuth";
 
 function ValidateEmailScreen({ route }) {
   const { email } = route.params;
+  const auth = useAuth();
   const ValidateEmailApi = useApi(authApi.validateEmail);
   const resendCodeApi = useApi(authApi.resendValidationCode);
-  const auth = useAuth();
   const { colors } = useTheme();
   const [minutes, setMinutes] = useState(1);
   const [seconds, setSeconds] = useState(0);
@@ -40,6 +41,7 @@ function ValidateEmailScreen({ route }) {
   const submit_code = async () => {
     await ValidateEmailApi.request(code, email);
     if (!ValidateEmailApi.error) auth.logIn(ValidateEmailApi.data);
+    else console.log(ValidateEmailApi.data);
   };
   const CELL_COUNT = 6;
   const [code, setCode] = useState("");
