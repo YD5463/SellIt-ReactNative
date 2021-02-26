@@ -12,6 +12,9 @@ import colors from "../../../config/colors";
 import contentTypes from "../../../config/contentTypes";
 import ContactMessage from "./ContactMessage";
 import LocationMessage from "./LocationMessage";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+const extraDataColor = "#404040";
 
 function RenderMessage({
   item,
@@ -23,7 +26,7 @@ function RenderMessage({
   searchQuery = "",
   isFrom,
 }) {
-  const { dateTime, contentType } = item;
+  const { dateTime, contentType, isSent } = item;
   const messageDate = moment(dateTime);
   const { t } = useTranslation();
   const { colors } = useTheme();
@@ -41,21 +44,20 @@ function RenderMessage({
   };
 
   const render = () => {
-    if (item.contentType === contentTypes.TEXT)
+    if (contentType === contentTypes.TEXT)
       return <TextMessage meesageData={item} searchQuery={searchQuery} />;
-    else if (item.contentType === contentTypes.AUDIO)
+    else if (contentType === contentTypes.AUDIO)
       return <AudioMessage content={item.content} duration={item.duration} />;
-    else if (item.contentType === contentTypes.IMAGE)
+    else if (contentType === contentTypes.IMAGE)
       return <ImageMessage meesageData={item} />;
-    else if (item.contentType === contentTypes.CONTACT)
+    else if (contentType === contentTypes.CONTACT)
       return <ContactMessage meesageData={item} />;
     return <LocationMessage messageData={item} />;
   };
   const getWidth = () => {
-    if (item.contentType === contentTypes.IMAGE) return { width: "75%" };
-    else if (item.contentType === contentTypes.CONTACT) return { width: "70%" };
-    else if (item.contentType === contentTypes.LOCATION)
-      return { width: "70%" };
+    if (contentType === contentTypes.IMAGE) return { width: "75%" };
+    else if (contentType === contentTypes.CONTACT) return { width: "70%" };
+    else if (contentType === contentTypes.LOCATION) return { width: "70%" };
     return { maxWidth: "75%" };
   };
 
@@ -85,10 +87,18 @@ function RenderMessage({
           >
             <View style={[isFrom ? styles.fromMessage : styles.toMessage]}>
               {render()}
-
-              <Text style={styles.messageTime}>
-                {moment(dateTime).format("HH:mm")}
-              </Text>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.messageTime}>
+                  {moment(dateTime).format("HH:mm")}
+                </Text>
+                {isFrom && (
+                  <MaterialCommunityIcons
+                    name={isSent === false ? "progress-clock" : "check"}
+                    size={16}
+                    color={extraDataColor}
+                  />
+                )}
+              </View>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -129,7 +139,7 @@ const styles = StyleSheet.create({
   },
   messageTime: {
     fontSize: 13,
-    color: "#404040",
+    color: extraDataColor,
     alignSelf: "flex-end",
     marginRight: 8,
     marginLeft: 5,

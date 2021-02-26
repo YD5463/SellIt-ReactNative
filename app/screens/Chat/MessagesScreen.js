@@ -64,17 +64,27 @@ function MessagesScreen({ navigation, route }) {
     return {
       content: content,
       contentType: contentType,
-      dateTime: moment().toString(),
+      dateTime: new Date().getTime(),
       fromUserId: userData.userId,
       toUserId: contactId,
+      isSent: false,
       ...other,
     };
   };
   const sendMessage = (message) => {
-    //call the api
     const newMessage = generateMessage(contentTypes.TEXT, message);
+    const messageIndex = messages.length;
+    socket.emit("send message", newMessage, (res) => {
+      //!make binary search based on the dateTime insted
+      if (messages.length === messageIndex) {
+        newMessage.isSent = true;
+        setMessages([...messages, newMessage]);
+      } else {
+        messages[messageIndex].isSent = true;
+        setMessages(messages);
+      }
+    });
     setMessages([...messages, newMessage]);
-    socket.emit("send message", newMessage);
   };
   const sendRecording = (uri, duration) => {
     console.log("duration: ", duration);
@@ -269,11 +279,12 @@ function MessagesScreen({ navigation, route }) {
     setLoading(false);
   };
   useEffect(() => {
-    initData();
     socket.on("receive message", (message) => {
-      console.log("im here", message);
       setMessages([...messages, message]);
     });
+  }, [messages]);
+  useEffect(() => {
+    initData();
     const unsubscribe = navigation.addListener("focus", () => {
       initBackground();
     });
@@ -318,7 +329,7 @@ function MessagesScreen({ navigation, route }) {
                     messageListRef.current.scrollToEnd()
                   }
                   data={messages}
-                  keyExtractor={(message) => message.dateTime}
+                  keyExtractor={(message) => message.dateTime.toString()}
                   renderItem={({ item, index }) => (
                     <RenderMessage
                       searchQuery={
