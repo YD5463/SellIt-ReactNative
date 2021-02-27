@@ -12,7 +12,6 @@ import { useTranslation } from "react-i18next";
 import RightHeader from "../../components/chat/Headers/RightHeader";
 import LeftHeader from "../../components/chat/Headers/LeftHeader";
 import Keyboard from "../../components/chat/Keyboard";
-import authStorage from "../../auth/storage";
 import ActivityIndicator from "../../components/ActivityIndicator";
 import RenderMessage from "../../components/chat/Messages/RenderMessage";
 import moment from "moment";
@@ -32,14 +31,12 @@ import colors from "../../config/colors";
 import Background from "./../../components/chat/Background";
 import cache from "../../utility/cache";
 import settings from "../../config/settings";
-// import io from "socket.io-client";
 
 function MessagesScreen({ navigation, route }) {
-  const [userData, setUserData] = useState();
   const [pickedMessages, setPickedMessages] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { contactName, contactId, socket } = route.params;
+  const { contactName, contactId, socket, user: userData } = route.params;
   const contactImageUri = route.params.contactProfileImage
     ? route.params.contactProfileImage.url
     : null;
@@ -273,14 +270,13 @@ function MessagesScreen({ navigation, route }) {
 
   const initData = async () => {
     setLoading(true);
-    const user = await authStorage.getUser();
     await initBackground();
-    setUserData(user);
     setLoading(false);
   };
   useEffect(() => {
     socket.on("receive message", (message) => {
-      setMessages([...messages, message]);
+      if (messages[messages.length - 1].dateTime !== message.dateTime)
+        setMessages([...messages, message]);
     });
   }, [messages]);
   useEffect(() => {

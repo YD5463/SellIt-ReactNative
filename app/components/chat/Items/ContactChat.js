@@ -18,6 +18,7 @@ function ContactChat({
   contactProfileImage,
   contactName,
   onPress,
+  diff,
 }) {
   const { colors } = useTheme();
   const { t } = useTranslation();
@@ -47,9 +48,10 @@ function ContactChat({
           color={colors.blue}
         />
         <Text style={styles.message}>{text}</Text>
-        {icon ? (
+
+        {icon !== "" && (
           <MaterialCommunityIcons name={icon} size={25} color={colors.light} />
-        ) : null}
+        )}
       </View>
     );
   };
@@ -64,29 +66,37 @@ function ContactChat({
 
   return (
     <TouchableOpacity onPress={onPress}>
-      <View style={styles.container}>
-        {contactProfileImage ? (
-          <Image
-            uri={contactProfileImage.url}
-            preview={{
-              uri: contactProfileImage.thumbnailUrl,
-            }}
-            style={styles.image}
-            tint="light"
-          />
-        ) : (
-          <DefualtUserImage size={imageSize} />
-        )}
-        <View style={{ flexDirection: "column", marginLeft: 10 }}>
-          <View style={{ flexDirection: "row" }}>
-            <Text style={styles.contactName}>{contactName}</Text>
-            <View style={{ justifyContent: "center" }}>
-              <Text style={styles.messageDateTime}>{displayTime()}</Text>
+      <>
+        <View style={styles.container}>
+          {contactProfileImage ? (
+            <Image
+              uri={contactProfileImage.url}
+              preview={{
+                uri: contactProfileImage.thumbnailUrl,
+              }}
+              style={styles.image}
+              tint="light"
+            />
+          ) : (
+            <DefualtUserImage size={imageSize} />
+          )}
+          <View style={styles.messageDataView}>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.contactName}>{contactName}</Text>
+
+              <View style={styles.extraDataView}>
+                <Text style={styles.messageDateTime}>{displayTime()}</Text>
+                {diff !== 0 && (
+                  <View style={styles.diff}>
+                    <Text style={styles.diffText}>{diff.toString()}</Text>
+                  </View>
+                )}
+              </View>
             </View>
+            {displayContent()}
           </View>
-          {displayContent()}
         </View>
-      </View>
+      </>
     </TouchableOpacity>
   );
 }
@@ -110,6 +120,23 @@ const styles = StyleSheet.create({
     textAlign: "left",
     width: "90%",
   },
+  diff: {
+    width: 23,
+    height: 23,
+    borderRadius: 12,
+    backgroundColor: colors.primary,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "flex-end",
+  },
+  diffText: {
+    fontSize: 14,
+    color: "white",
+  },
+  extraDataView: {
+    position: "absolute",
+    right: 20,
+  },
   message: {
     fontSize: 18,
     color: colors.medium,
@@ -119,6 +146,11 @@ const styles = StyleSheet.create({
     color: colors.medium,
     fontSize: 15,
     textAlign: "right",
+    paddingBottom: 10,
+  },
+  messageDataView: {
+    flexDirection: "column",
+    marginLeft: 10,
   },
 });
 
