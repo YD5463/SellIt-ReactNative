@@ -31,6 +31,8 @@ import colors from "../../config/colors";
 import Background from "./../../components/chat/Background";
 import cache from "../../utility/cache";
 import settings from "../../config/settings";
+// import socketStream from "socket.io-stream";
+import * as FileSystem from "expo-file-system";
 
 function MessagesScreen({ navigation, route }) {
   const [pickedMessages, setPickedMessages] = useState([]);
@@ -68,8 +70,13 @@ function MessagesScreen({ navigation, route }) {
       ...other,
     };
   };
-  const sendMessage = (message) => {
-    const newMessage = generateMessage(contentTypes.TEXT, message);
+  const sendFile = async (message) => {
+    const file = await FileSystem.readAsStringAsync(message.content, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+    socket.emit("send file", {file,...message});
+  };
+  const sendText = (newMessage) => {
     const messageIndex = messages.length;
     socket.emit("send message", newMessage, (res) => {
       //!make binary search based on the dateTime insted
@@ -81,6 +88,10 @@ function MessagesScreen({ navigation, route }) {
         setMessages(messages);
       }
     });
+  };
+  const sendMessage = (message) => {
+    const newMessage = generateMessage(contentTypes.TEXT, message);
+    sendText(newMessage);
     setMessages([...messages, newMessage]);
   };
   const sendRecording = (uri, duration) => {
@@ -89,31 +100,36 @@ function MessagesScreen({ navigation, route }) {
       duration: duration,
     });
     setMessages([...messages, newMessage]);
-    // socket.emit("chat message", "this.state.chatMessage");
+    sendFile(newMessage);
   };
   const sendImage = (imageData) => {
     const newMessage = generateMessage(contentTypes.IMAGE, imageData.uri);
     setMessages([...messages, newMessage]);
+    sendFile(newMessage);
   };
   const sendAudio = (audioDataList) => {
     const newMessages = [];
     for (let audioData of audioDataList) {
       //todo: add custom music audio message
-      newMessages.push(
-        generateMessage(contentTypes.AUDIO, audioData.uri, {
-          name: audioData.filename.slice(0, -4),
-          duration: audioData.duration,
-        })
-      );
+      const newMessage = generateMessage(contentTypes.AUDIO, audioData.uri, {
+        name: audioData.filename.slice(0, -4),
+        duration: audioData.duration,
+      });
+      sendFile(newMessage);
+      newMessages.push(newMessage);
     }
     setMessages([...messages, ...newMessages]);
   };
   const sendContact = (contactListData) => {
     const newMessages = [];
     for (let contactData of contactListData) {
-      newMessages.push(
-        generateMessage(contentTypes.CONTACT, contactData.name, contactData)
+      const newMessage = generateMessage(
+        contentTypes.CONTACT,
+        contactData.name,
+        contactData
       );
+      sendText(newMessage);
+      newMessages.push(newMessage);
     }
     setMessages([...messages, ...newMessages]);
   };
