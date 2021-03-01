@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { Camera } from "expo-camera";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-// import * as FileSystem from "expo-file-system";
 import * as FileSystem from "expo-file-system";
 
 import ResizableImage from "../../components/ResizableImage";
@@ -19,7 +18,7 @@ import ImagesList from "../../components/chat/ImagesList";
 import contentTypes from "../../config/contentTypes";
 
 //todo: move this...
-const APP_ASSETS_URI = "file://Sellit";
+// const APP_ASSETS_URI = "file://Sellit";
 
 function CameraScreen({ navigation, route }) {
   const { sendImage } = route.params;

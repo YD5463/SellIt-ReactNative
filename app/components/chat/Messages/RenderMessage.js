@@ -82,23 +82,21 @@ function RenderMessage({
             style={[
               styles.container,
               getWidth(),
-              isFrom ? { alignSelf: "flex-end" } : {},
+              isFrom ? styles.fromMessage : styles.toMessage,
             ]}
           >
-            <View style={[isFrom ? styles.fromMessage : styles.toMessage]}>
-              {render()}
-              <View style={{ flexDirection: "row" }}>
-                <Text style={styles.messageTime}>
-                  {moment(dateTime).format("HH:mm")}
-                </Text>
-                {isFrom && (
-                  <MaterialCommunityIcons
-                    name={isSent === false ? "progress-clock" : "check"}
-                    size={16}
-                    color={extraDataColor}
-                  />
-                )}
-              </View>
+            {render()}
+            <View style={styles.extraDataView}>
+              <Text style={styles.messageTime}>
+                {moment(dateTime).format("HH:mm")}
+              </Text>
+              {isFrom && (
+                <MaterialCommunityIcons
+                  name={isSent === false ? "progress-clock" : "check"}
+                  size={16}
+                  color={extraDataColor}
+                />
+              )}
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -131,6 +129,7 @@ const styles = StyleSheet.create({
   fromMessage: {
     backgroundColor: colors.primary,
     borderRadius: 5,
+    alignSelf: "flex-end",
   },
   dateText: {
     padding: 5,
@@ -154,6 +153,10 @@ const styles = StyleSheet.create({
     flex: 1,
     height: "100%",
     opacity: 0.5,
+  },
+  extraDataView: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
   },
 });
 
