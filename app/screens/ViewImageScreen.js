@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Image,
   StyleSheet,
   View,
-  Button,
   TouchableWithoutFeedback,
   Dimensions,
 } from "react-native";
@@ -11,20 +9,18 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "./../components/Screen";
 import { useTheme } from "react-native-paper";
 import * as ScreenOrientation from "expo-screen-orientation";
-import { DeviceMotion } from "expo-sensors";
+import ResizableImage from "./../components/ResizableImage";
 
 function ViewImageScreen({ route, navigation }) {
   const { imageUri } = route.params;
   const { colors } = useTheme();
-  const [deg, setdeg] = useState("0deg");
-  DeviceMotion.addListener(({ rotation }) => {
-    const sign = rotation.alpha >= 0 ? "+" : "-";
-    const alpha = Math.abs(rotation.alpha);
-    console.log(alpha);
-    const curr_deg = alpha > 3 || (alpha > 0 && alpha < 0.5) ? "90" : "0";
-    setdeg(`${sign}${curr_deg}deg`);
-  });
-  console.log(deg);
+  useEffect(() => {
+    const subs = ScreenOrientation.addOrientationChangeListener((listener) => {
+      console.log(listener.orientationInfo.orientation);
+    });
+    return () => subs.remove();
+  }, []);
+
   return (
     <Screen style={{ flex: 1 }}>
       <View style={[styles.container, { backgroundColor: colors.white }]}>
@@ -37,16 +33,8 @@ function ViewImageScreen({ route, navigation }) {
             />
           </View>
         </TouchableWithoutFeedback>
-        <View
-          style={{
-            transform: [{ rotate: deg }],
-          }}
-        >
-          <Image
-            resizeMode="contain"
-            style={styles.image}
-            source={{ uri: imageUri }}
-          />
+        <View>
+          <ResizableImage style={styles.image} uri={imageUri} />
         </View>
       </View>
     </Screen>

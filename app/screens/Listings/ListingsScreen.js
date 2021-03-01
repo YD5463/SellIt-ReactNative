@@ -45,7 +45,6 @@ function ListingsScreen({ navigation }) {
       setCartSize(0);
       setCart([]);
     }
-    console.log(cart);
   };
   const initListings = async () => {
     setRefreshing(true);
@@ -115,7 +114,7 @@ function ListingsScreen({ navigation }) {
   }, [listing]);
   const onAdvencedFilter = (minPrice, maxPrice) => {
     //todo: filter for the rate also
-    console.log(minPrice, "  ", maxPrice);
+    // console.log(minPrice, "  ", maxPrice);
 
     setListing(
       originalListing.filter(
@@ -125,7 +124,7 @@ function ListingsScreen({ navigation }) {
       )
     );
   };
-  console.log(categoriesMap);
+
   return (
     <>
       <ActivityIndicator visible={loading} />
@@ -172,7 +171,7 @@ function ListingsScreen({ navigation }) {
               <Button title="Retry" onPress={initData} />
             </>
           )}
-          {listing.length === 0 && (
+          {listing.length === 0 && !loading && (
             <AppText>No exiting listing with this filters.</AppText>
           )}
           <FlatList

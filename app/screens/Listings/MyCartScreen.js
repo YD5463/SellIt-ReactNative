@@ -18,6 +18,7 @@ import routes from "../../navigation/routes";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { TouchableWithoutFeedback } from "react-native";
+import EmptyList from "../../components/EmptyList";
 
 function MyCartScreen({ route, navigation }) {
   const getSum = (cart) => {
@@ -125,24 +126,12 @@ function MyCartScreen({ route, navigation }) {
       </TouchableOpacity>
     </Screen>
   ) : (
-    <Screen style={[styles.emptyCart, { backgroundColor: colors.light }]}>
-      <View style={[styles.mainCircle, { backgroundColor: colors.white }]}>
-        <MaterialCommunityIcons
-          name="basket"
-          size={150}
-          color={colors.primary}
-        />
-      </View>
-      <Text style={[styles.emptyCartTitle, { color: colors.medium }]}>
-        {t("emptyCartTitle")}
-      </Text>
-      <Text style={[styles.emptyCartSubTitle, { color: colors.medium }]}>
-        {t("emptyCartSubTitle")}
-      </Text>
-      <View style={{ width: 200 }}>
-        <AppButton title="Go Back" onPress={() => navigation.goBack()} />
-      </View>
-    </Screen>
+    <EmptyList
+      icon="basket"
+      titleKey="emptyCartTitle"
+      subTitleKey="emptyCartSubTitle"
+      buttonHandler={() => navigation.goBack()}
+    />
   );
 }
 
@@ -167,32 +156,6 @@ const styles = StyleSheet.create({
   },
   goBack: {
     fontSize: 20,
-    textAlign: "center",
-  },
-  mainCircle: {
-    width: 275,
-    height: 275,
-    borderRadius: 150,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  emptyCart: {
-    justifyContent: "center",
-    alignItems: "center",
-    paddingBottom: "10%",
-  },
-  emptyCartTitle: {
-    fontSize: 30,
-    fontWeight: "600",
-    alignSelf: "center",
-    justifyContent: "center",
-    paddingTop: 25,
-  },
-  emptyCartSubTitle: {
-    paddingTop: 15,
-    fontSize: 20,
-    paddingLeft: 15,
-    paddingRight: 15,
     textAlign: "center",
   },
   resetCartView: {

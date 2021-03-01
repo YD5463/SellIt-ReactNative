@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
-import useApi from "../../hooks/useApi";
 import myApi from "../../api/my";
 import listingsApi from "../../api/listings";
 
@@ -8,6 +7,8 @@ import ActivityIndicator from "../../components/ActivityIndicator";
 import AccountListingItem from "../../components/AccountListingItem";
 import routes from "../../navigation/routes";
 import { useToast } from "react-native-styled-toast";
+import EmptyList from "../../components/EmptyList";
+import { FontAwesome } from "@expo/vector-icons";
 
 function AccountListingsScreen({ route, navigation }) {
   const [listings, setListings] = useState([]);
@@ -44,21 +45,35 @@ function AccountListingsScreen({ route, navigation }) {
   return (
     <>
       <ActivityIndicator visible={loading} />
-      <View style={styles.container}>
-        <FlatList
-          data={listings}
-          renderItem={({ item }) => (
-            <AccountListingItem
-              listing={item}
-              onEdit={() =>
-                navigation.navigate(routes.LISTING_EDIT, { listing: item })
-              }
-              onDelete={() => onDelete(item._id)}
-            />
-          )}
-          keyExtractor={(listing) => listing._id}
+      {listings.length === 0 && !loading ? (
+        <EmptyList
+          titleKey="emptyMylistingsTitle"
+          subTitleKey="emptyMylistingsSubTitle"
+          IconComponent={FontAwesome}
+          icon="shopping-bag"
+          buttonHandler={() => {
+            navigation.goBack();
+            navigation.navigate(routes.LISTING_EDIT);
+          }}
+          buttonTitle="createFirstListing"
         />
-      </View>
+      ) : (
+        <View style={styles.container}>
+          <FlatList
+            data={listings}
+            renderItem={({ item }) => (
+              <AccountListingItem
+                listing={item}
+                onEdit={() =>
+                  navigation.navigate(routes.LISTING_EDIT, { listing: item })
+                }
+                onDelete={() => onDelete(item._id)}
+              />
+            )}
+            keyExtractor={(listing) => listing._id}
+          />
+        </View>
+      )}
     </>
   );
 }

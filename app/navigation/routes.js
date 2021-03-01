@@ -5,7 +5,7 @@ export default Object.freeze({
   LOGIN: "Login",
   MESSAGES: "Messages",
   REGISTER: "Register",
-  ACCOUNT_LISTINGS: "Listings",
+  ACCOUNT_LISTINGS: "Account Listings",
   EDIT_PROFILE: "ProfileEdit",
   SETTINGS: "Settings",
   CHANGE_PASSWORD: "Password",

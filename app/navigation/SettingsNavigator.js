@@ -58,7 +58,7 @@ const screens = [
   },
   {
     screenName: "Manage Privicy",
-    titleKey: "Privacy",
+    titleKey: "privacy",
     iconName: "shield-lock-outline",
     targetScreen: () =>
       getComponentWithBack(ManagePrivacyScreen, "Manage Privicy"),

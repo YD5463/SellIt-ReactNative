@@ -21,6 +21,7 @@ function ResizableImage({ uri, style }) {
       onHandlerStateChange={onZoomStateChange}
     >
       <Animated.Image
+        resizeMode={"contain"}
         source={{
           uri: uri,
         }}

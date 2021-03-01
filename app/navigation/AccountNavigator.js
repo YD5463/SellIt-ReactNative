@@ -20,7 +20,7 @@ const AccountNavigator = () => (
       options={{ headerShown: false }}
       component={ChatNavigator}
     />
-    <Stack.Screen name="Listings" component={AccountListingsScreen} />
+    <Stack.Screen name="Account Listings" component={AccountListingsScreen} />
     <Stack.Screen name="Orderd Listings" component={OrderedListingsScreen} />
     <Stack.Screen name="ProfileEdit" component={EditProfileScreen} />
   </Stack.Navigator>
