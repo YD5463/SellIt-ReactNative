@@ -1,4 +1,4 @@
-export default {
+export default Object.freeze({
   primary: "#fc5c65",
   secondary: "#4ecdc4",
   black: "#000",
@@ -12,4 +12,4 @@ export default {
   green: "#00C92F",
   audio: "#EC8E12",
   contactBackground: "#C0C0C0",
-};
+});

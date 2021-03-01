@@ -1,4 +1,4 @@
-export default {
+export default Object.freeze({
   AUDIO: "audio",
   TEXT: "text",
   IMAGE: "image",
@@ -6,4 +6,4 @@ export default {
   LOCATION: "location",
   MUSIC: "music",
   VIDEO: "video",
-};
+});

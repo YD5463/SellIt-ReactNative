@@ -5,6 +5,7 @@ import AccountListingsScreen from "../screens/Listings/AccountListingsScreen";
 import EditProfileScreen from "./../screens/Settings/EditProfileScreen";
 import OrderedListingsScreen from "../screens/Listings/OrderedListingsScreen";
 import ChatNavigator from "./ChatNavigator";
+import routes from "./routes";
 
 const Stack = createStackNavigator();
 
@@ -16,13 +17,19 @@ const AccountNavigator = () => (
       component={AccountScreen}
     />
     <Stack.Screen
-      name="Chat"
+      name={routes.CHAT}
       options={{ headerShown: false }}
       component={ChatNavigator}
     />
-    <Stack.Screen name="Account Listings" component={AccountListingsScreen} />
-    <Stack.Screen name="Orderd Listings" component={OrderedListingsScreen} />
-    <Stack.Screen name="ProfileEdit" component={EditProfileScreen} />
+    <Stack.Screen
+      name={routes.ACCOUNT_LISTINGS}
+      component={AccountListingsScreen}
+    />
+    <Stack.Screen
+      name={routes.ORDERED_ITEMS}
+      component={OrderedListingsScreen}
+    />
+    <Stack.Screen name={routes.EDIT_PROFILE} component={EditProfileScreen} />
   </Stack.Navigator>
 );
 
