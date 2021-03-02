@@ -30,8 +30,21 @@ if want to develop in the client side you will need to run the server clone this
 I record my emulator screen to show some of the features here:
 
 
+<iframe width="420" height="500"
+src="https://www.youtube.com/embed/sEN75VKk4S4">
+</iframe>
 
-<img src="demo.gif" alt="demo video" style="zoom: 25%;" />
+<iframe width="420" height="500"
+src="https://www.youtube.com/embed/V7RhsvWzwfU">
+</iframe>
+
+<iframe width="420" height="500"
+src="https://www.youtube.com/embed/rlrlsJZkPW8">
+</iframe>
+
+<iframe width="420" height="500"
+src="https://www.youtube.com/embed/qJ-8SWHBceU">
+</iframe>
 
 enjoy :)
 
