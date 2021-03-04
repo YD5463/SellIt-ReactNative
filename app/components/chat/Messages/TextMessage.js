@@ -1,22 +1,23 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import Text from "../../Text";
+import { StyleSheet } from "react-native";
 import Highlighter from "react-native-highlight-words";
 import { useTheme } from "react-native-paper";
-import colors from "../../../config/colors";
+import Hyperlink from "react-native-hyperlink";
+import Text from "../../Text";
 
 function TextMessage({ meesageData, searchQuery }) {
   const { content } = meesageData;
-
   const { colors } = useTheme();
   return (
-    <Highlighter
-      highlightStyle={{ backgroundColor: "yellow" }}
-      searchWords={searchQuery.split(" ")}
-      textToHighlight={content}
-      style={styles.message}
-      textComponent={Text}
-    />
+    <Hyperlink linkDefault={true} linkStyle={styles.link}>
+      <Highlighter
+        highlightStyle={{ backgroundColor: "yellow" }}
+        searchWords={searchQuery.split(" ")}
+        textToHighlight={content}
+        style={styles.message}
+        textComponent={Text}
+      ></Highlighter>
+    </Hyperlink>
   );
 }
 
@@ -26,6 +27,11 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     fontSize: 17,
+  },
+  link: {
+    color: "#526FFF",
+    borderBottomColor: "#526FFF",
+    borderBottomWidth: 0.2,
   },
 });
 
