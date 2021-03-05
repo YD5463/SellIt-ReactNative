@@ -116,7 +116,7 @@ function MyCartScreen({ route, navigation }) {
         onPress={() =>
           navigation.navigate(routes.CHECKOUT, { listings: editedCart })
         }
-        color="hardBlue"
+        color="blue"
         borderRadius={15}
       />
       <TouchableOpacity onPress={() => navigation.goBack()}>

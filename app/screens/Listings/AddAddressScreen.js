@@ -62,7 +62,7 @@ function AddAddressScreen({ navigation }) {
     // console.log(values);
     const response = await addAddressApi.request(values);
     // console.log(addAddressApi);
-    if (!response.ok) return console.log("Error Accured!!!");
+    if (!response.ok) return console.log("Error Accured!!!", response);
     toast({ message: "Add Address Succfully!" });
     navigation.goBack();
   };

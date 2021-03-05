@@ -1,8 +1,11 @@
 import client from "./client";
 const endpoint = "/transactions";
 
-const buy = (listingsIds, addressId, paymentId) =>
-  client.post(`${endpoint}/buy`, { listingsIds, addressId, paymentId });
+const buy = (details, onUploadProgress) =>
+  client.post(`${endpoint}/buy`, details, {
+    onUploadProgress: (progress) =>
+      onUploadProgress(progress.loaded / progress.total),
+  });
 
 const getOrderedListings = () => client.get(`${endpoint}/orderedListings`);
 

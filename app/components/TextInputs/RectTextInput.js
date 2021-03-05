@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 16,
+    padding: 10,
   },
   inputView: {
     height: 48,

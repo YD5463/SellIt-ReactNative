@@ -20,6 +20,7 @@ import transactions from "../../api/transactions";
 import { ErrorMessage } from "../../components/forms";
 import cache from "../../utility/cache";
 import settings from "../../config/settings";
+import UploadScreen from "./../UploadScreen";
 
 const MAX_OPTIONS = 3;
 
@@ -37,6 +38,8 @@ function CheckoutScreen({ navigation, route }) {
   const [paymentIndexToDelete, setPaymentIndexToDelete] = useState(-1);
   const [addressIndexToDelete, setAddressIndexToDelete] = useState(-1);
   const [error, setError] = useState();
+  const [uploadVisible, setUploadVisible] = useState(false);
+  const [progress, setProgress] = useState(0);
   let alreadySubmit = false;
 
   const { toast } = useToast();
@@ -117,17 +120,21 @@ function CheckoutScreen({ navigation, route }) {
     let listingsIds = {};
     for (let [id, details] of Object.entries(listings))
       listingsIds[id] = details.quantity;
-    // console.log(listingsIds);
-    await buyApi.request(
-      listingsIds,
-      getDeliveryAddressApi.data[chosenAddress]._id,
-      getPaymentMethodsApi.data[chosenPayment]._id
+    setUploadVisible(true);
+    const reponse = await transactions.buy(
+      {
+        listingsIds,
+        addressId: getDeliveryAddressApi.data[chosenAddress]._id,
+        paymentId: getPaymentMethodsApi.data[chosenPayment].payemntId,
+      },
+      (progress) => setProgress(progress)
     );
-    if (buyApi.error) setError(buyApi.error);
-    else {
-      toast({ message: "Buy Succfully..." });
-      if (!fromBuyNow) await cache.remove(settings.CartCacheKey);
+    setUploadVisible(false);
+    if (!reponse.ok) {
+      setError(reponse.data.toString());
+    } else {
       navigation.navigate(routes.LISTINGS);
+      if (!fromBuyNow) await cache.remove(settings.CartCacheKey);
     }
   };
   return (
@@ -136,6 +143,11 @@ function CheckoutScreen({ navigation, route }) {
         visible={getDeliveryAddressApi.loading || getPaymentMethodsApi.loading}
       />
       <Screen style={{ backgroundColor: colors.light }}>
+        <UploadScreen
+          onDone={() => setUploadVisible(false)}
+          progress={progress}
+          visible={uploadVisible}
+        />
         <View style={styles.container}>
           <Text style={[styles.heading, { color: colors.black }]}>
             Checkout

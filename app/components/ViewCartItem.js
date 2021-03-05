@@ -7,7 +7,7 @@ import QuantityInput from "./QuantityInput";
 import helper from "../utility/helper";
 import globalColors from "../config/colors";
 
-function ViewCartItem({ item, onMinus, onPlus, priceColor = "green" }) {
+function ViewCartItem({ item, onMinus, onPlus, priceColor = "blue" }) {
   const { colors } = useTheme();
   return (
     <View style={styles.container}>
@@ -17,7 +17,7 @@ function ViewCartItem({ item, onMinus, onPlus, priceColor = "green" }) {
         preview={{ uri: item.images[0].thumbnailUrl }}
         uri={item.images[0].url}
       />
-      <View style={{ flexDirection: "column", paddingLeft: 13 }}>
+      <View style={{ flexDirection: "column" }}>
         <Text style={styles.title} numberOfLines={2}>
           {helper.showText(item.title, 19)}
         </Text>
@@ -38,7 +38,7 @@ function ViewCartItem({ item, onMinus, onPlus, priceColor = "green" }) {
           }}
         >
           <Text
-            style={[styles.price, { color: colors[priceColor] }]}
+            style={[styles.price, { color: colors.secondry }]}
           >{`$${item.price}`}</Text>
           <View style={{ paddingLeft: 70 }}>
             <QuantityInput
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 120,
-    height: 140,
+    height: 120,
     borderRadius: 15,
   },
   title: {
