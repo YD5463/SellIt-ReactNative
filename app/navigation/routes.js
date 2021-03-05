@@ -32,4 +32,5 @@ export default Object.freeze({
   CHANGE_BACKGROUND: "Custom Background",
   BACKFROUND_GALLERY: "Background Gallery",
   BACKGROUND_PREVIEW: "Preview",
+  ODRER_DETAILS: "Order Details",
 });

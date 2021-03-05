@@ -82,7 +82,9 @@ function OrderedListingsScreen({ navigation }) {
             renderItem={({ item }) => (
               <MyOrdersItem
                 orderData={item}
-                onDetailPressed={() => {}}
+                onDetailPressed={() =>
+                  navigation.navigate(routes.ODRER_DETAILS, { orderData: item })
+                }
                 statuses={getStatusesApi.data}
               />
             )}
