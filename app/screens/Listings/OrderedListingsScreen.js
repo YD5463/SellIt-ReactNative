@@ -20,11 +20,19 @@ function OrderedListingsScreen({ navigation }) {
   const getOrderedListingsApi = useApi(transactions.getOrderedListings);
   const getStatusesApi = useApi(transactions.getStatuses);
   const [currStatus, setCurrStatus] = useState();
+  const [orders, setOrders] = useState([]);
   const init = async () => {
-    getOrderedListingsApi.request();
+    await getOrderedListingsApi.request();
     const response = await getStatusesApi.request();
-    if (response.ok) setCurrStatus(response.data[0]._id);
+    const defualtStatus = response.data[0]._id;
+    if (response.ok) setCurrStatus(defualtStatus);
   };
+  useEffect(() => {
+    setOrders(
+      getOrderedListingsApi.data.filter((order) => order.status === currStatus)
+    );
+  }, [currStatus]);
+
   useEffect(() => {
     init();
   }, []);
@@ -39,7 +47,9 @@ function OrderedListingsScreen({ navigation }) {
 
   return (
     <>
-      <ActivityIndicator visible={getOrderedListingsApi.loading} />
+      <ActivityIndicator
+        visible={getOrderedListingsApi.loading || getStatusesApi.loading}
+      />
       {getOrderedListingsApi.data.length === 0 &&
       !getOrderedListingsApi.loading ? (
         <EmptyList
@@ -67,7 +77,7 @@ function OrderedListingsScreen({ navigation }) {
             ))}
           </View>
           <FlatList
-            data={getOrderedListingsApi.data}
+            data={orders}
             keyExtractor={(order) => order._id}
             renderItem={({ item }) => (
               <MyOrdersItem
