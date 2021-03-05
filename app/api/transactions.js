@@ -9,4 +9,6 @@ const buy = (details, onUploadProgress) =>
 
 const getOrderedListings = () => client.get(`${endpoint}/orderedListings`);
 
-export default { buy, getOrderedListings };
+const getStatuses = () => client.get(`${endpoint}/statuses`);
+
+export default { buy, getOrderedListings, getStatuses };

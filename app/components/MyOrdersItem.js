@@ -6,10 +6,11 @@ import colors from "../config/colors";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 
-function MyOrdersItem({ orderData, onDetailPressed }) {
+function MyOrdersItem({ orderData, onDetailPressed, statuses }) {
   console.log(orderData);
   const { colors } = useTheme();
   const { t } = useTranslation();
+  const status = statuses.find((val) => val._id === orderData.status);
   return (
     <View style={[styles.container, { backgroundColor: colors.white }]}>
       <View style={{ flex: 1 }}>
@@ -35,7 +36,7 @@ function MyOrdersItem({ orderData, onDetailPressed }) {
           </View>
         </TouchableOpacity>
         <Text style={{ color: colors.secondary, textAlign: "center" }}>
-          Delivered
+          {status ? status.name : ""}
         </Text>
       </View>
     </View>

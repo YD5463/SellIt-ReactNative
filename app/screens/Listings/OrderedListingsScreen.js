@@ -16,20 +16,26 @@ import routes from "../../navigation/routes";
 import MyOrdersItem from "../../components/MyOrdersItem";
 import { useTheme } from "react-native-paper";
 
-const statuses = ["Delivered", "Proccessing", "Cancelled"];
-
 function OrderedListingsScreen({ navigation }) {
   const getOrderedListingsApi = useApi(transactions.getOrderedListings);
-  const [currStatus, setCurrStatus] = useState(statuses[0]);
-  useEffect(() => {
+  const getStatusesApi = useApi(transactions.getStatuses);
+  const [currStatus, setCurrStatus] = useState();
+  const init = async () => {
     getOrderedListingsApi.request();
+    const response = await getStatusesApi.request();
+    if (response.ok) setCurrStatus(response.data[0]._id);
+  };
+  useEffect(() => {
+    init();
   }, []);
   const { colors } = useTheme();
 
-  const getBackground = (status) =>
-    currStatus === status ? { backgroundColor: colors.primary } : {};
+  const getBackground = (status) => {
+    console.log(currStatus, status);
+    return currStatus === status ? { backgroundColor: colors.primary } : {};
+  };
   const getColor = (status) =>
-    currStatus === status ? colors.white : colors.black;
+    currStatus === status ? { color: colors.white } : { color: colors.black };
 
   return (
     <>
@@ -50,20 +56,26 @@ function OrderedListingsScreen({ navigation }) {
       ) : (
         <Screen style={[styles.container, { backgroundColor: colors.light }]}>
           <View style={styles.bar}>
-            {statuses.map((status) => (
+            {getStatusesApi.data.map((status) => (
               <TouchableOpacity
-                key={status}
-                style={[styles.element, getBackground(status)]}
-                onPress={() => setCurrStatus(status)}
+                key={status._id}
+                style={[styles.element, getBackground(status._id)]}
+                onPress={() => setCurrStatus(status._id)}
               >
-                <Text style={getColor(status)}>{status}</Text>
+                <Text style={getColor(status._id)}>{status.name}</Text>
               </TouchableOpacity>
             ))}
           </View>
           <FlatList
             data={getOrderedListingsApi.data}
             keyExtractor={(order) => order._id}
-            renderItem={({ item }) => <MyOrdersItem orderData={item} />}
+            renderItem={({ item }) => (
+              <MyOrdersItem
+                orderData={item}
+                onDetailPressed={() => {}}
+                statuses={getStatusesApi.data}
+              />
+            )}
           />
         </Screen>
       )}
