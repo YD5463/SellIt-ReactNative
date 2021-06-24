@@ -29,13 +29,13 @@ if want to develop in the client side you will need to run the server clone this
 
 I record my emulator screen to show some of the features here:
 
-[![Buy Listings](https://img.youtube.com/vi/sEN75VKk4S4/0.jpg)](https://www.youtube.com/watch?v=sEN75VKk4S4)
+[![Buy Listings](https://img.youtube.com/vi/f9bbhchlhpk/0.jpg)](https://www.youtube.com/watch?v=f9bbhchlhpk)
 
 [![Add Listings](https://img.youtube.com/vi/V7RhsvWzwfU/0.jpg)](https://www.youtube.com/watch?v=V7RhsvWzwfU)
 
-[![Chat](https://img.youtube.com/vi/rlrlsJZkPW8/0.jpg)](https://www.youtube.com/watch?v=rlrlsJZkPW8)
+[![Chat](https://img.youtube.com/vi/wvQWRt95NoQ/0.jpg)](https://www.youtube.com/watch?v=wvQWRt95NoQ)
 
-[![Other](https://img.youtube.com/vi/qJ-8SWHBceU/0.jpg)](https://www.youtube.com/watch?v=qJ-8SWHBceU)
+[![Other](https://img.youtube.com/vi/siJR_vWT3S4/0.jpg)](https://www.youtube.com/watch?v=siJR_vWT3S4)
 
 
 enjoy :)
